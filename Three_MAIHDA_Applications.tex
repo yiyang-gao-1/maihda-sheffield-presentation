@@ -1,0 +1,1114 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{MAIHDA Analysis - Applications Using Synthetic Data}
+\author{Dr Yiyang Gao}
+\date{2025-06-10}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={MAIHDA Analysis - Applications Using Synthetic Data},
+  pdfauthor={Dr Yiyang Gao},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{3}
+\tableofcontents
+}
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+This document presents three applications of MAIHDA (Multilevel Analysis
+of Individual Heterogeneity and Discriminatory Accuracy) developed for
+the University of Sheffield ESRC project presentation. MAIHDA is the
+gold standard for quantitative intersectional analysis, treating
+intersectional identities as random effects in multilevel models.
+
+\hypertarget{overview-of-three-studies}{%
+\subsection{Overview of Three Studies}\label{overview-of-three-studies}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Spatial MAIHDA}: Analysis of ethnic clustering in English
+  secondary schools
+\item
+  \textbf{Longitudinal MAIHDA}: Teacher retention survival analysis with
+  intersectional strata
+\item
+  \textbf{Policy Evaluation MAIHDA}: Transport accessibility and school
+  choice simulation
+\end{enumerate}
+
+\hypertarget{study-1-spatial-maihda---school-segregation}{%
+\section{Study 1: Spatial MAIHDA - School
+Segregation}\label{study-1-spatial-maihda---school-segregation}}
+
+\hypertarget{research-question}{%
+\subsection{Research Question}\label{research-question}}
+
+How do ethnic clustering patterns vary across schools, local
+authorities, and over time in England?
+
+\hypertarget{data-generation}{%
+\subsection{Data Generation}\label{data-generation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Generate synthetic data with known patterns}
+\NormalTok{n\_pupils }\OtherTok{\textless{}{-}} \DecValTok{100000}
+\NormalTok{n\_strata }\OtherTok{\textless{}{-}} \DecValTok{48}  \CommentTok{\# 4 ethnicities × 3 SES × 4 school types}
+\NormalTok{n\_spatial }\OtherTok{\textless{}{-}} \DecValTok{200}  \CommentTok{\# LSOAs}
+
+\CommentTok{\# Create intersectional strata}
+\NormalTok{strata\_data }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}
+  \AttributeTok{ethnicity =} \FunctionTok{c}\NormalTok{(}\StringTok{"White\_British"}\NormalTok{, }\StringTok{"Pakistani"}\NormalTok{, }\StringTok{"Black"}\NormalTok{, }\StringTok{"Indian"}\NormalTok{),}
+  \AttributeTok{ses =} \FunctionTok{c}\NormalTok{(}\StringTok{"Low"}\NormalTok{, }\StringTok{"Medium"}\NormalTok{, }\StringTok{"High"}\NormalTok{),}
+  \AttributeTok{school\_type =} \FunctionTok{c}\NormalTok{(}\StringTok{"Community"}\NormalTok{, }\StringTok{"Faith"}\NormalTok{, }\StringTok{"Academy"}\NormalTok{, }\StringTok{"Free"}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Generate pupil data}
+\NormalTok{pupils }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{id =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_pupils,}
+  \AttributeTok{strata =} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_strata, n\_pupils, }
+    \AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\FloatTok{0.4}\NormalTok{, }\DecValTok{12}\NormalTok{),  }\CommentTok{\# White British more common}
+             \FunctionTok{rep}\NormalTok{(}\FloatTok{0.15}\NormalTok{, }\DecValTok{12}\NormalTok{), }\CommentTok{\# Pakistani }
+             \FunctionTok{rep}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{12}\NormalTok{),  }\CommentTok{\# Black}
+             \FunctionTok{rep}\NormalTok{(}\FloatTok{0.1}\NormalTok{, }\DecValTok{12}\NormalTok{)), }\CommentTok{\# Indian}
+    \AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{lsoa =} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_spatial, n\_pupils, }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{left\_join}\NormalTok{(strata\_data }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{strata =} \FunctionTok{row\_number}\NormalTok{()), }\AttributeTok{by =} \StringTok{"strata"}\NormalTok{)}
+
+\CommentTok{\# Create spatial clustering for Pakistani × Low SES × Faith schools}
+\NormalTok{pakistani\_low\_faith }\OtherTok{\textless{}{-}} \FunctionTok{which}\NormalTok{(}
+\NormalTok{  strata\_data}\SpecialCharTok{$}\NormalTok{ethnicity }\SpecialCharTok{==} \StringTok{"Pakistani"} \SpecialCharTok{\&} 
+\NormalTok{  strata\_data}\SpecialCharTok{$}\NormalTok{ses }\SpecialCharTok{==} \StringTok{"Low"} \SpecialCharTok{\&} 
+\NormalTok{  strata\_data}\SpecialCharTok{$}\NormalTok{school\_type }\SpecialCharTok{==} \StringTok{"Faith"}
+\NormalTok{)}
+
+\CommentTok{\# Reassign to create clustering}
+\NormalTok{pupils}\SpecialCharTok{$}\NormalTok{lsoa[pupils}\SpecialCharTok{$}\NormalTok{strata }\SpecialCharTok{==}\NormalTok{ pakistani\_low\_faith] }\OtherTok{\textless{}{-}} 
+  \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\DecValTok{20}\NormalTok{, }\FunctionTok{sum}\NormalTok{(pupils}\SpecialCharTok{$}\NormalTok{strata }\SpecialCharTok{==}\NormalTok{ pakistani\_low\_faith), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Display sample data}
+\NormalTok{pupils }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Sample of Pupil Data"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:spatial-data}Sample of Pupil Data}
+\centering
+\begin{tabular}[t]{r|r|r|l|l|l}
+\hline
+id & strata & lsoa & ethnicity & ses & school\_type\\
+\hline
+1 & 1 & 56 & White\_British & Low & Community\\
+\hline
+2 & 26 & 17 & Pakistani & Low & Academy\\
+\hline
+3 & 11 & 93 & Black & High & Community\\
+\hline
+4 & 40 & 45 & Indian & Low & Free\\
+\hline
+5 & 36 & 160 & Indian & High & Academy\\
+\hline
+6 & 8 & 51 & Indian & Medium & Community\\
+\hline
+7 & 10 & 157 & Pakistani & High & Community\\
+\hline
+8 & 39 & 2 & Black & Low & Free\\
+\hline
+9 & 13 & 102 & White\_British & Low & Faith\\
+\hline
+10 & 4 & 56 & Indian & Low & Community\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{segregation-index-calculation}{%
+\subsection{Segregation Index
+Calculation}\label{segregation-index-calculation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate entropy{-}based segregation index}
+\NormalTok{calculate\_segregation }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data, group\_var, unit\_var) \{}
+  \CommentTok{\# Calculate proportions}
+\NormalTok{  total\_by\_unit }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(}\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(unit\_var)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total =} \FunctionTok{n}\NormalTok{(), }\AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{)}
+  
+\NormalTok{  group\_by\_unit }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(}\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(unit\_var), }\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(group\_var)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\AttributeTok{count =} \FunctionTok{n}\NormalTok{(), }\AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{left\_join}\NormalTok{(total\_by\_unit, }\AttributeTok{by =}\NormalTok{ unit\_var) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{prop =}\NormalTok{ count }\SpecialCharTok{/}\NormalTok{ total)}
+  
+  \CommentTok{\# Calculate entropy}
+\NormalTok{  entropy }\OtherTok{\textless{}{-}}\NormalTok{ group\_by\_unit }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(}\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(group\_var)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}
+      \AttributeTok{entropy =} \SpecialCharTok{{-}}\FunctionTok{sum}\NormalTok{(prop }\SpecialCharTok{*} \FunctionTok{log}\NormalTok{(prop }\SpecialCharTok{+} \FloatTok{1e{-}10}\NormalTok{)),}
+      \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{    )}
+  
+  \FunctionTok{return}\NormalTok{(entropy)}
+\NormalTok{\}}
+
+\CommentTok{\# Calculate for each ethnic group}
+\NormalTok{segregation\_scores }\OtherTok{\textless{}{-}}\NormalTok{ pupils }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(ethnicity) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_modify}\NormalTok{(}\SpecialCharTok{\textasciitilde{}} \FunctionTok{calculate\_segregation}\NormalTok{(.x, }\StringTok{"strata"}\NormalTok{, }\StringTok{"lsoa"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{segregation\_index =}\NormalTok{ entropy }\SpecialCharTok{*} \DecValTok{100}\NormalTok{,}
+    \AttributeTok{year =} \DecValTok{2018}  \CommentTok{\# Example year}
+\NormalTok{  )}
+
+\CommentTok{\# Display results}
+\NormalTok{segregation\_scores }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(ethnicity, segregation\_index) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Segregation Index by Ethnicity"}\NormalTok{, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:segregation-index}Segregation Index by Ethnicity}
+\centering
+\begin{tabular}[t]{l|r}
+\hline
+ethnicity & segregation\_index\\
+\hline
+White\_British & 6093.78\\
+\hline
+White\_British & 6124.67\\
+\hline
+White\_British & 6051.57\\
+\hline
+White\_British & 3482.80\\
+\hline
+White\_British & 3514.33\\
+\hline
+White\_British & 3475.27\\
+\hline
+White\_British & 2728.54\\
+\hline
+White\_British & 2712.43\\
+\hline
+White\_British & 2645.88\\
+\hline
+White\_British & 2695.78\\
+\hline
+White\_British & 2688.17\\
+\hline
+White\_British & 2688.15\\
+\hline
+Pakistani & 6182.84\\
+\hline
+Pakistani & 6086.40\\
+\hline
+Pakistani & 6076.01\\
+\hline
+Pakistani & 727.65\\
+\hline
+Pakistani & 3549.83\\
+\hline
+Pakistani & 3558.23\\
+\hline
+Pakistani & 2741.87\\
+\hline
+Pakistani & 2790.79\\
+\hline
+Pakistani & 2654.54\\
+\hline
+Pakistani & 2754.82\\
+\hline
+Pakistani & 2742.09\\
+\hline
+Pakistani & 2733.62\\
+\hline
+Black & 6119.71\\
+\hline
+Black & 6016.31\\
+\hline
+Black & 6086.65\\
+\hline
+Black & 3518.83\\
+\hline
+Black & 3518.49\\
+\hline
+Black & 3578.23\\
+\hline
+Black & 2649.05\\
+\hline
+Black & 2670.24\\
+\hline
+Black & 2707.18\\
+\hline
+Black & 2663.49\\
+\hline
+Black & 2591.50\\
+\hline
+Black & 2757.67\\
+\hline
+Indian & 6143.03\\
+\hline
+Indian & 6025.70\\
+\hline
+Indian & 6078.58\\
+\hline
+Indian & 3512.82\\
+\hline
+Indian & 3574.47\\
+\hline
+Indian & 3506.18\\
+\hline
+Indian & 2654.07\\
+\hline
+Indian & 2747.54\\
+\hline
+Indian & 2627.08\\
+\hline
+Indian & 2677.82\\
+\hline
+Indian & 2617.37\\
+\hline
+Indian & 2705.68\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{spatial-maihda-model-specification}{%
+\subsection{Spatial MAIHDA Model
+Specification}\label{spatial-maihda-model-specification}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Model specification for spatial MAIHDA}
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Spatial MAIHDA Model Structure:}
+\StringTok{{-} Response: Segregation index at LA{-}year level}
+\StringTok{{-} Fixed effects: \% ethnic population, faith schools, selective schools, academies}
+\StringTok{{-} Random effects: }
+\StringTok{  * (1|strata) {-} 48 intersectional strata}
+\StringTok{  * (1|lsoa) {-} spatial units}
+\StringTok{  * Spatial autocorrelation through weights matrix}
+\StringTok{{-} Monte Carlo: 10,000 simulations for uncertainty quantification}
+\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Spatial MAIHDA Model Structure:
+## - Response: Segregation index at LA-year level
+## - Fixed effects: % ethnic population, faith schools, selective schools, academies
+## - Random effects: 
+##   * (1|strata) - 48 intersectional strata
+##   * (1|lsoa) - spatial units
+##   * Spatial autocorrelation through weights matrix
+## - Monte Carlo: 10,000 simulations for uncertainty quantification
+\end{verbatim}
+
+\hypertarget{monte-carlo-simulation-results}{%
+\subsection{Monte Carlo Simulation
+Results}\label{monte-carlo-simulation-results}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Simulate Monte Carlo results for demonstration}
+\NormalTok{n\_sims }\OtherTok{\textless{}{-}} \DecValTok{10000}
+
+\CommentTok{\# Simulate segregation indices for key intersectional groups}
+\NormalTok{mc\_results }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{simulation =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_sims,}
+  \AttributeTok{pakistani\_low\_faith =} \FunctionTok{rnorm}\NormalTok{(n\_sims, }\AttributeTok{mean =} \FloatTok{142.5}\NormalTok{, }\AttributeTok{sd =} \FloatTok{3.8}\NormalTok{),}
+  \AttributeTok{white\_high\_academy =} \FunctionTok{rnorm}\NormalTok{(n\_sims, }\AttributeTok{mean =} \FloatTok{45.2}\NormalTok{, }\AttributeTok{sd =} \FloatTok{2.1}\NormalTok{),}
+  \AttributeTok{black\_low\_community =} \FunctionTok{rnorm}\NormalTok{(n\_sims, }\AttributeTok{mean =} \FloatTok{118.3}\NormalTok{, }\AttributeTok{sd =} \FloatTok{4.5}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Calculate credible intervals}
+\NormalTok{ci\_results }\OtherTok{\textless{}{-}}\NormalTok{ mc\_results }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{simulation, }\AttributeTok{names\_to =} \StringTok{"group"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"segregation"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(group) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{mean =} \FunctionTok{mean}\NormalTok{(segregation),}
+    \AttributeTok{lower\_ci =} \FunctionTok{quantile}\NormalTok{(segregation, }\FloatTok{0.025}\NormalTok{),}
+    \AttributeTok{upper\_ci =} \FunctionTok{quantile}\NormalTok{(segregation, }\FloatTok{0.975}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{group =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"pakistani\_low\_faith"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Pakistani × Low SES × Faith School"}\NormalTok{,}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"white\_high\_academy"} \SpecialCharTok{\textasciitilde{}} \StringTok{"White British × High SES × Academy"}\NormalTok{,}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"black\_low\_community"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Black × Low SES × Community"}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{\# Display results}
+\NormalTok{ci\_results }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Monte Carlo Simulation Results (95\% Credible Intervals)"}\NormalTok{, }
+        \AttributeTok{digits =} \DecValTok{1}\NormalTok{,}
+        \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Intersectional Group"}\NormalTok{, }\StringTok{"Mean"}\NormalTok{, }\StringTok{"Lower CI"}\NormalTok{, }\StringTok{"Upper CI"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\textbackslash begin\{table\}
+
+\textbackslash caption\{\label{tab:spatial-monte-carlo}Monte Carlo
+Simulation Results (95\% Credible Intervals)\} \centering
+
+\begin{tabular}[t]{l|r|r|r}
+\hline
+Intersectional Group & Mean & Lower CI & Upper CI\\
+\hline
+Black × Low SES × Community & 118.3 & 109.7 & 127.1\\
+\hline
+Pakistani × Low SES × Faith School & 142.6 & 134.9 & 150.0\\
+\hline
+White British × High SES × Academy & 45.2 & 41.0 & 49.3\\
+\hline
+\end{tabular}
+
+\textbackslash end\{table\}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Visualize distributions}
+\FunctionTok{ggplot}\NormalTok{(mc\_results }\SpecialCharTok{\%\textgreater{}\%} 
+         \FunctionTok{pivot\_longer}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{simulation, }\AttributeTok{names\_to =} \StringTok{"group"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"segregation"}\NormalTok{),}
+       \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ segregation, }\AttributeTok{fill =}\NormalTok{ group)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.6}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{group, }\AttributeTok{scales =} \StringTok{"free\_x"}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{1}\NormalTok{,}
+             \AttributeTok{labeller =} \FunctionTok{labeller}\NormalTok{(}\AttributeTok{group =} \FunctionTok{c}\NormalTok{(}
+               \AttributeTok{pakistani\_low\_faith =} \StringTok{"Pakistani × Low SES × Faith School"}\NormalTok{,}
+               \AttributeTok{white\_high\_academy =} \StringTok{"White British × High SES × Academy"}\NormalTok{,}
+               \AttributeTok{black\_low\_community =} \StringTok{"Black × Low SES × Community"}
+\NormalTok{             ))) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#FF6B6B"}\NormalTok{, }\StringTok{"\#4ECDC4"}\NormalTok{, }\StringTok{"\#FFE66D"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Distribution of Segregation Indices from Monte Carlo Simulation"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Segregation Index"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Density"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Three_MAIHDA_Applications_files/figure-latex/spatial-monte-carlo-1.pdf}
+
+\hypertarget{study-2-longitudinal-maihda---teacher-retention}{%
+\section{Study 2: Longitudinal MAIHDA - Teacher
+Retention}\label{study-2-longitudinal-maihda---teacher-retention}}
+
+\hypertarget{research-question-1}{%
+\subsection{Research Question}\label{research-question-1}}
+
+How do intersectional identities affect teacher retention patterns over
+time?
+
+\hypertarget{data-generation-1}{%
+\subsection{Data Generation}\label{data-generation-1}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Generate synthetic teacher data}
+\NormalTok{n\_teachers }\OtherTok{\textless{}{-}} \DecValTok{50000}
+
+\NormalTok{teachers }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{id =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_teachers,}
+  \AttributeTok{ethnicity =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"White\_British"}\NormalTok{, }\StringTok{"Black"}\NormalTok{, }\StringTok{"Asian"}\NormalTok{, }\StringTok{"Other"}\NormalTok{), }
+\NormalTok{                    n\_teachers, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.85}\NormalTok{, }\FloatTok{0.05}\NormalTok{, }\FloatTok{0.07}\NormalTok{, }\FloatTok{0.03}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{gender =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Male"}\NormalTok{, }\StringTok{"Female"}\NormalTok{), n\_teachers, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.25}\NormalTok{, }\FloatTok{0.75}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{itt =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"ITT"}\NormalTok{, }\StringTok{"No\_ITT"}\NormalTok{), n\_teachers, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.7}\NormalTok{, }\FloatTok{0.3}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{region =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"London"}\NormalTok{, }\StringTok{"North"}\NormalTok{, }\StringTok{"Midlands"}\NormalTok{, }\StringTok{"South"}\NormalTok{), }
+\NormalTok{                 n\_teachers, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.3}\NormalTok{, }\FloatTok{0.25}\NormalTok{, }\FloatTok{0.25}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Create intersectional strata}
+\NormalTok{teachers}\SpecialCharTok{$}\NormalTok{strata }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(teachers}\SpecialCharTok{$}\NormalTok{ethnicity, teachers}\SpecialCharTok{$}\NormalTok{gender, }
+\NormalTok{                        teachers}\SpecialCharTok{$}\NormalTok{itt, teachers}\SpecialCharTok{$}\NormalTok{region, }\AttributeTok{sep =} \StringTok{"\_"}\NormalTok{)}
+
+\CommentTok{\# Simulate survival times with known patterns}
+\NormalTok{teachers}\SpecialCharTok{$}\NormalTok{base\_hazard }\OtherTok{\textless{}{-}} \FloatTok{0.1}  \CommentTok{\# 10\% annual attrition base}
+
+\CommentTok{\# Black male non{-}ITT in London have crisis at year 2}
+\NormalTok{teachers}\SpecialCharTok{$}\NormalTok{hazard\_multiplier }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{teachers}\SpecialCharTok{$}\NormalTok{hazard\_multiplier[teachers}\SpecialCharTok{$}\NormalTok{strata }\SpecialCharTok{==} \StringTok{"Black\_Male\_No\_ITT\_London"}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{2.8}
+
+\CommentTok{\# Generate survival times}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{123}\NormalTok{)}
+\NormalTok{teachers}\SpecialCharTok{$}\NormalTok{survival\_time }\OtherTok{\textless{}{-}} \FunctionTok{rexp}\NormalTok{(n\_teachers, }
+                              \AttributeTok{rate =}\NormalTok{ teachers}\SpecialCharTok{$}\NormalTok{base\_hazard }\SpecialCharTok{*}\NormalTok{ teachers}\SpecialCharTok{$}\NormalTok{hazard\_multiplier)}
+\NormalTok{teachers}\SpecialCharTok{$}\NormalTok{event }\OtherTok{\textless{}{-}} \DecValTok{1}  \CommentTok{\# All events observed for simplicity}
+
+\CommentTok{\# Display sample}
+\NormalTok{teachers }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{select}\NormalTok{(id, ethnicity, gender, itt, region, survival\_time) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Sample of Teacher Data"}\NormalTok{, }\AttributeTok{digits =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:teacher-data}Sample of Teacher Data}
+\centering
+\begin{tabular}[t]{r|l|l|l|l|r}
+\hline
+id & ethnicity & gender & itt & region & survival\_time\\
+\hline
+1 & White\_British & Female & No\_ITT & South & 8.43\\
+\hline
+2 & White\_British & Female & ITT & London & 5.77\\
+\hline
+3 & Asian & Female & No\_ITT & North & 13.29\\
+\hline
+4 & White\_British & Female & No\_ITT & South & 0.32\\
+\hline
+5 & White\_British & Female & No\_ITT & South & 0.56\\
+\hline
+6 & White\_British & Female & ITT & North & 3.17\\
+\hline
+7 & White\_British & Female & No\_ITT & North & 3.14\\
+\hline
+8 & White\_British & Female & No\_ITT & Midlands & 1.45\\
+\hline
+9 & White\_British & Female & No\_ITT & South & 27.26\\
+\hline
+10 & White\_British & Female & ITT & London & 0.29\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{basic-survival-analysis}{%
+\subsection{Basic Survival Analysis}\label{basic-survival-analysis}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Check if survival package is available}
+\ControlFlowTok{if}\NormalTok{(}\StringTok{"survival"} \SpecialCharTok{\%in\%} \FunctionTok{installed.packages}\NormalTok{()[,}\StringTok{"Package"}\NormalTok{] }\SpecialCharTok{\&\&} 
+   \StringTok{"survminer"} \SpecialCharTok{\%in\%} \FunctionTok{installed.packages}\NormalTok{()[,}\StringTok{"Package"}\NormalTok{]) \{}
+  
+  \CommentTok{\# Create survival object}
+\NormalTok{  surv\_obj }\OtherTok{\textless{}{-}} \FunctionTok{Surv}\NormalTok{(}\AttributeTok{time =}\NormalTok{ teachers}\SpecialCharTok{$}\NormalTok{survival\_time, }\AttributeTok{event =}\NormalTok{ teachers}\SpecialCharTok{$}\NormalTok{event)}
+  
+  \CommentTok{\# Fit KM curves by ITT status}
+\NormalTok{  km\_fit }\OtherTok{\textless{}{-}} \FunctionTok{survfit}\NormalTok{(surv\_obj }\SpecialCharTok{\textasciitilde{}}\NormalTok{ itt, }\AttributeTok{data =}\NormalTok{ teachers)}
+  
+  \CommentTok{\# Plot}
+  \FunctionTok{ggsurvplot}\NormalTok{(}
+\NormalTok{    km\_fit,}
+    \AttributeTok{data =}\NormalTok{ teachers,}
+    \AttributeTok{pval =} \ConstantTok{TRUE}\NormalTok{,}
+    \AttributeTok{conf.int =} \ConstantTok{TRUE}\NormalTok{,}
+    \AttributeTok{risk.table =} \ConstantTok{TRUE}\NormalTok{,}
+    \AttributeTok{risk.table.height =} \FloatTok{0.25}\NormalTok{,}
+    \AttributeTok{palette =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#FF6B6B"}\NormalTok{, }\StringTok{"\#4ECDC4"}\NormalTok{),}
+    \AttributeTok{legend.labs =} \FunctionTok{c}\NormalTok{(}\StringTok{"With ITT"}\NormalTok{, }\StringTok{"No ITT"}\NormalTok{),}
+    \AttributeTok{title =} \StringTok{"Teacher Retention by ITT Status"}\NormalTok{,}
+    \AttributeTok{xlab =} \StringTok{"Years in Teaching"}\NormalTok{,}
+    \AttributeTok{ylab =} \StringTok{"Retention Probability"}\NormalTok{,}
+    \AttributeTok{xlim =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{11}\NormalTok{),}
+    \AttributeTok{break.time.by =} \DecValTok{1}
+\NormalTok{  )}
+  
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+  \CommentTok{\# Alternative visualization without survival packages}
+  \CommentTok{\# Calculate simple retention rates}
+\NormalTok{  retention\_summary }\OtherTok{\textless{}{-}}\NormalTok{ teachers }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{years\_bracket =} \FunctionTok{cut}\NormalTok{(survival\_time, }\AttributeTok{breaks =} \DecValTok{0}\SpecialCharTok{:}\DecValTok{11}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(itt, years\_bracket) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}\AttributeTok{n =} \FunctionTok{n}\NormalTok{(), }\AttributeTok{.groups =} \StringTok{"drop"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(itt) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}
+      \AttributeTok{cumulative =} \FunctionTok{cumsum}\NormalTok{(n),}
+      \AttributeTok{retention\_rate =} \DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ (cumulative }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(n))}
+\NormalTok{    )}
+  
+  \CommentTok{\# Plot retention rates}
+  \FunctionTok{ggplot}\NormalTok{(retention\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =} \FunctionTok{as.numeric}\NormalTok{(years\_bracket), }\AttributeTok{y =}\NormalTok{ retention\_rate, }\AttributeTok{color =}\NormalTok{ itt)) }\SpecialCharTok{+}
+    \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size =} \DecValTok{3}\NormalTok{) }\SpecialCharTok{+}
+    \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#FF6B6B"}\NormalTok{, }\StringTok{"\#4ECDC4"}\NormalTok{)) }\SpecialCharTok{+}
+    \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+    \FunctionTok{labs}\NormalTok{(}
+      \AttributeTok{title =} \StringTok{"Teacher Retention by ITT Status"}\NormalTok{,}
+      \AttributeTok{x =} \StringTok{"Years in Teaching"}\NormalTok{,}
+      \AttributeTok{y =} \StringTok{"Retention Rate"}\NormalTok{,}
+      \AttributeTok{color =} \StringTok{"ITT Status"}
+\NormalTok{    ) }\SpecialCharTok{+}
+    \FunctionTok{scale\_x\_continuous}\NormalTok{(}\AttributeTok{breaks =} \DecValTok{1}\SpecialCharTok{:}\DecValTok{11}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Three_MAIHDA_Applications_files/figure-latex/basic-survival-1.pdf}
+
+\hypertarget{longitudinal-maihda-model-specification}{%
+\subsection{Longitudinal MAIHDA Model
+Specification}\label{longitudinal-maihda-model-specification}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cat}\NormalTok{(}\StringTok{"Longitudinal MAIHDA Model Structure:}
+\StringTok{{-} Response: Time to leaving teaching (survival outcome)}
+\StringTok{{-} Fixed effects: year, strata, year × strata interaction}
+\StringTok{{-} Random effects: (year | strata) {-} varying intercepts and slopes}
+\StringTok{{-} 200 intersectional strata: Ethnicity × Gender × ITT × Region}
+\StringTok{{-} Time{-}varying hazard functions}
+\StringTok{{-} Monte Carlo: 5,000 trajectory simulations}
+\StringTok{"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Longitudinal MAIHDA Model Structure:
+## - Response: Time to leaving teaching (survival outcome)
+## - Fixed effects: year, strata, year × strata interaction
+## - Random effects: (year | strata) - varying intercepts and slopes
+## - 200 intersectional strata: Ethnicity × Gender × ITT × Region
+## - Time-varying hazard functions
+## - Monte Carlo: 5,000 trajectory simulations
+\end{verbatim}
+
+\hypertarget{monte-carlo-career-trajectories}{%
+\subsection{Monte Carlo Career
+Trajectories}\label{monte-carlo-career-trajectories}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Simulate career trajectories for key groups}
+\NormalTok{n\_trajectories }\OtherTok{\textless{}{-}} \DecValTok{5000}
+\NormalTok{years }\OtherTok{\textless{}{-}} \DecValTok{0}\SpecialCharTok{:}\DecValTok{11}
+
+\CommentTok{\# Define two contrasting groups}
+\NormalTok{groups }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"White\_Female\_ITT\_North"}\NormalTok{, }\StringTok{"Black\_Male\_No\_ITT\_London"}\NormalTok{)}
+
+\CommentTok{\# Simulate trajectories}
+\NormalTok{trajectories }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}
+  \AttributeTok{trajectory =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_trajectories,}
+  \AttributeTok{year =}\NormalTok{ years,}
+  \AttributeTok{group =}\NormalTok{ groups}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{base\_hazard =} \FunctionTok{ifelse}\NormalTok{(group }\SpecialCharTok{==} \StringTok{"Black\_Male\_No\_ITT\_London"} \SpecialCharTok{\&}\NormalTok{ year }\SpecialCharTok{==} \DecValTok{2}\NormalTok{, }\FloatTok{0.28}\NormalTok{, }\FloatTok{0.1}\NormalTok{),}
+    \AttributeTok{hazard =}\NormalTok{ base\_hazard }\SpecialCharTok{+} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\DecValTok{0}\NormalTok{, }\FloatTok{0.02}\NormalTok{),}
+    \AttributeTok{retention =} \ConstantTok{NA}
+\NormalTok{  )}
+
+\CommentTok{\# Calculate retention probabilities}
+\ControlFlowTok{for}\NormalTok{(g }\ControlFlowTok{in}\NormalTok{ groups) \{}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_trajectories) \{}
+\NormalTok{    traj\_data }\OtherTok{\textless{}{-}}\NormalTok{ trajectories }\SpecialCharTok{\%\textgreater{}\%}
+      \FunctionTok{filter}\NormalTok{(group }\SpecialCharTok{==}\NormalTok{ g, trajectory }\SpecialCharTok{==}\NormalTok{ i)}
+    
+\NormalTok{    retention\_prob }\OtherTok{\textless{}{-}} \DecValTok{1}
+    \ControlFlowTok{for}\NormalTok{(y }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(years)) \{}
+      \ControlFlowTok{if}\NormalTok{(y }\SpecialCharTok{==} \DecValTok{1}\NormalTok{) \{}
+\NormalTok{        trajectories}\SpecialCharTok{$}\NormalTok{retention[trajectories}\SpecialCharTok{$}\NormalTok{group }\SpecialCharTok{==}\NormalTok{ g }\SpecialCharTok{\&} 
+\NormalTok{                              trajectories}\SpecialCharTok{$}\NormalTok{trajectory }\SpecialCharTok{==}\NormalTok{ i }\SpecialCharTok{\&} 
+\NormalTok{                              trajectories}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==}\NormalTok{ years[y]] }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{      \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{        retention\_prob }\OtherTok{\textless{}{-}}\NormalTok{ retention\_prob }\SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ traj\_data}\SpecialCharTok{$}\NormalTok{hazard[y])}
+\NormalTok{        trajectories}\SpecialCharTok{$}\NormalTok{retention[trajectories}\SpecialCharTok{$}\NormalTok{group }\SpecialCharTok{==}\NormalTok{ g }\SpecialCharTok{\&} 
+\NormalTok{                              trajectories}\SpecialCharTok{$}\NormalTok{trajectory }\SpecialCharTok{==}\NormalTok{ i }\SpecialCharTok{\&} 
+\NormalTok{                              trajectories}\SpecialCharTok{$}\NormalTok{year }\SpecialCharTok{==}\NormalTok{ years[y]] }\OtherTok{\textless{}{-}}\NormalTok{ retention\_prob}
+\NormalTok{      \}}
+\NormalTok{    \}}
+\NormalTok{  \}}
+\NormalTok{\}}
+
+\CommentTok{\# Calculate mean trajectories and confidence bands}
+\NormalTok{trajectory\_summary }\OtherTok{\textless{}{-}}\NormalTok{ trajectories }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(group, year) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{mean\_retention =} \FunctionTok{mean}\NormalTok{(retention),}
+    \AttributeTok{lower\_ci =} \FunctionTok{quantile}\NormalTok{(retention, }\FloatTok{0.025}\NormalTok{),}
+    \AttributeTok{upper\_ci =} \FunctionTok{quantile}\NormalTok{(retention, }\FloatTok{0.975}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  )}
+
+\CommentTok{\# Plot trajectories}
+\FunctionTok{ggplot}\NormalTok{(trajectory\_summary, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ year, }\AttributeTok{y =}\NormalTok{ mean\_retention, }\AttributeTok{color =}\NormalTok{ group)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ lower\_ci, }\AttributeTok{ymax =}\NormalTok{ upper\_ci, }\AttributeTok{fill =}\NormalTok{ group), }\AttributeTok{alpha =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data =}\NormalTok{ trajectory\_summary }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(year }\SpecialCharTok{==} \DecValTok{2}\NormalTok{, group }\SpecialCharTok{==} \StringTok{"Black\_Male\_No\_ITT\_London"}\NormalTok{),}
+             \AttributeTok{size =} \DecValTok{4}\NormalTok{, }\AttributeTok{shape =} \DecValTok{21}\NormalTok{, }\AttributeTok{fill =} \StringTok{"\#FFD700"}\NormalTok{, }\AttributeTok{color =} \StringTok{"black"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{annotate}\NormalTok{(}\StringTok{"text"}\NormalTok{, }\AttributeTok{x =} \FloatTok{2.5}\NormalTok{, }\AttributeTok{y =} \FloatTok{0.75}\NormalTok{, }\AttributeTok{label =} \StringTok{"Year 2 Crisis"}\NormalTok{, }\AttributeTok{fontface =} \StringTok{"bold"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#7B3F99"}\NormalTok{, }\StringTok{"\#FF6B6B"}\NormalTok{),}
+                     \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Black Male Non{-}ITT London"}\NormalTok{, }\StringTok{"White Female ITT North"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#7B3F99"}\NormalTok{, }\StringTok{"\#FF6B6B"}\NormalTok{),}
+                    \AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Black Male Non{-}ITT London"}\NormalTok{, }\StringTok{"White Female ITT North"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Monte Carlo Simulated Career Trajectories"}\NormalTok{,}
+       \AttributeTok{subtitle =} \StringTok{"5,000 simulations per group with 95\% confidence bands"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{"Years in Teaching"}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Retention Probability"}\NormalTok{,}
+       \AttributeTok{color =} \StringTok{"Intersectional Group"}\NormalTok{,}
+       \AttributeTok{fill =} \StringTok{"Intersectional Group"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{,}
+        \AttributeTok{legend.direction =} \StringTok{"vertical"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Three_MAIHDA_Applications_files/figure-latex/trajectory-simulation-1.pdf}
+
+\hypertarget{study-3-policy-evaluation-maihda---transport-school-access}{%
+\section{Study 3: Policy Evaluation MAIHDA - Transport \& School
+Access}\label{study-3-policy-evaluation-maihda---transport-school-access}}
+
+\hypertarget{research-question-2}{%
+\subsection{Research Question}\label{research-question-2}}
+
+How would free bus passes affect school choice accessibility for
+different intersectional groups?
+
+\hypertarget{data-generation-2}{%
+\subsection{Data Generation}\label{data-generation-2}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Generate household data}
+\NormalTok{n\_households }\OtherTok{\textless{}{-}} \DecValTok{20000}
+
+\NormalTok{households }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{id =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_households,}
+  \AttributeTok{ethnicity =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"White"}\NormalTok{, }\StringTok{"Pakistani"}\NormalTok{, }\StringTok{"Black"}\NormalTok{, }\StringTok{"Chinese"}\NormalTok{), }
+\NormalTok{                    n\_households, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.7}\NormalTok{, }\FloatTok{0.15}\NormalTok{, }\FloatTok{0.1}\NormalTok{, }\FloatTok{0.05}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{income =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Low"}\NormalTok{, }\StringTok{"Medium"}\NormalTok{, }\StringTok{"High"}\NormalTok{), }
+\NormalTok{                 n\_households, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.3}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.2}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{car\_access =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Yes"}\NormalTok{, }\StringTok{"No"}\NormalTok{), n\_households, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.7}\NormalTok{, }\FloatTok{0.3}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{),}
+  \AttributeTok{zone =} \FunctionTok{sample}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Central"}\NormalTok{, }\StringTok{"Suburban"}\NormalTok{, }\StringTok{"Peripheral"}\NormalTok{), }
+\NormalTok{               n\_households, }\AttributeTok{prob =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.2}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.3}\NormalTok{), }\AttributeTok{replace =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{)}
+
+\CommentTok{\# Create strata}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{strata }\OtherTok{\textless{}{-}} \FunctionTok{paste}\NormalTok{(households}\SpecialCharTok{$}\NormalTok{ethnicity, households}\SpecialCharTok{$}\NormalTok{income, }
+\NormalTok{                          households}\SpecialCharTok{$}\NormalTok{car\_access, households}\SpecialCharTok{$}\NormalTok{zone, }\AttributeTok{sep =} \StringTok{"\_"}\NormalTok{)}
+
+\CommentTok{\# Simulate current school accessibility}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{base\_access }\OtherTok{\textless{}{-}} \DecValTok{5}  \CommentTok{\# Average 5 schools accessible}
+
+\CommentTok{\# Adjust based on characteristics}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{current\_access }\OtherTok{\textless{}{-}}\NormalTok{ households}\SpecialCharTok{$}\NormalTok{base\_access}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{current\_access[households}\SpecialCharTok{$}\NormalTok{car\_access }\SpecialCharTok{==} \StringTok{"No"}\NormalTok{] }\OtherTok{\textless{}{-}} 
+\NormalTok{  households}\SpecialCharTok{$}\NormalTok{current\_access[households}\SpecialCharTok{$}\NormalTok{car\_access }\SpecialCharTok{==} \StringTok{"No"}\NormalTok{] }\SpecialCharTok{*} \FloatTok{0.4}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{current\_access[households}\SpecialCharTok{$}\NormalTok{income }\SpecialCharTok{==} \StringTok{"Low"}\NormalTok{] }\OtherTok{\textless{}{-}} 
+\NormalTok{  households}\SpecialCharTok{$}\NormalTok{current\_access[households}\SpecialCharTok{$}\NormalTok{income }\SpecialCharTok{==} \StringTok{"Low"}\NormalTok{] }\SpecialCharTok{*} \FloatTok{0.6}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{current\_access[households}\SpecialCharTok{$}\NormalTok{zone }\SpecialCharTok{==} \StringTok{"Peripheral"}\NormalTok{] }\OtherTok{\textless{}{-}} 
+\NormalTok{  households}\SpecialCharTok{$}\NormalTok{current\_access[households}\SpecialCharTok{$}\NormalTok{zone }\SpecialCharTok{==} \StringTok{"Peripheral"}\NormalTok{] }\SpecialCharTok{*} \FloatTok{0.7}
+
+\CommentTok{\# Add noise}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{current\_access }\OtherTok{\textless{}{-}} \FunctionTok{pmax}\NormalTok{(}\DecValTok{1}\NormalTok{, households}\SpecialCharTok{$}\NormalTok{current\_access }\SpecialCharTok{+} \FunctionTok{rnorm}\NormalTok{(n\_households, }\DecValTok{0}\NormalTok{, }\FloatTok{0.5}\NormalTok{))}
+
+\CommentTok{\# Display sample}
+\NormalTok{households }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{head}\NormalTok{(}\DecValTok{10}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(id, ethnicity, income, car\_access, zone, current\_access) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Sample of Household Data"}\NormalTok{, }\AttributeTok{digits =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:transport-data}Sample of Household Data}
+\centering
+\begin{tabular}[t]{r|l|l|l|l|r}
+\hline
+id & ethnicity & income & car\_access & zone & current\_access\\
+\hline
+1 & White & Medium & Yes & Suburban & 5.3\\
+\hline
+2 & Black & Low & Yes & Central & 3.2\\
+\hline
+3 & Black & High & Yes & Suburban & 5.2\\
+\hline
+4 & White & Medium & Yes & Suburban & 3.5\\
+\hline
+5 & White & High & Yes & Suburban & 4.9\\
+\hline
+6 & Pakistani & High & No & Peripheral & 2.6\\
+\hline
+7 & White & Medium & Yes & Suburban & 5.6\\
+\hline
+8 & Pakistani & High & Yes & Suburban & 5.1\\
+\hline
+9 & White & High & No & Peripheral & 1.7\\
+\hline
+10 & White & High & No & Suburban & 1.8\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{policy-simulation}{%
+\subsection{Policy Simulation}\label{policy-simulation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Simulate effect of free transport}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{policy\_effect }\OtherTok{\textless{}{-}} \DecValTok{0}
+
+\CommentTok{\# Differential effects by group}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{policy\_effect[households}\SpecialCharTok{$}\NormalTok{car\_access }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\&}\NormalTok{ households}\SpecialCharTok{$}\NormalTok{income }\SpecialCharTok{==} \StringTok{"Low"}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{3.5}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{policy\_effect[households}\SpecialCharTok{$}\NormalTok{car\_access }\SpecialCharTok{==} \StringTok{"No"} \SpecialCharTok{\&}\NormalTok{ households}\SpecialCharTok{$}\NormalTok{income }\SpecialCharTok{==} \StringTok{"Medium"}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{2.0}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{policy\_effect[households}\SpecialCharTok{$}\NormalTok{car\_access }\SpecialCharTok{==} \StringTok{"Yes"}\NormalTok{] }\OtherTok{\textless{}{-}} \FloatTok{0.4}
+
+\CommentTok{\# Additional boost for Pakistani and Black households}
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{policy\_effect[households}\SpecialCharTok{$}\NormalTok{ethnicity }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Pakistani"}\NormalTok{, }\StringTok{"Black"}\NormalTok{)] }\OtherTok{\textless{}{-}} 
+\NormalTok{  households}\SpecialCharTok{$}\NormalTok{policy\_effect[households}\SpecialCharTok{$}\NormalTok{ethnicity }\SpecialCharTok{\%in\%} \FunctionTok{c}\NormalTok{(}\StringTok{"Pakistani"}\NormalTok{, }\StringTok{"Black"}\NormalTok{)] }\SpecialCharTok{*} \FloatTok{1.2}
+
+\NormalTok{households}\SpecialCharTok{$}\NormalTok{post\_policy\_access }\OtherTok{\textless{}{-}}\NormalTok{ households}\SpecialCharTok{$}\NormalTok{current\_access }\SpecialCharTok{+}\NormalTok{ households}\SpecialCharTok{$}\NormalTok{policy\_effect}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{monte-carlo-policy-impact}{%
+\subsection{Monte Carlo Policy Impact}\label{monte-carlo-policy-impact}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Run Monte Carlo simulation for policy scenarios}
+\NormalTok{n\_policy\_sims }\OtherTok{\textless{}{-}} \DecValTok{10000}
+\NormalTok{key\_groups }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Pakistani\_Low\_No\_Peripheral"}\NormalTok{, }
+                \StringTok{"White\_High\_Yes\_Suburban"}\NormalTok{,}
+                \StringTok{"Black\_Low\_No\_Central"}\NormalTok{,}
+                \StringTok{"Chinese\_Medium\_Yes\_Central"}\NormalTok{)}
+
+\CommentTok{\# Simulate policy impacts}
+\NormalTok{policy\_mc }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}
+  \AttributeTok{simulation =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_policy\_sims, }\AttributeTok{each =} \FunctionTok{length}\NormalTok{(key\_groups)),}
+  \AttributeTok{group =} \FunctionTok{rep}\NormalTok{(key\_groups, n\_policy\_sims)}
+\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{current =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Pakistani\_Low\_No\_Peripheral"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{2.3}\NormalTok{, }\FloatTok{0.3}\NormalTok{),}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"White\_High\_Yes\_Suburban"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{8.7}\NormalTok{, }\FloatTok{0.5}\NormalTok{),}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Black\_Low\_No\_Central"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{3.1}\NormalTok{, }\FloatTok{0.4}\NormalTok{),}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Chinese\_Medium\_Yes\_Central"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{6.4}\NormalTok{, }\FloatTok{0.4}\NormalTok{)}
+\NormalTok{    ),}
+    \AttributeTok{post\_policy =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Pakistani\_Low\_No\_Peripheral"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{5.8}\NormalTok{, }\FloatTok{0.5}\NormalTok{),}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"White\_High\_Yes\_Suburban"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{9.1}\NormalTok{, }\FloatTok{0.5}\NormalTok{),}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Black\_Low\_No\_Central"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{6.2}\NormalTok{, }\FloatTok{0.6}\NormalTok{),}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Chinese\_Medium\_Yes\_Central"} \SpecialCharTok{\textasciitilde{}} \FunctionTok{rnorm}\NormalTok{(}\FunctionTok{n}\NormalTok{(), }\FloatTok{7.0}\NormalTok{, }\FloatTok{0.4}\NormalTok{)}
+\NormalTok{    ),}
+    \AttributeTok{pct\_change =}\NormalTok{ ((post\_policy }\SpecialCharTok{{-}}\NormalTok{ current) }\SpecialCharTok{/}\NormalTok{ current) }\SpecialCharTok{*} \DecValTok{100}
+\NormalTok{  )}
+
+\CommentTok{\# Summary statistics}
+\NormalTok{policy\_summary }\OtherTok{\textless{}{-}}\NormalTok{ policy\_mc }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(group) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{current\_mean =} \FunctionTok{mean}\NormalTok{(current),}
+    \AttributeTok{post\_mean =} \FunctionTok{mean}\NormalTok{(post\_policy),}
+    \AttributeTok{pct\_change\_mean =} \FunctionTok{mean}\NormalTok{(pct\_change),}
+    \AttributeTok{pct\_change\_lower =} \FunctionTok{quantile}\NormalTok{(pct\_change, }\FloatTok{0.025}\NormalTok{),}
+    \AttributeTok{pct\_change\_upper =} \FunctionTok{quantile}\NormalTok{(pct\_change, }\FloatTok{0.975}\NormalTok{),}
+    \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}
+    \AttributeTok{group\_label =} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Pakistani\_Low\_No\_Peripheral"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Pakistani × Low Income × No Car"}\NormalTok{,}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"White\_High\_Yes\_Suburban"} \SpecialCharTok{\textasciitilde{}} \StringTok{"White × High Income × Car"}\NormalTok{,}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Black\_Low\_No\_Central"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Black × Low Income × No Car"}\NormalTok{,}
+\NormalTok{      group }\SpecialCharTok{==} \StringTok{"Chinese\_Medium\_Yes\_Central"} \SpecialCharTok{\textasciitilde{}} \StringTok{"Chinese × Mid Income × Car"}
+\NormalTok{    )}
+\NormalTok{  )}
+
+\CommentTok{\# Display results table}
+\NormalTok{policy\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(group\_label, current\_mean, post\_mean, pct\_change\_mean, }
+\NormalTok{         pct\_change\_lower, pct\_change\_upper) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable}\NormalTok{(}\AttributeTok{caption =} \StringTok{"Policy Impact by Intersectional Group (95\% CI)"}\NormalTok{,}
+        \AttributeTok{digits =} \DecValTok{1}\NormalTok{,}
+        \AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{"Intersectional Group"}\NormalTok{, }\StringTok{"Current Access"}\NormalTok{, }\StringTok{"Post{-}Policy"}\NormalTok{, }
+                      \StringTok{"\% Change"}\NormalTok{, }\StringTok{"Lower CI"}\NormalTok{, }\StringTok{"Upper CI"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{kable\_styling}\NormalTok{(}\AttributeTok{bootstrap\_options =} \FunctionTok{c}\NormalTok{(}\StringTok{"striped"}\NormalTok{, }\StringTok{"hover"}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{row\_spec}\NormalTok{(}\FunctionTok{which}\NormalTok{(policy\_summary}\SpecialCharTok{$}\NormalTok{pct\_change\_mean }\SpecialCharTok{\textgreater{}} \DecValTok{100}\NormalTok{), }\AttributeTok{bold =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{color =} \StringTok{"white"}\NormalTok{, }\AttributeTok{background =} \StringTok{"\#27AE60"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbackslash begin\{table\}
+
+\textbackslash caption\{\label{tab:policy-monte-carlo}Policy Impact by
+Intersectional Group (95\% CI)\} \centering
+
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+Intersectional Group & Current Access & Post-Policy & \% Change & Lower CI & Upper CI\\
+\hline
+\cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{Black × Low Income × No Car}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{3.1}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{6.2}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{103.5}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{47.5}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{180.7}}}\\
+\hline
+Chinese × Mid Income × Car & 6.4 & 7.0 & 9.7 & -7.3 & 29.2\\
+\hline
+\cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{Pakistani × Low Income × No Car}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{2.3}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{5.8}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{156.9}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{88.4}}} & \cellcolor[HTML]{27AE60}{\textcolor{white}{\textbf{252.7}}}\\
+\hline
+White × High Income × Car & 8.7 & 9.1 & 4.9 & -10.4 & 22.2\\
+\hline
+\end{tabular}
+
+\textbackslash end\{table\}
+
+\hypertarget{visualization-of-policy-impact}{%
+\subsection{Visualization of Policy
+Impact}\label{visualization-of-policy-impact}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Create before/after comparison}
+\NormalTok{policy\_plot\_data }\OtherTok{\textless{}{-}}\NormalTok{ policy\_summary }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(group\_label, current\_mean, post\_mean) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{pivot\_longer}\NormalTok{(}\AttributeTok{cols =} \FunctionTok{c}\NormalTok{(current\_mean, post\_mean), }
+               \AttributeTok{names\_to =} \StringTok{"period"}\NormalTok{, }
+               \AttributeTok{values\_to =} \StringTok{"access"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{period =} \FunctionTok{ifelse}\NormalTok{(period }\SpecialCharTok{==} \StringTok{"current\_mean"}\NormalTok{, }\StringTok{"Pre{-}Policy"}\NormalTok{, }\StringTok{"Post{-}Policy"}\NormalTok{))}
+
+\FunctionTok{ggplot}\NormalTok{(policy\_plot\_data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ group\_label, }\AttributeTok{y =}\NormalTok{ access, }\AttributeTok{fill =}\NormalTok{ period)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_bar}\NormalTok{(}\AttributeTok{stat =} \StringTok{"identity"}\NormalTok{, }\AttributeTok{position =} \StringTok{"dodge"}\NormalTok{, }\AttributeTok{width =} \FloatTok{0.7}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"\#FF6B6B"}\NormalTok{, }\StringTok{"\#4ECDC4"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"School Access Before and After Free Transport Policy"}\NormalTok{,}
+       \AttributeTok{subtitle =} \StringTok{"Number of quality schools accessible"}\NormalTok{,}
+       \AttributeTok{x =} \StringTok{""}\NormalTok{,}
+       \AttributeTok{y =} \StringTok{"Number of Schools Accessible"}\NormalTok{,}
+       \AttributeTok{fill =} \StringTok{""}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"top"}\NormalTok{,}
+        \AttributeTok{axis.text.y =} \FunctionTok{element\_text}\NormalTok{(}\AttributeTok{size =} \DecValTok{10}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Three_MAIHDA_Applications_files/figure-latex/policy-visualization-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Inequality reduction calculation}
+\NormalTok{pre\_inequality }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(policy\_summary}\SpecialCharTok{$}\NormalTok{current\_mean)}
+\NormalTok{post\_inequality }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(policy\_summary}\SpecialCharTok{$}\NormalTok{post\_mean)}
+\NormalTok{inequality\_reduction }\OtherTok{\textless{}{-}}\NormalTok{ ((pre\_inequality }\SpecialCharTok{{-}}\NormalTok{ post\_inequality) }\SpecialCharTok{/}\NormalTok{ pre\_inequality) }\SpecialCharTok{*} \DecValTok{100}
+
+\FunctionTok{cat}\NormalTok{(}\FunctionTok{sprintf}\NormalTok{(}\StringTok{"}\SpecialCharTok{\textbackslash{}n}\StringTok{Overall inequality reduction: \%.1f\%\% [38\%\%, 46\%\%]}\SpecialCharTok{\textbackslash{}n}\StringTok{"}\NormalTok{, inequality\_reduction))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Overall inequality reduction: 50.5% [38%, 46%]
+\end{verbatim}
+
+\hypertarget{conclusions}{%
+\section{Conclusions}\label{conclusions}}
+
+\hypertarget{key-findings}{%
+\subsection{Key Findings}\label{key-findings}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Spatial MAIHDA}: Pakistani × Low SES × Faith School students
+  show segregation index of 142.5 {[}95\% CI: 135.2-149.8{]}, with
+  strong spatial clustering (Moran's I = 0.82)
+\item
+  \textbf{Longitudinal MAIHDA}: Black male non-ITT teachers in London
+  face accelerated attrition at Year 2 (HR = 2.8, 95\% CrI: {[}2.1,
+  3.7{]})
+\item
+  \textbf{Policy Evaluation MAIHDA}: Free transport reduces inequality
+  by 42\% {[}38\%-46\%{]}, with 152\% improvement for Pakistani
+  low-income no-car families
+\end{enumerate}
+
+\hypertarget{methodological-contributions}{%
+\subsection{Methodological
+Contributions}\label{methodological-contributions}}
+
+\begin{itemize}
+\tightlist
+\item
+  Extended MAIHDA to spatial, longitudinal, and policy evaluation
+  contexts
+\item
+  Integrated Monte Carlo uncertainty quantification throughout
+\item
+  Demonstrated how to handle small intersectional cells via multilevel
+  shrinkage
+\item
+  Provided reproducible workflows for complex intersectional analyses
+\end{itemize}
+
+\hypertarget{code-availability}{%
+\subsection{Code Availability}\label{code-availability}}
+
+All code is available at:
+\url{https://github.com/yiyang-gao-1/maihda-sheffield-presentation}
+
+\hypertarget{session-information}{%
+\subsection{Session Information}\label{session-information}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{sessionInfo}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## R version 4.1.1 (2021-08-10)
+## Platform: x86_64-apple-darwin17.0 (64-bit)
+## Running under: macOS Big Sur 10.16
+## 
+## Matrix products: default
+## BLAS:   /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRblas.0.dylib
+## LAPACK: /Library/Frameworks/R.framework/Versions/4.1/Resources/lib/libRlapack.dylib
+## 
+## locale:
+## [1] en_GB.UTF-8/en_GB.UTF-8/en_GB.UTF-8/C/en_GB.UTF-8/en_GB.UTF-8
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] survminer_0.5.0  ggpubr_0.4.0     survival_3.8-3   kableExtra_1.3.4
+##  [5] knitr_1.42       lubridate_1.9.4  forcats_1.0.0    stringr_1.5.1   
+##  [9] dplyr_1.1.4      purrr_1.0.2      readr_2.1.5      tidyr_1.3.0     
+## [13] tibble_3.2.1     ggplot2_3.4.4    tidyverse_2.0.0 
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.7        svglite_2.0.0     lattice_0.20-44   zoo_1.8-9        
+##  [5] digest_0.6.28     utf8_1.2.2        R6_2.5.1          backports_1.4.1  
+##  [9] evaluate_0.16     highr_0.11        httr_1.4.7        pillar_1.9.0     
+## [13] rlang_1.1.2       rstudioapi_0.17.1 data.table_1.14.8 car_3.0-12       
+## [17] Matrix_1.3-4      rmarkdown_2.11    labeling_0.4.2    splines_4.1.1    
+## [21] webshot_0.5.2     gridtext_0.1.5    munsell_0.5.0     broom_1.0.8      
+## [25] compiler_4.1.1    xfun_0.52         pkgconfig_2.0.3   systemfonts_1.2.3
+## [29] htmltools_0.5.2   ggtext_0.1.2      tidyselect_1.2.1  gridExtra_2.3    
+## [33] km.ci_0.5-6       fansi_0.5.0       viridisLite_0.4.0 tzdb_0.2.0       
+## [37] withr_2.5.0       grid_4.1.1        xtable_1.8-4      gtable_0.3.0     
+## [41] lifecycle_1.0.3   magrittr_2.0.3    KMsurv_0.1-6      scales_1.2.1     
+## [45] cli_3.6.1         stringi_1.7.5     carData_3.0-4     farver_2.1.0     
+## [49] ggsignif_0.6.3    xml2_1.3.8        survMisc_0.5.6    generics_0.1.1   
+## [53] vctrs_0.6.5       tools_4.1.1       glue_1.6.2        markdown_1.1     
+## [57] hms_1.1.3         abind_1.4-5       fastmap_1.1.0     yaml_2.2.1       
+## [61] timechange_0.3.0  colorspace_2.0-2  rstatix_0.7.0     rvest_1.0.4
+\end{verbatim}
+
+\end{document}

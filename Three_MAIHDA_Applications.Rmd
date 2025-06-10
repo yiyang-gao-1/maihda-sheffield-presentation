@@ -3,6 +3,9 @@ title: "MAIHDA Analysis - Applications Using Synthetic Data"
 author: "Dr Yiyang Gao"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
   html_document:
     toc: yes
     toc_float: yes
@@ -24,6 +27,7 @@ knitr::opts_chunk$set(
 
 # Set CRAN mirror
 options(repos = c(CRAN = "https://cloud.r-project.org"))
+
 
 # Load required packages
 library(tidyverse)

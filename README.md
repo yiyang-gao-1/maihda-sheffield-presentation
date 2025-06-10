@@ -45,7 +45,7 @@ The presentation includes:
 **Dr Yiyang Gao**  
 Evidence Centre for Education  
 Durham University  
-Contact: [your.email@durham.ac.uk]
+Contact: [yiyang.gao@durham.ac.uk]
 
 ## Usage
 

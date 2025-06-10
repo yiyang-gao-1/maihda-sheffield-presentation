@@ -61,5 +61,5 @@ install.packages(c("tidyverse", "knitr", "kableExtra", "survival", "survminer"))
 ```
 
 ## Requirements
-Gao, Y. (2024). Multilevel Modelling & MAIHDA: From Educational Segregation to 
+Gao, Y. (2025). Multilevel Modelling & MAIHDA: From Educational Segregation to 
 Intersectional Analysis. Presentation at University of Sheffield ESRC Project.

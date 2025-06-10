@@ -1,0 +1,196 @@
+// Custom SCSS Theme for MAIHDA Presentation
+
+// Color palette
+$primary-color: #7B3F99;
+$primary-dark: #5A2D79;
+$secondary-color: #FFD700;
+$success-color: #4ECDC4;
+$danger-color: #FF6B6B;
+$warning-color: #FFE66D;
+$info-color: #87CEEB;
+
+// Typography
+$font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+$font-family-mono: 'Courier New', Courier, monospace;
+
+// Reveal.js theme customization
+.reveal {
+  font-family: $font-family-base;
+  
+  // Headings
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  
+  h1 {
+    color: $primary-color;
+    font-size: 2.5em;
+  }
+  
+  h2 {
+    font-size: 2em;
+    
+    // White text on purple background slides
+    section[data-background-color="#{$primary-color}"] & {
+      color: white;
+    }
+  }
+  
+  h3 {
+    color: $primary-color;
+    font-size: 1.5em;
+    margin-top: 1em;
+  }
+  
+  // Links
+  a {
+    color: $primary-color;
+    text-decoration: none;
+    
+    &:hover {
+      color: $primary-dark;
+      text-decoration: underline;
+    }
+  }
+  
+  // Code styling
+  code {
+    font-family: $font-family-mono;
+    background-color: #f5f5f5;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+  }
+  
+  pre {
+    code {
+      padding: 1em;
+      display: block;
+      overflow-x: auto;
+    }
+  }
+  
+  // Tables
+  table {
+    margin: 1.5em auto;
+    
+    th {
+      background: linear-gradient(135deg, $primary-color 0%, $primary-dark 100%);
+      color: white;
+      font-weight: 600;
+      padding: 0.75em;
+    }
+    
+    td {
+      padding: 0.6em 0.75em;
+      
+      &.highlight-cell {
+        background-color: $secondary-color;
+        font-weight: bold;
+      }
+    }
+    
+    tr:hover {
+      background-color: rgba($primary-color, 0.05);
+    }
+  }
+  
+  // Callout boxes
+  .callout {
+    margin: 1.5em 0;
+    padding: 1.25em;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    &-important {
+      background-color: lighten($primary-color, 45%);
+      border-left: 5px solid $primary-color;
+      
+      .callout-title {
+        color: $primary-color;
+        font-weight: bold;
+      }
+    }
+    
+    &-warning {
+      background-color: lighten($secondary-color, 20%);
+      border-left: 5px solid darken($secondary-color, 10%);
+    }
+    
+    &-note {
+      background-color: lighten($info-color, 20%);
+      border-left: 5px solid $info-color;
+    }
+  }
+  
+  // Columns
+  .columns {
+    display: flex;
+    gap: 2em;
+    align-items: flex-start;
+    
+    .column {
+      flex: 1;
+      
+      &[width="33%"] {
+        flex: 0 0 33%;
+      }
+      
+      &[width="50%"] {
+        flex: 0 0 50%;
+      }
+      
+      &[width="34%"] {
+        flex: 0 0 34%;
+      }
+    }
+  }
+  
+  // Lists
+  ul, ol {
+    li {
+      margin-bottom: 0.5em;
+      line-height: 1.6;
+    }
+  }
+  
+  // Progress bar
+  .progress {
+    color: $primary-color;
+    height: 4px;
+    
+    span {
+      background: linear-gradient(90deg, $primary-color 0%, $primary-dark 100%);
+    }
+  }
+  
+  // Slide transitions
+  .slides section {
+    transition: all 0.3s ease;
+  }
+  
+  // Special slide backgrounds
+  section {
+    &[data-background-color="#{$primary-color}"] {
+      h1, h2, h3, p, li {
+        color: white;
+      }
+      
+      .callout {
+        background-color: rgba(255, 255, 255, 0.9);
+        color: #333;
+      }
+    }
+  }
+  
+  // R plot outputs
+  .cell-output-display {
+    margin: 1em auto;
+    text-align: center;
+    
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+}

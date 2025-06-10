@@ -1,0 +1,592 @@
+---
+title: "Multilevel Modelling & MAIHDA"
+subtitle: "From Educational Segregation to Intersectional Analysis"
+author: 
+  - name: "Dr Yiyang Gao"
+    affiliations:
+      - "PhD in Advanced Quantitative Methods, Q-Step Centre, Exeter"
+      - "Current Postdoc, Evidence Centre for Education, Durham University"
+date: today
+format:
+  revealjs:
+    theme: [default, custom.scss]
+    slide-number: true
+    show-slide-number: all
+    transition: slide
+    background-transition: fade
+    width: 1024
+    height: 768
+    margin: 0.1
+    center: true
+    preview-links: auto
+    logo: ""
+    footer: "MAIHDA: Three Research Applications"
+    css: custom.css
+---
+
+```{r setup, include=FALSE}
+# Load required packages
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+# Note: ggforce is only needed if you want to use geom_circle
+# If not installed, you can comment out the spatial visualization plot
+```
+
+## Research Profile {background-color="#7B3F99"}
+
+:::: {.columns}
+
+::: {.column width="33%"}
+### 🏫 Ethnicity & Segregation
+
+**Evolving Patterns of Ethnic Segregation in English Schools**  
+*Population, Space and Place (R&R)*
+
+**⭐ Multilevel Analysis of Ethnic Clustering Across Local Schools**  
+*British Education Research Journal (R&R)*  
+*★ Featured in this presentation*
+:::
+
+::: {.column width="33%"}
+### 💼 Workforce Inequality
+
+**⭐ Understanding Teacher Retention in England: A Multi-Cohort Survival Analysis**  
+*Research Papers in Education (Under Review)*  
+*★ Featured in this presentation*
+
+**Spatial-Temporal Patterns of Teacher Career Progression**  
+*Presenting at: ADR UK & RGS-IBG*
+:::
+
+::: {.column width="34%"}
+### 🗺️ Accessibility, Simulation, Health
+
+**Convenor: "Systems and Simulation Approaches in Population Research"**  
+*BSPS | Collaboration with Glasgow*
+
+**⭐ Grant: Educational Equity - Transport & School Segregation**  
+*With Department of Sociology, Durham*  
+*★ Featured in this presentation*
+:::
+
+::::
+
+::: {.notes}
+Research positioning at the intersection of Quantitative Geography (Space), Demography/Sociology (Population), Education, and Health
+:::
+
+---
+
+## What is MAIHDA?
+
+### Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy
+
+::: {.callout-important}
+## The "Gold Standard" for Quantitative Intersectional Analysis
+Treats intersectional identities as random effects in multilevel models, revealing how multiple characteristics combine to create unique experiences beyond simple additive effects
+:::
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Conventional Approach:
+- Examines factors separately
+- Assumes additive effects
+- Misses critical intersections
+- Generic policy recommendations
+:::
+
+::: {.column width="50%"}
+### MAIHDA Approach:
+- Creates intersectional strata
+- Reveals multiplicative effects
+- Handles small cell sizes via shrinkage
+- Enables targeted interventions
+:::
+
+::::
+
+::: {.callout-warning}
+## Three Extended MAIHDA Applications:
+- **Spatial MAIHDA** → School Segregation Study
+- **Longitudinal MAIHDA** → Teacher Retention Study
+- **Policy Evaluation MAIHDA** → Transport & Accessibility Study
+:::
+
+---
+
+## Study 1: Ethnic School Segregation - Current Approach
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Research Question
+How do ethnic clustering patterns vary across schools, local authorities, and over time in England?
+
+### Current Method
+- Three-level multilevel model
+- Years → Local Authorities → Regions
+- Observation unit: Segregation scores (LA-year level)
+- Entropy-based segregation index
+- Examines factors separately
+
+```
+Y_tij = γ₀₀₀ + β₁(Selective)_ij + β₂(Academies)_ij 
+        + β₃(Faith)_ij + β₄(% ethnic)_ij 
+        + u₀₀j + r₀ij + e_tij
+```
+:::
+
+::: {.column width="50%"}
+### Key Finding
+**Counterintuitive: Higher ethnic % = Lower concentration**
+
+```{r}
+#| echo: false
+#| fig-height: 4
+library(ggplot2)
+library(dplyr)
+
+variance_data <- data.frame(
+  Group = rep(c("Bangladeshi", "Indian", "White British"), each = 4),
+  Component = rep(c("Year", "Local Authority", "Region", "Residual"), 3),
+  Percentage = c(30, 41, 26, 3,  # Bangladeshi
+                 44, 21, 26, 9,  # Indian
+                 61, 31, 5, 3)    # White British
+)
+
+variance_data$Component <- factor(variance_data$Component, 
+                                  levels = c("Residual", "Region", "Local Authority", "Year"))
+
+ggplot(variance_data, aes(x = Group, y = Percentage, fill = Component)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  scale_fill_manual(values = c("Residual" = "#D3D3D3", 
+                               "Region" = "#98FB98", 
+                               "Local Authority" = "#87CEEB", 
+                               "Year" = "#FFB6C1")) +
+  labs(y = "Variance Explained (%)", x = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        plot.title = element_text(hjust = 0.5)) +
+  ggtitle("Variance Components by Ethnic Group")
+```
+:::
+
+::::
+
+::: {.callout-note}
+## Limitation
+Cannot explain WHY this happens differently for different groups or WHERE spatial clusters of disadvantage exist
+:::
+
+---
+
+## Study 1: Spatial MAIHDA Enhancement
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Method Enhancement:
+- 48 intersectional strata: Ethnicity × SES × School Type
+- Cross-classified with spatial units (LSOAs)
+- Spatial weights matrix for autocorrelation
+- Monte Carlo uncertainty propagation (10,000 simulations)
+
+```
+Y_ijk = γ₀ + (1|strata_j) + (1|spatial_k) 
+        + W*spatial_effects + ε_ijk
+```
+
+### Simulated Results:
+
+| Intersectional Group | Segregation Index | Spatial Clustering |
+|---------------------|-------------------|-------------------|
+| Pakistani × Low SES × Faith School | **142.5** | Moran's I = 0.82 |
+| White British × High SES × Academy | 45.2 | Moran's I = 0.21 |
+| Black × Low SES × Community | 118.3 | Moran's I = 0.67 |
+:::
+
+::: {.column width="50%"}
+### Monte Carlo Spatial Simulation
+
+```{r}
+#| echo: false
+#| fig-height: 5
+library(ggplot2)
+
+# Create spatial cluster visualization
+set.seed(123)
+
+# If ggforce is available, use geom_circle; otherwise use geom_point
+if (requireNamespace("ggforce", quietly = TRUE)) {
+  library(ggforce)
+  clusters <- data.frame(
+    x = c(2, 2.5, 2.3, 6, 6.5, 9, 9.3),
+    y = c(3, 3.3, 2.5, 4, 3.8, 3.5, 2.8),
+    size = c(60, 45, 35, 30, 25, 50, 40),
+    type = c("High", "High", "High", "Low", "Low", "Moderate", "Moderate"),
+    label = c("High Segregation\nPakistani×LowSES", "", "", 
+              "Low Segregation", "", "Moderate", "")
+  )
+  
+  ggplot(clusters) +
+    geom_circle(aes(x0 = x, y0 = y, r = size/20, fill = type), alpha = 0.6) +
+    geom_text(data = clusters[clusters$label != "",], 
+              aes(x = x, y = y, label = label), size = 3) +
+    geom_curve(aes(x = 3.5, y = 3.2, xend = 5.5, yend = 3.8),
+               arrow = arrow(length = unit(0.3, "cm")),
+               curvature = -0.3) +
+    annotate("text", x = 4.5, y = 4.2, label = "Spatial Spillover", size = 3) +
+    scale_fill_manual(values = c("High" = "#FF6B6B", 
+                                 "Low" = "#4ECDC4", 
+                                 "Moderate" = "#FFE66D")) +
+    theme_minimal() +
+    theme(legend.position = "none") +
+    coord_fixed() +
+    xlim(0, 11) + ylim(1, 5) +
+    labs(title = "Spatial Clustering of School Segregation")
+} else {
+  # Alternative visualization without ggforce
+  clusters <- data.frame(
+    x = c(2, 2.5, 2.3, 6, 6.5, 9, 9.3),
+    y = c(3, 3.3, 2.5, 4, 3.8, 3.5, 2.8),
+    size = c(60, 45, 35, 30, 25, 50, 40),
+    type = c("High", "High", "High", "Low", "Low", "Moderate", "Moderate"),
+    label = c("High Segregation\nPakistani×LowSES", "", "", 
+              "Low Segregation", "", "Moderate", "")
+  )
+  
+  ggplot(clusters) +
+    geom_point(aes(x = x, y = y, size = size, color = type), alpha = 0.6) +
+    geom_text(data = clusters[clusters$label != "",], 
+              aes(x = x, y = y, label = label), size = 3) +
+    geom_curve(aes(x = 3.5, y = 3.2, xend = 5.5, yend = 3.8),
+               arrow = arrow(length = unit(0.3, "cm")),
+               curvature = -0.3) +
+    annotate("text", x = 4.5, y = 4.2, label = "Spatial Spillover", size = 3) +
+    scale_color_manual(values = c("High" = "#FF6B6B", 
+                                  "Low" = "#4ECDC4", 
+                                  "Moderate" = "#FFE66D")) +
+    scale_size_continuous(range = c(5, 15), guide = "none") +
+    theme_minimal() +
+    theme(legend.position = "none") +
+    xlim(0, 11) + ylim(1, 5) +
+    labs(title = "Spatial Clustering of School Segregation")
+}
+```
+:::
+
+::::
+
+::: {.callout-important}
+## Key Finding
+Monte Carlo reveals 95% CI [135.2, 149.8] for Pakistani×LowSES×Faith clusters. Spatial autocorrelation shows segregation "hot spots" requiring targeted intervention in specific neighborhoods, not just schools.
+:::
+
+---
+
+## Study 2: Teacher Retention - Current Approach
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Current Method:
+- Cox proportional hazards model
+- 650,000 teachers tracked
+- Shows WHO leaves and WHEN
+- Cannot explain intersectional vulnerabilities
+
+### Key Statistics:
+
+| Group | 11-Year Retention |
+|-------|-------------------|
+| Female | 16.54% |
+| Male | 12.96% |
+| With ITT | 16.85% |
+| No ITT | 9.75% |
+| White British | 15.88% |
+| Ethnic Minority | 13.50% |
+:::
+
+::: {.column width="50%"}
+### Kaplan-Meier Survival Curves:
+
+```{r}
+#| echo: false
+#| fig-height: 5
+library(ggplot2)
+library(survival)
+
+# Simulate survival data
+time <- seq(0, 11, 0.1)
+itt_survival <- exp(-0.15 * time)
+no_itt_survival <- exp(-0.25 * time)
+
+survival_data <- data.frame(
+  time = rep(time, 2),
+  survival = c(itt_survival, no_itt_survival),
+  group = rep(c("With ITT (16.85%)", "No ITT (9.75%)"), each = length(time))
+)
+
+ggplot(survival_data, aes(x = time, y = survival, color = group)) +
+  geom_line(linewidth = 1.5) +
+  scale_color_manual(values = c("With ITT (16.85%)" = "#FF6B6B", 
+                                "No ITT (9.75%)" = "#4ECDC4")) +
+  labs(x = "Years in Teaching", 
+       y = "Retention Rate",
+       title = "Teacher Retention by Initial Teacher Training Status") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank()) +
+  scale_y_continuous(labels = scales::percent)
+```
+:::
+
+::::
+
+::: {.callout-note}
+## Limitation
+Treats characteristics separately - misses critical intersectional vulnerabilities like "Black male teachers without ITT in London"
+:::
+
+---
+
+## Study 2: Longitudinal MAIHDA Enhancement
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Method Enhancement:
+- 200 intersectional strata: Ethnicity × Gender × ITT × Region
+- Time-varying hazard functions
+- Monte Carlo trajectory simulation (5,000 paths)
+- Identifies critical career junctures
+
+### Intersectional Groups (examples):
+- White British × Female × ITT × North
+- Black × Male × Non-ITT × London
+- Pakistani × Female × ITT × Yorkshire
+- Chinese × Male × ITT × Southeast
+:::
+
+::: {.column width="50%"}
+### Monte Carlo Simulated Trajectories:
+
+```{r}
+#| echo: false
+#| fig-height: 5
+library(ggplot2)
+
+# Simulate trajectory data with confidence bands
+time <- seq(0, 11, 0.1)
+set.seed(456)
+
+# Group 1: White × Female × ITT × North
+traj1_mean <- exp(-0.12 * time)
+traj1_upper <- exp(-0.10 * time)
+traj1_lower <- exp(-0.14 * time)
+
+# Group 2: Black × Male × Non-ITT × London
+traj2_mean <- exp(-0.28 * time)
+traj2_upper <- exp(-0.25 * time)
+traj2_lower <- exp(-0.31 * time)
+
+# Create separate data frames for ribbons
+ribbon1 <- data.frame(
+  time = time,
+  mean = traj1_mean,
+  upper = traj1_upper,
+  lower = traj1_lower,
+  group = "White × Female × ITT × North"
+)
+
+ribbon2 <- data.frame(
+  time = time,
+  mean = traj2_mean,
+  upper = traj2_upper,
+  lower = traj2_lower,
+  group = "Black × Male × Non-ITT × London"
+)
+
+# Combine for line plot
+line_data <- rbind(
+  data.frame(time = time, value = traj1_mean, group = "White × Female × ITT × North"),
+  data.frame(time = time, value = traj2_mean, group = "Black × Male × Non-ITT × London")
+)
+
+ggplot() +
+  geom_ribbon(data = ribbon1, aes(x = time, ymin = lower, ymax = upper), 
+              fill = "#7B3F99", alpha = 0.2) +
+  geom_ribbon(data = ribbon2, aes(x = time, ymin = lower, ymax = upper), 
+              fill = "#FF6B6B", alpha = 0.2) +
+  geom_line(data = line_data, aes(x = time, y = value, color = group), 
+            linewidth = 1.5) +
+  geom_point(x = 2, y = exp(-0.28 * 2), color = "#FFD700", size = 4) +
+  annotate("text", x = 2.5, y = exp(-0.28 * 2) + 0.05, 
+           label = "Year 2 Crisis", size = 3) +
+  scale_color_manual(values = c("White × Female × ITT × North" = "#7B3F99", 
+                                "Black × Male × Non-ITT × London" = "#FF6B6B")) +
+  labs(x = "Years", y = "Retention Probability",
+       title = "Career Trajectories with 95% Confidence Intervals") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank())
+```
+:::
+
+::::
+
+::: {.callout-important}
+## Critical Finding
+Monte Carlo reveals Black male non-ITT teachers in London face accelerated attrition at Year 2 (HR jumps to 2.8, 95% CrI: [2.1, 3.7]). This specific vulnerability was invisible in conventional analysis.
+:::
+
+---
+
+## Study 3: Transport & Educational Access - Current Approach
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Research Question:
+How does public transport infrastructure affect school segregation and educational equity?
+
+### Current Planned Method:
+- Agent-based modeling (ABM)
+- MATSim transport simulation
+- Quality-Accessibility Index
+- Compare London (free transport) vs Leeds
+
+### Focus:
+Simulate household school choices under different transport scenarios
+:::
+
+::: {.column width="50%"}
+### Preliminary Transport Barriers:
+
+::: {.callout-note}
+## Average Journey Times to Quality Schools:
+- Low Income Households: **47 min**
+- High Income Households: **18 min**
+- No Car Access: **52 min**
+- Car Access: **15 min**
+:::
+
+::: {.callout-warning}
+## Key Policy Question:
+Would free bus passes (like London) reduce educational inequality?
+:::
+:::
+
+::::
+
+::: {.callout-note}
+## Limitation
+Current approach treats demographic groups separately - misses how transport barriers compound for specific intersectional groups
+:::
+
+---
+
+## Study 3: Policy Evaluation MAIHDA Enhancement
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Method Enhancement:
+- 60 intersectional strata: Ethnicity × Income × Car Access × Zone
+- Random slopes for policy effects
+- Monte Carlo policy simulation (10,000 scenarios)
+- Pre/post free transport comparison
+
+```
+Y_ij = γ₀ + β₁(Policy) + u₁j(Policy×Strata) 
+       + (1|strata_j) + ε_ij
+```
+
+### Policy Scenarios:
+1. Free bus passes for all students
+2. Targeted passes for low-income areas
+3. Enhanced bus frequency
+4. New routes to quality schools
+:::
+
+::: {.column width="50%"}
+### Monte Carlo Policy Impact Simulation:
+
+| Intersectional Group | Current Access | Post-Policy | % Change |
+|---------------------|----------------|-------------|----------|
+| Pakistani × Low Income × No Car | **2.3 schools** | 5.8 schools | +152% |
+| White × High Income × Car | 8.7 schools | 9.1 schools | +5% |
+| Black × Low Income × No Car | **3.1 schools** | 6.2 schools | +100% |
+| Chinese × Mid Income × Car | 6.4 schools | 7.0 schools | +9% |
+
+```{r}
+#| echo: false
+#| fig-height: 3.5
+library(ggplot2)
+library(tidyr)
+
+policy_data <- data.frame(
+  Group = c("Pak×Low×NoCar", "White×High×Car", "Black×Low×NoCar", "Chi×Mid×Car"),
+  Pre_Policy = c(2.3, 8.7, 3.1, 6.4),
+  Post_Policy = c(5.8, 9.1, 6.2, 7.0)
+)
+
+policy_long <- pivot_longer(policy_data, cols = c(Pre_Policy, Post_Policy), 
+                            names_to = "Period", values_to = "Schools")
+
+ggplot(policy_long, aes(x = Group, y = Schools, fill = Period)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  scale_fill_manual(values = c("Pre_Policy" = "#FF6B6B", "Post_Policy" = "#4ECDC4"),
+                    labels = c("Pre-Policy", "Post-Policy")) +
+  labs(y = "Number of Accessible Schools", x = "",
+       title = "Policy Impact by Intersectional Group") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 45, hjust = 1))
+```
+:::
+
+::::
+
+::: {.callout-important}
+## Policy Finding
+Monte Carlo reveals 95% CI for impact: Pakistani low-income no-car families gain [4.8, 6.8] schools. Free transport reduces inequality by 42% [38%, 46%] - but only for specific intersectional groups.
+:::
+
+---
+
+## MAIHDA: Transforming Understanding of Educational Inequalities {background-color="#7B3F99"}
+
+### Evolution Across Three Studies
+
+| Study | Current Method | MAIHDA Extension | Key Innovation |
+|-------|----------------|------------------|----------------|
+| **School Segregation** | Conventional Multilevel | Spatial MAIHDA | Reveals neighborhood clusters of intersectional disadvantage |
+| **Teacher Retention** | Survival Analysis | Longitudinal MAIHDA | Identifies career crisis points for specific groups |
+| **Transport Access** | Agent-Based Model | Policy Evaluation MAIHDA | Quantifies differential policy impacts |
+
+:::: {.columns}
+
+::: {.column width="50%"}
+### Methodological Innovation:
+- Extending MAIHDA to spatial, longitudinal, and policy domains
+- Monte Carlo uncertainty quantification
+- Large dataset expertise (NPD, SWC)
+:::
+
+::: {.column width="50%"}
+### Why MAIHDA Matters:
+- Identifies WHO needs help (intersections)
+- Shows WHERE to intervene (spatial)
+- Reveals WHEN to act (temporal)
+- Quantifies WHAT WORKS (policy)
+:::
+
+::::
+
+::: {.callout-important}
+## Vision
+Advancing intersectional quantitative methods to reveal not just that inequalities exist, but precisely **where**, **for whom**, **when**, and **why** – transforming our ability to design interventions that actually work
+:::

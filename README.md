@@ -58,3 +58,7 @@ Contact: [yiyang.gao@durham.ac.uk]
 For running the R analysis:
 ```r
 install.packages(c("tidyverse", "knitr", "kableExtra", "survival", "survminer"))
+
+## Requirements
+Gao, Y. (2024). Multilevel Modelling & MAIHDA: From Educational Segregation to 
+Intersectional Analysis. Presentation at University of Sheffield ESRC Project.

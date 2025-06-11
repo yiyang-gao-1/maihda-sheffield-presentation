@@ -376,6 +376,19 @@
             border: 3px solid #7B3F99;
             box-shadow: 0 4px 8px rgba(123, 63, 153, 0.2);
         }
+        
+        .analysis-box {
+            background: #e6f3ff;
+            border: 2px solid #2B5797;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .analysis-box h4 {
+            color: #2B5797;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -391,14 +404,14 @@
                     <p>Current Postdoc, Evidence Centre for Education, Durham University</p>
                 </div>
             </div>
-            <span class="slide-number">1/12</span>
+            <span class="slide-number">1/10</span>
         </div>
 
         <!-- Slide 2: Research Profile -->
         <div class="slide">
             <div class="slide-header">
                 <h2>Research Profile</h2>
-                <span class="slide-number">2/12</span>
+                <span class="slide-number">2/10</span>
             </div>
             <div class="slide-content">
                 <p style="margin-bottom: 30px;">Research Positioning: At the intersection of <span class="emphasis">Quantitative Geography (Space)</span>, <span class="emphasis">Demography/Sociology (Population)</span>, <span class="emphasis">Education</span>, and <span class="emphasis">Health</span></p>
@@ -438,7 +451,7 @@
         <div class="slide">
             <div class="slide-header">
                 <h2>What is MAIHDA?</h2>
-                <span class="slide-number">3/12</span>
+                <span class="slide-number">3/10</span>
             </div>
             <div class="slide-content">
                 <h3>Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy</h3>
@@ -484,7 +497,7 @@
         <div class="slide">
             <div class="slide-header">
                 <h2>Study 1: Ethnic School Segregation - Current Approach</h2>
-                <span class="slide-number">4/12</span>
+                <span class="slide-number">4/10</span>
             </div>
             <div class="slide-content">
                 <div class="two-column">
@@ -492,18 +505,21 @@
                         <h3>Research Question</h3>
                         <p>How do ethnic clustering patterns vary across schools, local authorities, and over time in England?</p>
                         
+                        <div class="analysis-box">
+                            <h4>Unit of Analysis & Structure:</h4>
+                            <ul style="list-style-type: none; margin-left: 0;">
+                                <li><strong>• Unit of analysis:</strong> Local authority-year-ethnicity combinations</li>
+                                <li><strong>• Y variable:</strong> Segregation index (entropy-based) that measures how concentrated/clustered each ethnic group is across schools within that local authority</li>
+                                <li><strong>• Structure:</strong> Each row represents one ethnic group's segregation level in one local authority for one year</li>
+                            </ul>
+                        </div>
+                        
                         <h3>Current Method</h3>
                         <ul>
                             <li>Three-level multilevel model</li>
                             <li>Years → Local Authorities → Regions</li>
-                            <li>Observation unit: Segregation scores (LA-year level)</li>
-                            <li>Entropy-based segregation index</li>
                             <li>Examines factors separately</li>
                         </ul>
-                        
-                        <div class="formula">
-                            Y_tij = γ₀₀₀ + β₁(Selective)_ij + β₂(Academies)_ij + β₃(Faith)_ij + β₄(% ethnic)_ij + u₀₀j + r₀ij + e_tij
-                        </div>
                     </div>
                     
                     <div>
@@ -567,7 +583,7 @@
         <div class="slide">
             <div class="slide-header">
                 <h2>Study 1: Spatial MAIHDA Enhancement</h2>
-                <span class="slide-number">5/12</span>
+                <span class="slide-number">5/10</span>
             </div>
             <div class="slide-content">
                 <h3>Spatial MAIHDA Innovation</h3>
@@ -624,7 +640,7 @@
                         </defs>
                         <rect width="800" height="300" fill="url(#grid)" />
                         
-                        <!-- Spatial clusters visualization -->
+                        <!-- Spatial clusters visualisation -->
                         <circle cx="150" cy="100" r="60" fill="#FF6B6B" opacity="0.6"/>
                         <circle cx="200" cy="130" r="45" fill="#FF6B6B" opacity="0.6"/>
                         <circle cx="180" cy="180" r="35" fill="#FF6B6B" opacity="0.6"/>
@@ -651,7 +667,7 @@
                 </div>
                 
                 <div class="key-point">
-                    <p><strong>Key Finding:</strong> Monte Carlo reveals 95% CI [135.2, 149.8] for Pakistani×LowSES×Faith clusters. Spatial autocorrelation shows segregation "hot spots" requiring targeted intervention in specific neighborhoods, not just schools.</p>
+                    <p><strong>Key Finding:</strong> Monte Carlo reveals 95% CI [135.2, 149.8] for Pakistani×LowSES×Faith clusters. Spatial autocorrelation shows segregation "hot spots" requiring targeted intervention in specific neighbourhoods, not just schools.</p>
                 </div>
             </div>
         </div>
@@ -660,7 +676,7 @@
         <div class="slide">
             <div class="slide-header">
                 <h2>Study 2: Teacher Retention - Current Approach</h2>
-                <span class="slide-number">6/12</span>
+                <span class="slide-number">6/10</span>
             </div>
             <div class="slide-content">
                 <h3>Survival Analysis Results</h3>
@@ -762,7 +778,7 @@
         <div class="slide">
             <div class="slide-header">
                 <h2>Study 2: Longitudinal MAIHDA Enhancement</h2>
-                <span class="slide-number">7/12</span>
+                <span class="slide-number">7/10</span>
             </div>
             <div class="slide-content">
                 <h3>Longitudinal MAIHDA Innovation (Bell et al., 2024)</h3>
@@ -835,7 +851,7 @@
         <div class="slide">
             <div class="slide-header">
                 <h2>Study 3: Transport & Educational Access - Current Approach</h2>
-                <span class="slide-number">8/12</span>
+                <span class="slide-number">8/10</span>
             </div>
             <div class="slide-content">
                 <h3>Grant Application: Educational Equity & Transport</h3>
@@ -847,7 +863,7 @@
                         
                         <h4>Current Planned Method:</h4>
                         <ul>
-                            <li>Agent-based modeling (ABM)</li>
+                            <li>Agent-based modelling (ABM)</li>
                             <li>MATSim transport simulation</li>
                             <li>Quality-Accessibility Index</li>
                             <li>Compare London (free transport) vs Leeds</li>
@@ -898,7 +914,7 @@
         <div class="slide">
             <div class="slide-header">
                 <h2>Study 3: Policy Evaluation MAIHDA Enhancement</h2>
-                <span class="slide-number">9/12</span>
+                <span class="slide-number">9/10</span>
             </div>
             <div class="slide-content">
                 <h3>Policy Evaluation MAIHDA for Transport Interventions</h3>
@@ -963,7 +979,7 @@
                         
                         <div class="chart-container" style="height: 250px; margin-top: 20px;">
                             <svg viewBox="0 0 400 250" style="width: 100%; height: 100%;">
-                                <!-- Policy impact visualization -->
+                                <!-- Policy impact visualisation -->
                                 <rect x="50" y="180" width="40" height="50" fill="#FF6B6B"/>
                                 <rect x="50" y="80" width="40" height="100" fill="#4ECDC4"/>
                                 
@@ -998,89 +1014,7 @@
             </div>
         </div>
 
-        <!-- Slide 10: Monte Carlo Integration - REMOVED FOR TIME -->
-        <!-- This slide is hidden but kept in case needed for longer presentations -->
-        <div class="slide" style="display: none !important;">
-            <div class="slide-header">
-                <h2>Monte Carlo Methods Enhance All MAIHDA Extensions</h2>
-                <span class="slide-number">10/12</span>
-            </div>
-            <div class="slide-content">
-                <h3>How Monte Carlo Strengthens Each Extension</h3>
-                
-                <div class="three-column">
-                    <div class="research-box">
-                        <h4>🗺️ Spatial MAIHDA</h4>
-                        <p><strong>Monte Carlo Contribution:</strong></p>
-                        <ul style="font-size: 16px;">
-                            <li>Propagates spatial uncertainty through neighborhoods</li>
-                            <li>Identifies robust "hot spots" across simulations</li>
-                            <li>Quantifies spillover effects between areas</li>
-                        </ul>
-                        <div style="background: #f0f0f0; padding: 10px; margin-top: 10px; border-radius: 5px;">
-                            <p style="font-size: 14px;"><strong>Output:</strong> 95% CrI for spatial clustering: Moran's I [0.78, 0.86]</p>
-                        </div>
-                    </div>
-                    
-                    <div class="research-box">
-                        <h4>📈 Longitudinal MAIHDA</h4>
-                        <p><strong>Monte Carlo Contribution:</strong></p>
-                        <ul style="font-size: 16px;">
-                            <li>Simulates career trajectories with uncertainty</li>
-                            <li>Accounts for selection effects over time</li>
-                            <li>Identifies critical intervention windows</li>
-                        </ul>
-                        <div style="background: #f0f0f0; padding: 10px; margin-top: 10px; border-radius: 5px;">
-                            <p style="font-size: 14px;"><strong>Output:</strong> Year 2 crisis probability: 78% [71%, 85%]</p>
-                        </div>
-                    </div>
-                    
-                    <div class="research-box">
-                        <h4>📊 Policy Evaluation MAIHDA</h4>
-                        <p><strong>Monte Carlo Contribution:</strong></p>
-                        <ul style="font-size: 16px;">
-                            <li>Tests policy robustness across scenarios</li>
-                            <li>Quantifies differential impacts by group</li>
-                            <li>Provides confidence in recommendations</li>
-                        </ul>
-                        <div style="background: #f0f0f0; padding: 10px; margin-top: 10px; border-radius: 5px;">
-                            <p style="font-size: 14px;"><strong>Output:</strong> Inequality reduction: 42% [38%, 46%]</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <h3 style="margin-top: 30px;">Technical Implementation</h3>
-                <div class="formula">
-                    <pre style="font-size: 14px;">
-# Bayesian MAIHDA with Monte Carlo in R
-library(brms)
-
-# Spatial MAIHDA with uncertainty
-spatial_model <- brm(
-  segregation ~ (1|strata) + (1|spatial_unit) + spatial_lag,
-  prior = c(
-    prior(normal(0, 1), class = sd),
-    prior(normal(0, 0.5), class = sd, group = strata)
-  ),
-  iter = 10000,
-  chains = 4,
-  data = school_data
-)
-
-# Extract posterior samples for Monte Carlo
-posterior <- posterior_samples(spatial_model)
-spatial_effects <- apply(posterior, 1, calculate_morans_i)
-quantile(spatial_effects, c(0.025, 0.975))  # 95% Credible Interval
-                    </pre>
-                </div>
-                
-                <div class="key-point">
-                    <p><strong>Key Innovation:</strong> Monte Carlo transforms MAIHDA from describing patterns to providing robust, uncertainty-quantified recommendations for policy and practice</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 11: Key Contributions & Conclusion -->
+        <!-- Slide 10: Key Contributions & Conclusion -->
         <div class="slide">
             <div class="slide-header">
                 <h2>MAIHDA: Transforming Understanding of Educational Inequalities</h2>
@@ -1100,7 +1034,7 @@ quantile(spatial_effects, c(0.025, 0.975))  # 95% Credible Interval
                         <td><strong>School Segregation</strong></td>
                         <td>Conventional Multilevel</td>
                         <td>Spatial MAIHDA</td>
-                        <td>Reveals neighborhood clusters of intersectional disadvantage</td>
+                        <td>Reveals neighbourhood clusters of intersectional disadvantage</td>
                     </tr>
                     <tr>
                         <td><strong>Teacher Retention</strong></td>
@@ -1147,98 +1081,23 @@ quantile(spatial_effects, c(0.025, 0.975))  # 95% Credible Interval
                 </div>
             </div>
         </div>
-
-        <!-- Slide 12: Conclusion - REMOVED AND MERGED INTO SLIDE 11 -->
-        <div class="slide" style="display: none !important;">
-            <div class="slide-header">
-                <h2>Contributing to Sheffield's MAIHDA Leadership</h2>
-                <span class="slide-number">12/12</span>
-            </div>
-            <div class="slide-content">
-                <h3>My Contribution to the ESRC Project</h3>
-                
-                <div class="two-column">
-                    <div>
-                        <h4>Methodological Innovation:</h4>
-                        <ul>
-                            <li>Extending MAIHDA to new domains (spatial, policy evaluation)</li>
-                            <li>Integrating Monte Carlo uncertainty quantification</li>
-                            <li>Bridging MAIHDA with other methods (ABM, survival analysis)</li>
-                            <li>Developing reproducible workflows in R</li>
-                        </ul>
-                        
-                        <h4>Substantive Applications:</h4>
-                        <ul>
-                            <li>Education (segregation, retention, access)</li>
-                            <li>Workforce inequalities</li>
-                            <li>Transport and spatial justice</li>
-                            <li>Health equity (future extensions)</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4>Large Dataset Expertise:</h4>
-                        <ul>
-                            <li>National Pupil Database</li>
-                            <li>School Workforce Census (1.7M teachers)</li>
-                            <li>Transport networks and accessibility data</li>
-                            <li>Experience with ONS Secure Research Service</li>
-                        </ul>
-                        
-                        <h4>Training & Dissemination:</h4>
-                        <ul>
-                            <li>R programming teaching experience</li>
-                            <li>Workshop development skills</li>
-                            <li>Creating accessible tutorials</li>
-                            <li>Stakeholder engagement experience</li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="key-point" style="margin-top: 30px;">
-                    <p style="text-align: center; font-size: 24px;">
-                        <strong>Vision:</strong> Advancing intersectional quantitative methods to reveal not just that inequalities exist, 
-                        but precisely <span class="emphasis">where</span>, <span class="emphasis">for whom</span>, 
-                        <span class="emphasis">when</span>, and <span class="emphasis">why</span> – 
-                        transforming our ability to design interventions that actually work
-                    </p>
-                </div>
-                
-                <div style="text-align: center; margin-top: 40px;">
-                    <p style="font-size: 18px; font-style: italic;">
-                        "MAIHDA doesn't just identify problems – it illuminates solutions"
-                    </p>
-                </div>
-            </div>
-        </div>
     </div>
 
     <div class="navigation">
         <button id="prevBtn" onclick="changeSlide(-1)">Previous</button>
-        <span id="slideIndicator" style="color: #666; font-size: 16px;">1 / 12</span>
+        <span id="slideIndicator" style="color: #666; font-size: 16px;">1 / 10</span>
         <button id="nextBtn" onclick="changeSlide(1)">Next</button>
     </div>
 
     <script>
         let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide:not([style*="display: none"])');
-        const totalSlides = 10; // Updated to reflect actual visible slides
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
 
         function showSlide(n) {
-            document.querySelectorAll('.slide').forEach(slide => slide.classList.remove('active'));
+            slides.forEach(slide => slide.classList.remove('active'));
             currentSlide = (n + totalSlides) % totalSlides;
-            
-            // Skip hidden slides
-            let visibleIndex = 0;
-            let actualSlideIndex = 0;
-            document.querySelectorAll('.slide').forEach((slide, index) => {
-                if (!slide.style.cssText.includes('display: none')) {
-                    if (visibleIndex === currentSlide) {
-                        slide.classList.add('active');
-                        actualSlideIndex = index;
-                    }
-                    visibleIndex++;
-                }
-            });
+            slides[currentSlide].classList.add('active');
             
             // Update navigation
             document.getElementById('prevBtn').disabled = currentSlide === 0;

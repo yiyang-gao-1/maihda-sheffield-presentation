@@ -8,19 +8,13 @@ institute: |
 date: today
 format:
   revealjs:
-    theme: [default, custom.scss]
+    theme: simple
     slide-number: true
     navigation-mode: linear
     controls: true
     logo: ""
     footer: "MAIHDA Applications | University of Sheffield"
     css: custom.css
-    width: 1024
-    height: 768
-    margin: 0.1
-    center: true
-    transition: slide
-    background-transition: fade
 ---
 
 ```{r setup, include=FALSE}
@@ -34,147 +28,180 @@ library(ggplot2)
 
 # Set theme
 theme_set(theme_minimal(base_size = 14))
-Research Profile {background-color="#7B3F99"}
+```
+
+# Research Profile {background-color="#7B3F99"}
+
 :::: {.columns}
 ::: {.column width="100%"}
-Research Positioning: At the intersection of Quantitative Geography (Space), Demography/Sociology (Population), Education, and Health
+**Research Positioning:** At the intersection of Quantitative Geography (Space), Demography/Sociology (Population), Education, and Health
 :::
 ::::
+
 ::: {.panel-tabset}
-🏫 Ethnicity & Segregation
+
+## 🏫 Ethnicity & Segregation
+
 ::: {.callout-important}
-Featured in this presentation
+**Featured in this presentation**
 
-Evolving Patterns of Ethnic Segregation in English Schools
-Population, Space and Place (R&R)
-⭐ Multilevel Analysis of Ethnic Clustering Across Local Schools
-British Education Research Journal (R&R)
+- Evolving Patterns of Ethnic Segregation in English Schools  
+  *Population, Space and Place* (R&R)
+- ⭐ Multilevel Analysis of Ethnic Clustering Across Local Schools  
+  *British Education Research Journal* (R&R)
 :::
 
-💼 Workforce Inequality
+## 💼 Workforce Inequality
+
 ::: {.callout-important}
-Featured in this presentation
+**Featured in this presentation**
 
-⭐ Understanding Teacher Retention in England: A Multi-Cohort Survival Analysis
-Research Papers in Education (Under Review)
-Spatial-Temporal Patterns of Teacher Career Progression
-Presenting at: ADR UK & RGS-IBG
+- ⭐ Understanding Teacher Retention in England: A Multi-Cohort Survival Analysis  
+  *Research Papers in Education* (Under Review)
+- Spatial-Temporal Patterns of Teacher Career Progression  
+  *Presenting at: ADR UK & RGS-IBG*
 :::
 
-🗺️ Accessibility & Health
+## 🗺️ Accessibility & Health
+
 ::: {.callout-important}
-Featured in this presentation
+**Featured in this presentation**
 
-Convenor: "Systems and Simulation Approaches in Population Research"
-BSPS | Collaboration with Glasgow
-⭐ Grant: Educational Equity - Transport & School Segregation
-With Department of Sociology, Durham
+- Convenor: "Systems and Simulation Approaches in Population Research"  
+  *BSPS | Collaboration with Glasgow*
+- ⭐ Grant: Educational Equity - Transport & School Segregation  
+  *With Department of Sociology, Durham*
 :::
 
 :::
-What is MAIHDA? {background-color="#f0f0f0"}
-Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy
+
+# What is MAIHDA? {background-color="#f0f0f0"}
+
+**Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy**
+
 ::: {.callout-note}
-The "Gold Standard" for Quantitative Intersectional Analysis
+**The "Gold Standard" for Quantitative Intersectional Analysis**
+
 Treats intersectional identities as random effects in multilevel models, revealing how multiple characteristics combine to create unique experiences beyond simple additive effects
 :::
+
 :::: {.columns}
 ::: {.column width="50%"}
-Conventional Approach:
+**Conventional Approach:**
 
-Examines factors separately
-Assumes additive effects
-Misses critical intersections
-Generic policy recommendations
+- Examines factors separately
+- Assumes additive effects
+- Misses critical intersections
+- Generic policy recommendations
 :::
 
 ::: {.column width="50%"}
-MAIHDA Approach:
+**MAIHDA Approach:**
 
-Creates intersectional strata
-Reveals multiplicative effects
-Handles small cell sizes via shrinkage
-Enables targeted interventions
+- Creates intersectional strata
+- Reveals multiplicative effects
+- Handles small cell sizes via shrinkage
+- Enables targeted interventions
 :::
-
 ::::
-::: {.callout-warning}
-Three Extended MAIHDA Applications:
 
-Spatial MAIHDA → School Segregation Study
-Longitudinal MAIHDA → Teacher Retention Study
-Policy Evaluation MAIHDA → Transport & Accessibility Study
+::: {.callout-warning}
+**Three Extended MAIHDA Applications:**
+
+1. Spatial MAIHDA → School Segregation Study
+2. Longitudinal MAIHDA → Teacher Retention Study
+3. Policy Evaluation MAIHDA → Transport & Accessibility Study
 :::
 
-Study 1: Educational Segregation {background-color="#7B3F99"}
-Current Approach: Limitations {.smaller}
+# Study 1: Educational Segregation {background-color="#7B3F99"}
+
+## Current Approach: Limitations {.smaller}
+
 :::: {.columns}
 ::: {.column width="50%"}
-Research Question
+### Research Question
 Which students experience educational segregation, and how does this vary across space and time?
-::: {.callout-tip}
-Current Aggregate Approach:
 
-Calculates: Segregation indices by ethnicity and area
-Shows: Overall levels of ethnic concentration in schools
-Misses: Which specific students attend segregated schools
-Cannot reveal: Intersectional vulnerabilities
+::: {.callout-tip}
+**Current Aggregate Approach:**
+
+- **Calculates:** Segregation indices by ethnicity and area
+- **Shows:** Overall levels of ethnic concentration in schools
+- **Misses:** Which specific students attend segregated schools
+- **Cannot reveal:** Intersectional vulnerabilities
 :::
 
-Current Method
+### Current Method
 
-Aggregate segregation indices
-Treats ethnic groups as homogeneous
-Cannot identify individual risk factors
-Misses within-group heterogeneity
+- Aggregate segregation indices
+- Treats ethnic groups as homogeneous
+- Cannot identify individual risk factors
+- Misses within-group heterogeneity
 :::
 
 ::: {.column width="50%"}
-The Segregation Paradox
+### The Segregation Paradox
 Aggregate data shows decreasing segregation, but which students still experience it?
+
 ::: {style="background-color: #f5f5f5; padding: 20px; border-radius: 8px;"}
-Who Attends Segregated Schools?
+**Who Attends Segregated Schools?**
 Current methods can't answer:
 
-Are Pakistani boys more affected than Pakistani girls?
-Does social class intersect with ethnicity?
-Where do vulnerable groups cluster?
+- Are Pakistani boys more affected than Pakistani girls?
+- Does social class intersect with ethnicity?
+- Where do vulnerable groups cluster?
 :::
 
 ::: {.callout-warning}
-Definition of Segregated School:
+**Definition of Segregated School:**
 Schools where >70% of students are from a single ethnic group (following Burgess & Wilson, 2005)
 :::
 :::
 ::::
+
 ::: {.callout-important}
-Limitation
+**Limitation**
+
 Aggregate approaches hide intersectional experiences - we need individual-level analysis to understand WHO experiences segregation, not just HOW MUCH segregation exists
 :::
-Spatial MAIHDA Enhancement {.smaller}
-Individual-Level Spatial MAIHDA Innovation
+
+## Spatial MAIHDA Enhancement {.smaller}
+
+**Individual-Level Spatial MAIHDA Innovation**
+
 :::: {.columns}
 ::: {.column width="50%"}
-Method Enhancement:
+### Method Enhancement:
 
-Unit: Individual students (N = 3.2 million)
-Outcome: Attends segregated school (binary)
-24 intersectional strata: Ethnicity × SES × Gender
-Cross-classified with spatial units (LSOAs)
-Monte Carlo: 10,000 simulations
+- **Unit:** Individual students (N = 3.2 million)
+- **Outcome:** Attends segregated school (binary)
+- **24 intersectional strata:** Ethnicity × SES × Gender
+- **Cross-classified** with spatial units (LSOAs)
+- **Monte Carlo:** 10,000 simulations
 
-logit(Y_ijk) = γ₀ + u₀j[strata] + v₀k[LSOA] + W*spatial_effects
-Key Innovation: Reveals WHO is most likely to experience segregation, not just WHERE segregation exists
+$$\text{logit}(Y_{ijk}) = \gamma_0 + u_{0j}[\text{strata}] + v_{0k}[\text{LSOA}] + W \cdot \text{spatial\_effects}$$
+
+**Key Innovation:** Reveals WHO is most likely to experience segregation, not just WHERE segregation exists
 :::
+
 ::: {.column width="50%"}
-Probability of Attending Segregated School:
-Intersectional GroupProbabilityOdds RatioPakistani × Low SES × Female68.4%3.24 [2.89-3.61]Pakistani × Low SES × Male71.2%3.57 [3.18-3.99]White × High SES × Female21.1%ReferenceBlack × Low SES × Male52.3%2.48 [2.21-2.78]
+### Probability of Attending Segregated School:
+
+| Intersectional Group | Probability | Odds Ratio |
+|---------------------|-------------|------------|
+| Pakistani × Low SES × Female | 68.4% | 3.24 [2.89-3.61] |
+| Pakistani × Low SES × Male | 71.2% | 3.57 [3.18-3.99] |
+| White × High SES × Female | 21.1% | Reference |
+| Black × Low SES × Male | 52.3% | 2.48 [2.21-2.78] |
+
 ::: {style="background-color: #e6f3ff; padding: 15px; border-radius: 8px;"}
-Discriminatory Accuracy: ICC = 0.15
+**Discriminatory Accuracy:** ICC = 0.15  
 85% of variation is within intersectional groups - context matters more than identity alone
 :::
 :::
 ::::
+
+```{r spatial-viz, fig.width=8, fig.height=5}
 # Create simplified spatial concentration visualization
 library(ggplot2)
 
@@ -199,32 +226,40 @@ ggplot(spatial_data) +
   theme_void() +
   theme(plot.title = element_text(size = 14, hjust = 0.5),
         plot.subtitle = element_text(size = 12, hjust = 0.5))
+```
+
 ::: {.callout-important}
-Critical Finding
+**Critical Finding**
+
 Monte Carlo reveals Pakistani low-SES boys have 71.2% [95% CI: 68.4%-73.8%] probability of attending segregated schools, with strong spatial clustering (Moran's I = 0.82) in specific urban areas. This intersectional vulnerability was invisible in aggregate analyses.
 :::
-Study 2: Teacher Retention {background-color="#7B3F99"}
-Current Approach: Tracking the 2011 Cohort {.smaller}
-Traditional Survival Analysis
+
+# Study 2: Teacher Retention {background-color="#7B3F99"}
+
+## Current Approach: Tracking the 2011 Cohort {.smaller}
+
+**Traditional Survival Analysis**
+
 :::: {.columns}
 ::: {.column width="50%"}
-Current Method Limitations:
+### Current Method Limitations:
 
-Cox model with additive effects
-Assumes: ethnicity + gender + ITT = risk
-Misses intersectional experiences
-Cannot identify time-specific vulnerabilities
+- Cox model with additive effects
+- Assumes: ethnicity + gender + ITT = risk
+- Misses intersectional experiences
+- Cannot identify time-specific vulnerabilities
 
 ::: {.callout-tip}
-Hidden Variation:
+**Hidden Variation:**
 Overall retention rates mask huge differences:
 
-Female: 16.54% - but ranges from 8% to 24% by intersectional group
-No ITT: 9.75% - but some groups retain at 18%, others at 3%
+- **Female:** 16.54% - but ranges from 8% to 24% by intersectional group
+- **No ITT:** 9.75% - but some groups retain at 18%, others at 3%
 :::
 :::
 
 ::: {.column width="50%"}
+```{r retention-viz, fig.width=6, fig.height=5}
 # Create simplified Kaplan-Meier visualization
 library(ggplot2)
 
@@ -253,30 +288,40 @@ ggplot(survival_data, aes(x = Year, y = Retention, color = Group)) +
        color = "") +
   theme_minimal() +
   theme(legend.position = "top")
-But which teachers struggle most?
+```
+
+**But which teachers struggle most?**
 :::
 ::::
+
 ::: {.callout-important}
-Critical Limitation
+**Critical Limitation**
+
 These aggregate curves hide intersectional vulnerabilities. A Black male teacher without ITT in London has a fundamentally different trajectory than a White female teacher with ITT in rural areas - but current analysis treats them as parts of separate, additive categories.
 :::
-Longitudinal MAIHDA Enhancement {.smaller}
-Revealing Intersectional Career Trajectories
+
+## Longitudinal MAIHDA Enhancement {.smaller}
+
+**Revealing Intersectional Career Trajectories**
+
 :::: {.columns}
 ::: {.column width="50%"}
-Longitudinal MAIHDA Innovation:
+### Longitudinal MAIHDA Innovation:
 
-200 intersectional strata: Ethnicity × Gender × ITT × Region
-Time-varying hazards: Captures non-linear career patterns
-Individual trajectories: Random slopes for each stratum
-Critical periods: Statistically identified vulnerability windows
+- **200 intersectional strata:** Ethnicity × Gender × ITT × Region
+- **Time-varying hazards:** Captures non-linear career patterns
+- **Individual trajectories:** Random slopes for each stratum
+- **Critical periods:** Statistically identified vulnerability windows
 
-logit(leaving) ~ poly(year,2) + (poly(year,2)|strata) + (1|school) + (1|teacher)
+$$\text{logit}(\text{leaving}) \sim \text{poly}(\text{year}, 2) + (\text{poly}(\text{year}, 2) | \text{strata}) + (1|\text{school}) + (1|\text{teacher})$$
+
 ::: {style="background-color: #e6f3ff; padding: 12px; border-radius: 8px;"}
-Key Finding: 78% of variation is within intersectional groups - individual context dominates
+**Key Finding:** 78% of variation is within intersectional groups - individual context dominates
 :::
 :::
+
 ::: {.column width="50%"}
+```{r trajectory-viz, fig.width=7, fig.height=6}
 # Create trajectory visualization
 years <- 0:11
 
@@ -312,7 +357,8 @@ ggplot(trajectories, aes(x = Year, y = Retention, color = Group)) +
   geom_point(data = critical_points, size = 5, shape = 21, 
              fill = "#FFD700", color = "black", stroke = 2) +
   scale_color_manual(values = c("#FF6B6B", "#FFB366", "#7B3F99", "#4ECDC4")) +
-  scale_x_continuous(breaks = seq(0, 11, 2), labels = 2011:2022) +
+  scale_x_continuous(breaks = seq(0, 11, 2), 
+                     labels = seq(2011, 2021, 2)) +
   labs(title = "5,000 MC Simulations: Top Risk Groups",
        x = "Year",
        y = "Retention Probability (%)",
@@ -322,91 +368,127 @@ ggplot(trajectories, aes(x = Year, y = Retention, color = Group)) +
         legend.text = element_text(size = 9)) +
   annotate("text", x = 2.5, y = 65, label = "Year 2\nCrisis", size = 3) +
   annotate("text", x = 1.5, y = 73, label = "Year 1\nCrisis", size = 3)
+```
 :::
 ::::
+
 ::: {.panel-tabset}
-Risk Statistics
-Intersectional GroupYear 1 RiskYear 2 RiskCritical Period11-Year RetentionBlack × Male × Non-ITT × London18%31%Year 2 Crisis3.2%Pakistani × Female × Non-ITT × North22%28%Year 1 Crisis4.8%White × Female × ITT × North8%10%Gradual23.4%
-Key Insight
+
+### Risk Statistics
+
+| Intersectional Group | Year 1 Risk | Year 2 Risk | Critical Period | 11-Year Retention |
+|---------------------|-------------|-------------|-----------------|-------------------|
+| Black × Male × Non-ITT × London | 18% | 31% | Year 2 Crisis | 3.2% |
+| Pakistani × Female × Non-ITT × North | 22% | 28% | Year 1 Crisis | 4.8% |
+| White × Female × ITT × North | 8% | 10% | Gradual | 23.4% |
+
+### Key Insight
+
 ::: {.callout-important}
-Transformative Insight
+**Transformative Insight**
+
 Longitudinal MAIHDA reveals that "teacher retention" isn't one problem but many distinct challenges. Black male non-ITT teachers in London face a Year 2 crisis (HR = 2.8, 95% CrI: [2.1-3.7]), while Pakistani female non-ITT teachers in the North struggle most in Year 1. This enables precisely targeted, time-specific interventions.
 :::
+
 :::
-Study 3: London's Transport Policy {background-color="#7B3F99"}
-Current Approach: Policy Complexity {.smaller}
-Evaluating Complex Eligibility Criteria: Who Really Benefits?
+
+# Study 3: London's Transport Policy {background-color="#7B3F99"}
+
+## Current Approach: Policy Complexity {.smaller}
+
+**Evaluating Complex Eligibility Criteria: Who Really Benefits?**
+
 :::: {.columns}
 ::: {.column width="50%"}
-London's Free Transport Policy:
+### London's Free Transport Policy:
+
 ::: {style="background-color: #f5f5f5; padding: 15px; border-radius: 8px; font-size: 0.9em;"}
-Standard Eligibility:
+**Standard Eligibility:**
 
-Under 8: >2 miles to school
-8+: >3 miles to school
-No safe walking route
-Special educational needs
+- Under 8: >2 miles to school
+- 8+: >3 miles to school
+- No safe walking route
+- Special educational needs
 
-Low-Income Eligibility:
+**Low-Income Eligibility:**
 
-8-11: >2 miles (nearest school)
-11-16: 2-6 miles (3 nearest schools)
-11-16: 2-15 miles (faith schools)
+- 8-11: >2 miles (nearest school)
+- 11-16: 2-6 miles (3 nearest schools)
+- 11-16: 2-15 miles (faith schools)
 :::
 
-Current ABM Limitations:
+### Current ABM Limitations:
 
-Models "average" low-income behavior
-Can't capture faith school preferences by ethnicity
-Misses intersectional barriers
+- Models "average" low-income behavior
+- Can't capture faith school preferences by ethnicity
+- Misses intersectional barriers
 :::
 
 ::: {.column width="50%"}
-Hidden Complexity:
+### Hidden Complexity:
+
 ::: {.callout-tip}
-The Same Policy, Different Impacts:
+**The Same Policy, Different Impacts:**
+
 Example: 11-year-old, low-income, 4 miles from school
-✓ White British: Likely uses local school (free transport)
-✓ Pakistani Muslim: May prefer faith school 8 miles away (not covered)
-✓ Black Caribbean: May avoid local "failing" school (complex choice)
+- ✓ White British: Likely uses local school (free transport)
+- ✓ Pakistani Muslim: May prefer faith school 8 miles away (not covered)
+- ✓ Black Caribbean: May avoid local "failing" school (complex choice)
 :::
+
 ::: {.callout-warning}
-Research Gap:
+**Research Gap:**
 Current models simulate transport use but can't explain WHY different groups make different choices under the same policy
 :::
-Key Questions ABM Can't Answer:
 
-Do faith school preferences create transport inequity?
-Which intersectional groups fall through eligibility gaps?
-How do cultural factors interact with distance rules?
+### Key Questions ABM Can't Answer:
+
+- Do faith school preferences create transport inequity?
+- Which intersectional groups fall through eligibility gaps?
+- How do cultural factors interact with distance rules?
 :::
-
 ::::
+
 ::: {.callout-important}
-Critical Limitation
+**Critical Limitation**
+
 Agent-based models treat policy eligibility as binary (yes/no) but can't reveal how intersectional identities shape actual benefit realization or uncover systematic exclusions
 :::
-MAIHDA-Enhanced Policy Evaluation {.smaller}
-Revealing Who Benefits and Who's Left Behind
+
+## MAIHDA-Enhanced Policy Evaluation {.smaller}
+
+**Revealing Who Benefits and Who's Left Behind**
+
 :::: {.columns}
 ::: {.column width="50%"}
-MAIHDA + ABM Integration:
+### MAIHDA + ABM Integration:
 
-MAIHDA: Identifies differential policy impacts by intersectional group
-ABM: Simulates spatial dynamics and school competition
-60 strata: Ethnicity × Income × Car × Distance
-Monte Carlo: 10,000 policy scenarios
+- **MAIHDA:** Identifies differential policy impacts by intersectional group
+- **ABM:** Simulates spatial dynamics and school competition
+- **60 strata:** Ethnicity × Income × Car × Distance
+- **Monte Carlo:** 10,000 policy scenarios
 
-Y_ij = β₀ + β₁(Eligible) + β₂(Distance) + u₁j(Policy×Strata) + (1|LSOA) + ε_ij
+$$Y_{ij} = \beta_0 + \beta_1(\text{Eligible}) + \beta_2(\text{Distance}) + u_{1j}(\text{Policy} \times \text{Strata}) + (1|\text{LSOA}) + \varepsilon_{ij}$$
+
 ::: {style="background-color: #e6f3ff; padding: 12px; border-radius: 8px;"}
-Key Innovation:
+**Key Innovation:**
 Reveals not just WHO is eligible, but who actually BENEFITS and WHY some eligible groups don't access support
 :::
 :::
+
 ::: {.column width="50%"}
-Differential Policy Realization:
-Intersectional GroupEligibleTake-upImpactPakistani × Low Income × 4mi✓42%+1.2 schoolsWhite × Low Income × 4mi✓78%+3.1 schoolsBlack × Low Income × 2.5mi✗-0 schoolsPakistani × Low Income × Faith✓*68%+4.8 schools
+### Differential Policy Realization:
+
+| Intersectional Group | Eligible | Take-up | Impact |
+|---------------------|----------|---------|---------|
+| Pakistani × Low Income × 4mi | ✓ | 42% | +1.2 schools |
+| White × Low Income × 4mi | ✓ | 78% | +3.1 schools |
+| Black × Low Income × 2.5mi | ✗ | - | 0 schools |
+| Pakistani × Low Income × Faith | ✓* | 68% | +4.8 schools |
+
 *Eligible for faith school provision (2-15 miles)
+
+```{r policy-gap-viz, fig.width=6, fig.height=4}
 # Create policy gap visualization
 library(ggplot2)
 
@@ -428,66 +510,87 @@ ggplot(gap_data) +
   theme_void() +
   theme(legend.position = "none",
         plot.title = element_text(size = 12, hjust = 0.5))
+```
 :::
 ::::
-Monte Carlo Policy Refinements
+
+### Monte Carlo Policy Refinements
+
 ::: {layout-ncol=3}
 ::: {style="background-color: #f0e6ff; padding: 15px; border-radius: 8px;"}
-Scenario A: Reduce threshold to 2.5 miles for all
-→ 18,000 more eligible
+**Scenario A:** Reduce threshold to 2.5 miles for all  
+→ 18,000 more eligible  
 → Reduces gap by 31%
 :::
+
 ::: {style="background-color: #e6f3ff; padding: 15px; border-radius: 8px;"}
-Scenario B: Cultural liaison for take-up
-→ Pakistani take-up: 42%→71%
+**Scenario B:** Cultural liaison for take-up  
+→ Pakistani take-up: 42%→71%  
 → Most cost-effective
 :::
+
 ::: {style="background-color: #ffe6e6; padding: 15px; border-radius: 8px;"}
-Scenario C: Expand faith provision
-→ Addresses preferences
+**Scenario C:** Expand faith provision  
+→ Addresses preferences  
 → Reduces segregation 24%
 :::
 :::
+
 ::: {.callout-important}
-Transformative Finding
+**Transformative Finding**
+
 MAIHDA reveals the policy works differently than intended - Pakistani families are eligible but face cultural/information barriers (42% take-up), while Black families in the 2.5-3 mile gap receive no support despite similar need. Monte Carlo simulations show targeted outreach would be 3x more cost-effective than expanding eligibility.
 :::
-Conclusions {background-color="#7B3F99"}
-MAIHDA: Transforming Understanding of Educational Inequalities
-Evolution Across Three Studies
-StudyCurrent MethodMAIHDA ExtensionKey InnovationSchool SegregationAggregate IndicesSpatial MAIHDAReveals which intersectional groups experience segregation & where they clusterTeacher RetentionSurvival AnalysisLongitudinal MAIHDAIdentifies career crisis points for specific groupsTransport AccessAgent-Based ModelPolicy Evaluation MAIHDAQuantifies differential policy impacts
-Contributing to Sheffield's MAIHDA Leadership
+
+# Conclusions {background-color="#7B3F99"}
+
+## MAIHDA: Transforming Understanding of Educational Inequalities
+
+### Evolution Across Three Studies
+
+| Study | Current Method | MAIHDA Extension | Key Innovation |
+|-------|----------------|------------------|----------------|
+| School Segregation | Aggregate Indices | Spatial MAIHDA | Reveals which intersectional groups experience segregation & where they cluster |
+| Teacher Retention | Survival Analysis | Longitudinal MAIHDA | Identifies career crisis points for specific groups |
+| Transport Access | Agent-Based Model | Policy Evaluation MAIHDA | Quantifies differential policy impacts |
+
+## Contributing to Sheffield's MAIHDA Leadership
+
 :::: {.columns}
 ::: {.column width="50%"}
-Methodological Innovation:
+### Methodological Innovation:
 
-Extending MAIHDA to spatial, longitudinal, and policy domains
-Monte Carlo uncertainty quantification
-Large dataset expertise (NPD, SWC)
+- Extending MAIHDA to spatial, longitudinal, and policy domains
+- Monte Carlo uncertainty quantification
+- Large dataset expertise (NPD, SWC)
 :::
 
 ::: {.column width="50%"}
-Why MAIHDA Matters:
+### Why MAIHDA Matters:
 
-Identifies WHO needs help (intersections)
-Shows WHERE to intervene (spatial)
-Reveals WHEN to act (temporal)
-Quantifies WHAT WORKS (policy)
+- Identifies WHO needs help (intersections)
+- Shows WHERE to intervene (spatial)
+- Reveals WHEN to act (temporal)
+- Quantifies WHAT WORKS (policy)
 :::
-
 ::::
+
 ::: {.callout-note}
-Vision
+**Vision**
+
 Advancing intersectional quantitative methods to reveal not just that inequalities exist, but precisely where, for whom, when, and why – transforming our ability to design interventions that actually work
 :::
-Thank You {background-color="#7B3F99"}
+
+# Thank You {background-color="#7B3F99"}
+
 ::: {style="text-align: center; margin-top: 100px;"}
-Questions?
-Dr Yiyang Gao
-Evidence Centre for Education
+## Questions?
+
+**Dr Yiyang Gao**  
+Evidence Centre for Education  
 Durham University
-[Email] • [GitHub] • [Twitter]
 :::
+
 ::: {style="text-align: center; margin-top: 50px; font-style: italic;"}
 "MAIHDA doesn't just identify problems – it illuminates solutions"
 :::

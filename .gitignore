@@ -1,49 +1,58 @@
-# History files
+# R and RStudio files
 .Rhistory
-.Rapp.history
-
-# Session Data files
 .RData
-.RDataTmp
-
-# User-specific files
-.Ruserdata
-
-# Example code in package build process
-*-Ex.R
-
-# Output files from R CMD build
-/*.tar.gz
-
-# Output files from R CMD check
-/*.Rcheck/
-
-# RStudio files
 .Rproj.user/
+*.Rproj
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# LaTeX auxiliary files
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.fls
+*.fdb_latexmk
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
-
-# knitr and R markdown default cache directories
+# Quarto cache
 *_cache/
-/cache/
+*_files/
 
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
+# macOS
+.DS_Store
 
-# R Environment Variables
-.Renviron
+# Windows
+Thumbs.db
 
-# pkgdown site
-docs/
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# translation temp files
-po/*~
+# Temporary files
+*~
+*.tmp
+*.temp
 
-# RStudio Connect folder
-rsconnect/
+# R Markdown cache
+*_cache/
+
+# Output files that can be regenerated
+*.pdf
+*.docx
+
+# Backup files
+*.bak
+*.backup
+
+# Node modules (if you ever use any JS build tools)
+node_modules/
+
+# Python (if you ever use Python scripts)
+__pycache__/
+*.py[cod]
+.env
+
+# Sensitive or personal information
+config.yml
+secrets.json

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Extended MAIHDA Studies - Understanding Society</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #660099;
+            color: #333;
+            overflow: hidden;
+        }
+        
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px;
+            display: none;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: all 0.5s ease;
+            overflow-y: auto;
+        }
+        
+        .slide.active {
+            display: block;
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .slide h1 {
+            color: #660099;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            border-bottom: 3px solid #660099;
+            padding-bottom: 20px;
+        }
+        
+        .slide h2 {
+            color: #660099;
+            font-size: 1.8em;
+            margin: 30px 0 20px 0;
+        }
+        
+        .slide h3 {
+            color: #444;
+            font-size: 1.4em;
+            margin: 20px 0 15px 0;
+        }
+        
+        .navigation {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(255,255,255,0.9);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        .nav-btn {
+            background: #660099;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .nav-btn:hover {
+            background: #440099;
+            transform: scale(1.05);
+        }
+        
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+        
+        .slide-counter {
+            font-weight: bold;
+            color: #660099;
+            font-size: 18px;
+        }
+        
+        .key-point {
+            background: #f3e6ff;
+            border-left: 5px solid #660099;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: #660099;
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .findings-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        .findings-list li {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #660099;
+            transition: all 0.3s;
+        }
+        
+        .findings-list li:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+        
+        .study-card {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .study-card:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            border-color: #660099;
+        }
+        
+        .progress-indicator {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .progress-dot:hover {
+            background: rgba(255,255,255,0.6);
+            transform: scale(1.2);
+        }
+        
+        .progress-dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+        
+        .progress-dot.active:hover {
+            background: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: #660099;
+            color: white;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <div class="progress-indicator">
+            <div class="progress-dot active"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+        </div>
+        
+        <!-- Slide 1: Title Slide -->
+        <div class="slide active">
+            <h1>Extended MAIHDA Studies Using Understanding Society Data</h1>
+            <div style="text-align: center; margin-top: 50px;">
+                <h2 style="color: #666;">Three Innovative Applications of Multilevel Analysis for<br>Intersectional Health Disparities</h2>
+                <div style="margin-top: 60px;">
+                    <p style="font-size: 1.3em; color: #555;">Dr Yiyang Gao</p>
+                    <p style="font-size: 1.1em; color: #777; margin-top: 10px;">23 June 2025</p>
+                </div>
+            </div>
+            <div class="key-point" style="margin-top: 80px;">
+                <p><strong>MAIHDA:</strong> Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy</p>
+                <p style="margin-top: 10px;">A powerful framework for understanding how social identities intersect to shape health outcomes</p>
+            </div>
+        </div>
+        
+        <!-- Slide 2: Overview -->
+        <div class="slide">
+            <h1>Overview: Three Extended MAIHDA Studies</h1>
+            
+            <div class="study-card animate-in">
+                <h3>Study 1: Longitudinal MAIHDA</h3>
+                <p><strong>Research Question:</strong> How do physical health trajectories differ across intersectional groups defined by sex, ethnicity, and education, and how do these trajectories vary with aging and time?</p>
+                <p><strong>Key Innovation:</strong> Separates age effects (time-varying) from stratum membership (fixed)</p>
+            </div>
+            
+            <div class="study-card animate-in">
+                <h3>Study 2: Spatial MAIHDA</h3>
+                <p><strong>Research Question:</strong> To what extent do geographic contexts amplify or mitigate mental health inequalities across intersectional groups?</p>
+                <p><strong>Key Innovation:</strong> Cross-classified multilevel model examining place-based interventions</p>
+            </div>
+            
+            <div class="study-card animate-in">
+                <h3>Study 3: Policy Evaluation MAIHDA</h3>
+                <p><strong>Research Question:</strong> How did COVID-19 differentially impact mental health across intersectional groups?</p>
+                <p><strong>Key Innovation:</strong> Evaluates differential policy impacts using baseline controls</p>
+            </div>
+        </div>
+        
+        <!-- Slide 3: Data Overview -->
+        <div class="slide">
+            <h1>Understanding Society Data</h1>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Longitudinal Study</div>
+                    <div class="stat-value">465,115</div>
+                    <div class="stat-label">Observations</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Unique Individuals</div>
+                    <div class="stat-value">62,155</div>
+                    <div class="stat-label">Physical Health Study</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Survey Waves</div>
+                    <div class="stat-value">14</div>
+                    <div class="stat-label">2009-2023</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">COVID Analysis</div>
+                    <div class="stat-value">111,101</div>
+                    <div class="stat-label">GHQ Observations</div>
+                </div>
+            </div>
+            
+            <h2>Key Variables Used Across Studies</h2>
+            <table>
+                <tr>
+                    <th>Category</th>
+                    <th>Variables</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>Identity</strong></td>
+                    <td>Sex, Ethnicity, Education</td>
+                    <td>Fixed characteristics defining intersectional strata</td>
+                </tr>
+                <tr>
+                    <td><strong>Health Outcomes</strong></td>
+                    <td>SF-12 PCS, SF-12 MCS, GHQ-12</td>
+                    <td>Physical health, mental health, and psychological distress</td>
+                </tr>
+                <tr>
+                    <td><strong>Geographic</strong></td>
+                    <td>Region, Urban/Rural</td>
+                    <td>25 spatial units (region × urban status)</td>
+                </tr>
+                <tr>
+                    <td><strong>Time</strong></td>
+                    <td>Wave, Age, Birth Cohort</td>
+                    <td>Temporal dimensions for longitudinal analysis</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Slide 4: Longitudinal MAIHDA -->
+        <div class="slide">
+            <h1>Study 1: Longitudinal MAIHDA - Physical Health Trajectories</h1>
+            
+            <h2>Key Findings</h2>
+            <div class="findings-list">
+                <li><strong>Variance Decomposition:</strong> 7.03% of variance at stratum level in empty model, reduced to <span class="highlight">0.11%</span> in full model</li>
+                <li><strong>Demographics explain 98.6%</strong> of stratum variance - suggesting largely additive effects</li>
+                <li><strong>Age effect:</strong> -0.204 points per year on physical health (significant decline)</li>
+                <li><strong>Individual trajectories vary significantly</strong> - random slopes improve model fit</li>
+                <li><strong>Correlation of -0.387</strong> between baseline health and age slopes - those with better initial health show steeper declines</li>
+            </div>
+            
+            <div class="key-point">
+                <h3>Model Progression</h3>
+                <p>Empty Model → Basic Time → Age Trajectories → Fixed Effects → Random Slopes → Full Model</p>
+                <p>Best model (by AIC/BIC): Full model with random slopes, demographics, and birth cohort effects</p>
+            </div>
+        </div>
+        
+        <!-- Slide 5: Spatial MAIHDA -->
+        <div class="slide">
+            <h1>Study 2: Spatial MAIHDA - Geographic Mental Health Patterns</h1>
+            
+            <h2>Geographic Variation</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Regional Difference</div>
+                    <div class="stat-value">2.4 points</div>
+                    <div class="stat-label">Between best and worst regions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Rural Mean MCS</div>
+                    <div class="stat-value">48.5</div>
+                    <div class="stat-label">vs Urban: 46.7</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Stratum Variance</div>
+                    <div class="stat-value">8.2%</div>
+                    <div class="stat-label">Between-stratum ICC</div>
+                </div>
+            </div>
+            
+            <h2>Area Effects</h2>
+            <ul class="findings-list">
+                <li><strong>Area deprivation effect:</strong> -0.54 points on mental health per unit increase</li>
+                <li><strong>6 priority areas identified</strong> needing universal + targeted interventions</li>
+                <li><strong>Individual characteristics explain 75.4%</strong> of stratum variance</li>
+                <li><strong>Cross-classified model</strong> reveals both place and identity matter</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 6: Policy Evaluation MAIHDA -->
+        <div class="slide">
+            <h1>Study 3: Policy Evaluation MAIHDA - COVID-19 Mental Health Impacts</h1>
+            
+            <h2>COVID-19 Mental Health Impact Analysis</h2>
+            <div class="key-point">
+                <p><strong>Mean GHQ increase during COVID:</strong> 0.61 points (scale 0-36, where higher = worse)</p>
+                <p><strong>22% experienced clinical deterioration</strong> (4+ point increase in GHQ)</p>
+            </div>
+            
+            <h3>Most vs Least Affected Groups</h3>
+            <table>
+                <tr>
+                    <th>Most Affected</th>
+                    <th>Mean Change</th>
+                    <th>Least Affected</th>
+                    <th>Mean Change</th>
+                </tr>
+                <tr>
+                    <td>Female Black ALevel 16-24</td>
+                    <td>+4.0</td>
+                    <td>Male Asian Degree 16-24</td>
+                    <td>-2.7</td>
+                </tr>
+                <tr>
+                    <td>Female Asian ALevel 16-24</td>
+                    <td>+3.6</td>
+                    <td>Male Black Higher 40-59</td>
+                    <td>-1.5</td>
+                </tr>
+            </table>
+            
+            <h3>Key Findings</h3>
+            <ul class="findings-list">
+                <li><strong>Between-stratum variance:</strong> Only 1.0% (lower than for health outcomes)</li>
+                <li><strong>Demographics explain 91%</strong> of stratum variance in impact</li>
+                <li><strong>Baseline mental health effect:</strong> -0.44 coefficient (regression to mean)</li>
+                <li><strong>Recovery trajectory:</strong> Minimal at -0.003 points per month</li>
+            </ul>
+        </div>
+        
+        <!-- Slide 7: Methodological Innovations -->
+        <div class="slide">
+            <h1>Methodological Innovations</h1>
+            
+            <div class="study-card">
+                <h3>Longitudinal MAIHDA</h3>
+                <ul>
+                    <li>Separates age effects from stratum membership</li>
+                    <li>Models individual change and variation in trajectories</li>
+                    <li>Reduces confounding through within-person comparisons</li>
+                    <li>Can examine trajectories over time, not just static disparities</li>
+                </ul>
+            </div>
+            
+            <div class="study-card">
+                <h3>Spatial MAIHDA</h3>
+                <ul>
+                    <li>Cross-classified multilevel model</li>
+                    <li>Accounts for geographic clustering</li>
+                    <li>Tests cross-level interactions between area and individual characteristics</li>
+                    <li>Identifies priority areas combining high prevalence and high inequality</li>
+                </ul>
+            </div>
+            
+            <div class="study-card">
+                <h3>Policy Evaluation MAIHDA</h3>
+                <ul>
+                    <li>Uses pre-pandemic baseline data with COVID-19 survey waves</li>
+                    <li>Tests whether baseline characteristics moderate policy effects</li>
+                    <li>Can identify which groups are most vulnerable to external shocks</li>
+                    <li>Evaluates differential policy impacts across intersectional groups</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Slide 8: Overall Pattern -->
+        <div class="slide">
+            <h1>Overall Pattern Across Studies</h1>
+            
+            <div class="key-point">
+                <h2 style="text-align: center; margin: 20px 0;">The Additive Main Effects Finding</h2>
+                <p style="font-size: 1.2em; text-align: center;">Across all three studies, the additive main effects of demographics explain most (75-99%) of the between-stratum variance</p>
+            </div>
+            
+            <h3>What This Means</h3>
+            <ul class="findings-list">
+                <li><strong>Intersectional effects are largely additive</strong> rather than interactive for these outcomes</li>
+                <li><strong>Individual-level variation remains important</strong> - significant variation within strata</li>
+                <li><strong>Contextual effects matter</strong> - time, place, and policy contexts shape outcomes</li>
+                <li><strong>Traditional demographic categories capture most inequality</strong> but miss important nuances</li>
+            </ul>
+            
+            <h3>Variance Explained by Demographics</h3>
+            <table>
+                <tr>
+                    <th>Study</th>
+                    <th>Outcome</th>
+                    <th>% Variance Explained</th>
+                </tr>
+                <tr>
+                    <td>Longitudinal</td>
+                    <td>Physical Health</td>
+                    <td>98.6%</td>
+                </tr>
+                <tr>
+                    <td>Spatial</td>
+                    <td>Mental Health</td>
+                    <td>75.4%</td>
+                </tr>
+                <tr>
+                    <td>Policy</td>
+                    <td>COVID Impact</td>
+                    <td>91.0%</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Slide 9: Policy Implications -->
+        <div class="slide">
+            <h1>Policy Implications</h1>
+            
+            <h2>Universal vs Targeted Interventions</h2>
+            <div class="study-card">
+                <h3>From Spatial MAIHDA</h3>
+                <p><strong>6 areas need "Universal + Targeted" interventions:</strong> High overall prevalence AND high inequality</p>
+                <p><strong>7 areas need "Monitor" only:</strong> Low prevalence and low inequality</p>
+                <p><strong>5 areas need "Universal" interventions:</strong> High prevalence but low inequality</p>
+                <p><strong>5 areas need "Targeted" interventions:</strong> Low prevalence but high inequality</p>
+            </div>
+            
+            <h2>Key Recommendations</h2>
+            <ul class="findings-list">
+                <li><strong>Physical Health:</strong> Focus on aging populations - steeper declines for those with initially good health</li>
+                <li><strong>Mental Health:</strong> Geographic targeting essential - rural areas show better outcomes</li>
+                <li><strong>COVID Support:</strong> Young females with lower education most vulnerable</li>
+                <li><strong>Area-based interventions:</strong> Can address multiple intersecting disadvantages simultaneously</li>
+            </ul>
+            
+            <div class="key-point">
+                <p><strong>Main Message:</strong> While intersectional effects are largely additive, understanding patterns across groups remains crucial for effective policy design and resource allocation</p>
+            </div>
+        </div>
+        
+        <!-- Slide 10: Conclusions -->
+        <div class="slide">
+            <h1>Conclusions</h1>
+            
+            <h2>Key Contributions</h2>
+            <div class="findings-list">
+                <li><strong>Methodological Innovation:</strong> Three novel extensions of MAIHDA framework</li>
+                <li><strong>Empirical Insights:</strong> Comprehensive understanding of health inequalities in UK</li>
+                <li><strong>Policy Relevance:</strong> Clear guidance for intervention strategies</li>
+            </div>
+            
+            <h2>Main Takeaways</h2>
+            <div class="key-point">
+                <p><strong>1.</strong> Traditional demographic categories explain most between-group variance</p>
+                <p><strong>2.</strong> Individual trajectories and contextual factors remain crucial</p>
+                <p><strong>3.</strong> Different outcomes require different analytical approaches</p>
+                <p><strong>4.</strong> Extended MAIHDA methods offer valuable insights beyond conventional analysis</p>
+            </div>
+            
+            <h2>Future Directions</h2>
+            <ul>
+                <li>Apply these methods to other health outcomes and contexts</li>
+                <li>Develop software tools for easier implementation</li>
+                <li>Explore higher-order interactions in larger samples</li>
+                <li>Integrate with causal inference frameworks</li>
+            </ul>
+            
+            <div style="text-align: center; margin-top: 50px;">
+                <h3>Thank You</h3>
+                <p style="margin-top: 20px; color: #666;">Questions and Discussion Welcome</p>
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-btn" onclick="previousSlide()">Previous</button>
+            <span class="slide-counter">1 / 10</span>
+            <button class="nav-btn" onclick="nextSlide()">Next</button>
+        </div>
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressDots = document.querySelectorAll('.progress-dot');
+        const slideCounter = document.querySelector('.slide-counter');
+        
+        function showSlide(n) {
+            slides.forEach(slide => {
+                slide.classList.remove('active');
+            });
+            progressDots.forEach(dot => {
+                dot.classList.remove('active');
+            });
+            
+            currentSlide = (n + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            progressDots[currentSlide].classList.add('active');
+            slideCounter.textContent = `${currentSlide + 1} / ${slides.length}`;
+            
+            // Update navigation buttons
+            const prevBtn = document.querySelector('.nav-btn');
+            const nextBtn = document.querySelectorAll('.nav-btn')[1];
+            
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+            
+            // Animate elements on slide change
+            const animateElements = slides[currentSlide].querySelectorAll('.animate-in');
+            animateElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+        }
+        
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+            }
+        }
+        
+        function previousSlide() {
+            if (currentSlide > 0) {
+                showSlide(currentSlide - 1);
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+            if (e.key >= '0' && e.key <= '9') {
+                const slideNum = parseInt(e.key) - 1;
+                if (slideNum >= 0 && slideNum < slides.length) {
+                    showSlide(slideNum);
+                }
+            }
+        });
+        
+        // Touch/swipe navigation for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            if (touchEndX < touchStartX - 50) nextSlide();
+            if (touchEndX > touchStartX + 50) previousSlide();
+        }
+        
+        // Add click functionality to progress dots
+        progressDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+            });
+            
+            // Add tooltip on hover
+            dot.title = `Go to slide ${index + 1}`;
+        });
+        
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

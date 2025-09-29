@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Transport Policy Analysis: Conventional vs MAIHDA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+            overflow: hidden;
+        }
+        
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .slide {
+            width: 1024px;
+            height: 768px;
+            background: white;
+            position: absolute;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        .slide-header {
+            background: linear-gradient(135deg, #7B3F99 0%, #5A2D79 100%);
+            color: white;
+            padding: 40px 50px 30px;
+        }
+        
+        .slide-content {
+            padding: 40px 50px;
+            height: calc(100% - 120px);
+            overflow-y: auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #7B3F99;
+        }
+        
+        h2 {
+            font-size: 36px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        h3 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #7B3F99;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        
+        h4 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .code-box {
+            background: #f5f5f5;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            overflow-x: auto;
+        }
+        
+        .code-dark {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+        
+        .code-comment {
+            color: #75715e;
+            font-style: italic;
+        }
+        
+        .code-keyword {
+            color: #66d9ef;
+        }
+        
+        .code-function {
+            color: #a6e22e;
+        }
+        
+        .code-string {
+            color: #e6db74;
+        }
+        
+        .code-number {
+            color: #ae81ff;
+        }
+        
+        .highlight {
+            background: #FFD700;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .danger-box {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .info-box {
+            background: #d1ecf1;
+            border: 2px solid #17a2b8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 30px 0;
+        }
+        
+        .method-box {
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            background: #fafafa;
+        }
+        
+        .conventional-box {
+            border-color: #dc3545;
+            background: #ffe6e6;
+        }
+        
+        .maihda-box {
+            border-color: #28a745;
+            background: #e6ffe6;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        button {
+            background: #7B3F99;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #5A2D79;
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        .impact-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .impact-table th {
+            background: #7B3F99;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 18px;
+        }
+        
+        .impact-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            font-size: 17px;
+        }
+        
+        .impact-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .positive {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .negative {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        
+        .neutral {
+            color: #6c757d;
+        }
+        
+        .big-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #7B3F99;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #666;
+            text-align: center;
+        }
+        
+        .arrow {
+            font-size: 36px;
+            color: #7B3F99;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .formula-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 20px;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .vs-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #dc3545;
+            text-align: center;
+        }
+        
+        .key-insight {
+            background: linear-gradient(135deg, #f0e6ff 0%, #e6f3ff 100%);
+            border: 3px solid #7B3F99;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 4px 8px rgba(123, 63, 153, 0.2);
+        }
+        
+        .key-point {
+            background: #f0e6ff;
+            border-left: 5px solid #7B3F99;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .data-viz {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .step-box {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .big-reveal {
+            font-size: 32px;
+            font-weight: bold;
+            color: #dc3545;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- PART 1: CONVENTIONAL VS MAIHDA -->
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="slide-header">
+                <h2>The Hidden Truth: Why Conventional Policy Evaluation Fails</h2>
+                <p style="color: #e0e0e0; font-size: 24px;">Understanding London's Transport Policy Through Two Lenses</p>
+                <span class="slide-number">1/13</span>
+            </div>
+            <div class="slide-content">
+                <div class="big-number">One Policy. Two Stories.</div>
+                <div class="subtitle">Which one reveals the truth?</div>
+                
+                <div class="comparison-grid" style="margin-top: 50px;">
+                    <div class="method-box conventional-box">
+                        <h3 style="color: #dc3545; text-align: center;">Conventional Approach</h3>
+                        <p style="text-align: center; font-size: 24px; margin-top: 20px;">"The policy is working!"</p>
+                        <p style="text-align: center; font-size: 18px; color: #666;">Average improvement: +31%</p>
+                    </div>
+                    
+                    <div class="method-box maihda-box">
+                        <h3 style="color: #28a745; text-align: center;">MAIHDA Approach</h3>
+                        <p style="text-align: center; font-size: 24px; margin-top: 20px;">"The policy is deepening inequality!"</p>
+                        <p style="text-align: center; font-size: 18px; color: #666;">Some gain +3.1, others gain 0</p>
+                    </div>
+                </div>
+                
+                <div class="arrow">↓</div>
+                <p style="text-align: center; font-size: 24px; font-weight: bold;">Let's see how these different conclusions arise...</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Conventional Approach -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The Conventional (Wrong) Approach</h2>
+                <span class="slide-number">2/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>Simple Before/After Comparison</h3>
+                <div class="data-viz">
+                    <div style="display: flex; justify-content: space-around; align-items: center;">
+                        <div>
+                            <p style="font-size: 16px; margin-bottom: 10px;">BEFORE POLICY</p>
+                            <div class="big-number" style="color: #666;">5.2</div>
+                            <p style="font-size: 16px;">schools accessible</p>
+                        </div>
+                        <div style="font-size: 48px; color: #7B3F99;">→</div>
+                        <div>
+                            <p style="font-size: 16px; margin-bottom: 10px;">AFTER POLICY</p>
+                            <div class="big-number" style="color: #28a745;">6.8</div>
+                            <p style="font-size: 16px;">schools accessible</p>
+                        </div>
+                    </div>
+                    <div class="success-box" style="margin-top: 30px;">
+                        <p style="text-align: center; font-size: 24px; margin: 0;">Policy Effect = <span class="highlight">+1.6 schools (31% improvement!)</span></p>
+                    </div>
+                </div>
+                
+                <h3>Or a Basic Regression:</h3>
+                <div class="code-box">
+                    schools_accessible ~ policy_period + controls
+                </div>
+                <p>This gives us <strong>one coefficient</strong>: "The policy increases access by 1.6 schools on average"</p>
+                
+                <div class="warning-box">
+                    <h4 style="color: #856404; margin-bottom: 10px;">⚠️ What This Approach Assumes:</h4>
+                    <ul style="margin-left: 20px;">
+                        <li>The policy affects everyone equally</li>
+                        <li>Average effects tell the whole story</li>
+                        <li>If the average improves, the policy is successful</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Why It's Misleading -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Why The Conventional Approach Is Misleading</h2>
+                <span class="slide-number">3/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>The "Successful" Policy Story</h3>
+                <div class="success-box">
+                    <ul style="list-style: none; margin: 0;">
+                        <li>✓ 65% of eligible families use the service</li>
+                        <li>✓ Users gain access to 3.1 more schools on average</li>
+                        <li>✓ Overall inequality reduced by 15%</li>
+                        <li style="font-size: 24px; font-weight: bold; margin-top: 15px;">Conclusion: "Policy is working well!"</li>
+                    </ul>
+                </div>
+                
+                <h3>What Gets Hidden Behind the Average</h3>
+                <table class="impact-table">
+                    <tr>
+                        <th>Group</th>
+                        <th>Take-up Rate</th>
+                        <th>Schools Gained</th>
+                        <th>Reality</th>
+                    </tr>
+                    <tr>
+                        <td>White low-income families at 4mi</td>
+                        <td class="positive">78%</td>
+                        <td class="positive">+3.1 schools</td>
+                        <td>Thriving ✓</td>
+                    </tr>
+                    <tr>
+                        <td>Pakistani low-income families at 4mi</td>
+                        <td class="negative">42%</td>
+                        <td class="negative">+1.2 schools</td>
+                        <td>Struggling</td>
+                    </tr>
+                    <tr style="background: #ffe6e6;">
+                        <td>Black low-income families at 2.5mi</td>
+                        <td class="negative">0%</td>
+                        <td class="negative">+0 schools</td>
+                        <td>Completely excluded!</td>
+                    </tr>
+                </table>
+                
+                <div class="danger-box">
+                    <p style="font-size: 22px; text-align: center; margin: 0;">
+                        <strong>The "successful average" masks a policy that's actually increasing inequality!</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Conventional Policy Response -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The Conventional Policy Response</h2>
+                <span class="slide-number">4/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>What Policymakers Conclude from "Successful" Averages:</h3>
+                
+                <div class="warning-box">
+                    <h4 style="margin-bottom: 15px;">💭 "The Policy Logic"</h4>
+                    <ul>
+                        <li>"Let's do more of the same - expand eligibility to help more people"</li>
+                        <li>"The 35% not using it probably don't need it"</li>
+                        <li>"The policy design is good, we just need bigger coverage"</li>
+                    </ul>
+                </div>
+                
+                <h3>The Resulting Action Plan:</h3>
+                <div class="data-viz">
+                    <div style="font-size: 32px; color: #dc3545; margin-bottom: 20px;">Scenario A: Expand Eligibility</div>
+                    <p style="font-size: 20px;">Reduce distance threshold: 3 miles → 2.5 miles</p>
+                    <p style="font-size: 18px; color: #666;">Cost: £££ (Most expensive option)</p>
+                </div>
+                
+                <div class="arrow">↓</div>
+                
+                <div class="danger-box">
+                    <h4 style="margin-bottom: 10px;">🚨 The Problem:</h4>
+                    <p>This addresses the <strong>wrong problem</strong>! It assumes people aren't using the service because they're not eligible, when actually:</p>
+                    <ul style="margin-top: 10px;">
+                        <li>Pakistani families ARE eligible but don't use it (information/trust barriers)</li>
+                        <li>More eligibility won't help if take-up remains at 42%</li>
+                        <li>Expensive expansion with minimal impact on inequality</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: How MAIHDA Changes This -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>How MAIHDA Changes Everything</h2>
+                <span class="slide-number">5/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>The MAIHDA Model</h3>
+                <div class="formula-comparison">
+                    <div class="code-box" style="background: #ffe6e6;">
+                        <p style="font-size: 16px; margin-bottom: 10px;">CONVENTIONAL:</p>
+                        <p style="margin: 0;">schools ~ period + controls</p>
+                    </div>
+                    <div class="vs-text">VS</div>
+                    <div class="code-box" style="background: #e6ffe6;">
+                        <p style="font-size: 16px; margin-bottom: 10px;">MAIHDA:</p>
+                        <p style="margin: 0;">schools ~ period + <span class="highlight">(period | strata_id)</span> + (1 | household_id)</p>
+                    </div>
+                </div>
+                
+                <p>The key term <code style="background: #FFD700; padding: 2px 5px;">(period | strata_id)</code> allows policy effects to vary by intersectional group!</p>
+                
+                <h3>What MAIHDA Reveals:</h3>
+                <div class="comparison-grid">
+                    <div>
+                        <h4 style="color: #28a745;">✓ Policy works GREAT for:</h4>
+                        <ul>
+                            <li>White British families (78% take-up)</li>
+                            <li>Those with cars</li>
+                            <li>Faith-based users</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style="color: #dc3545;">✗ Policy FAILS for:</h4>
+                        <ul>
+                            <li>Pakistani families (42% take-up)</li>
+                            <li>Black families at 2.5mi (0% - not eligible)</li>
+                            <li>Those facing information barriers</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="key-insight">
+                    <h4 style="margin-bottom: 10px;">🎯 The Real Insight:</h4>
+                    <p>The "successful" average comes from high-performing groups compensating for failing groups. The policy is actually <strong>deepening inequalities</strong> - helping those who already have advantages while failing those who need it most!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Better Solutions -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>MAIHDA-Informed Solutions</h2>
+                <span class="slide-number">6/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>From Wrong Diagnosis to Right Treatment</h3>
+                
+                <table class="impact-table">
+                    <tr>
+                        <th>Approach</th>
+                        <th>Diagnosis</th>
+                        <th>Solution</th>
+                        <th>Cost</th>
+                        <th>Impact</th>
+                    </tr>
+                    <tr style="background: #ffe6e6;">
+                        <td><strong>Conventional</strong></td>
+                        <td>"Not enough people eligible"</td>
+                        <td>Expand eligibility (A)</td>
+                        <td>£££</td>
+                        <td class="negative">10% reduction</td>
+                    </tr>
+                    <tr style="background: #e6ffe6;">
+                        <td><strong>MAIHDA</strong></td>
+                        <td>"Eligible people face barriers"</td>
+                        <td>Targeted outreach (B)</td>
+                        <td>£</td>
+                        <td class="positive">25% reduction ✓</td>
+                    </tr>
+                </table>
+                
+                <h3>Why Targeted Outreach (Scenario B) Wins:</h3>
+                <div class="success-box">
+                    <ul>
+                        <li><strong>Addresses actual barriers:</strong> Information gaps, cultural mistrust, language issues</li>
+                        <li><strong>Cost-effective:</strong> No expensive eligibility expansion needed</li>
+                        <li><strong>Targeted impact:</strong> Helps those who need it most (Pakistani families: 42% → 71%)</li>
+                        <li><strong>Evidence-based:</strong> Based on understanding WHO struggles and WHY</li>
+                    </ul>
+                </div>
+                
+                <div class="key-insight">
+                    <h4 style="margin-bottom: 15px;">💡 The Fundamental Lesson:</h4>
+                    <p style="font-size: 22px; text-align: center; margin: 0;">
+                        Without MAIHDA, we solve the <span style="color: #dc3545;">wrong problem</span> expensively.<br>
+                        With MAIHDA, we solve the <span style="color: #28a745;">right problem</span> efficiently.
+                    </p>
+                </div>
+                
+                <div style="margin-top: 30px; text-align: center; font-size: 18px; color: #666;">
+                    <p><strong>Remember:</strong> Averages hide inequalities. Intersectional analysis reveals them.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PART 2: MONTE CARLO EXPLANATION -->
+        <!-- Slide 7: Title -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Behind the Monte Carlo Curtain</h2>
+                <p style="color: #e0e0e0; font-size: 24px;">Understanding the Synthetic Data in Our MAIHDA Demonstration</p>
+                <span class="slide-number">7/13</span>
+            </div>
+            <div class="slide-content">
+                <div class="big-reveal">
+                    The Monte Carlo results are completely synthetic/fake
+                </div>
+                <div class="subtitle">
+                    They're predetermined to illustrate the methodological point
+                </div>
+                
+                <div class="warning-box" style="margin-top: 50px;">
+                    <h3 style="text-align: center; margin-bottom: 20px;">⚠️ Full Transparency Alert ⚠️</h3>
+                    <p style="font-size: 20px; text-align: center;">This presentation reveals exactly how the "simulation" works and why that's actually okay for a methodological demonstration</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px;">
+                    <p style="font-size: 24px;">Ready to peek behind the curtain? →</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: The Simulation Code -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The "Monte Carlo" Simulation Code</h2>
+                <span class="slide-number">8/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>What the R code actually does:</h3>
+                
+                <div class="code-dark">
+<span class="code-function">mc_scenarios</span> <- <span class="code-function">map_df</span>(<span class="code-number">1</span>:n_sims, <span class="code-keyword">function</span>(i) {
+  <span class="code-comment"># Scenario A: Reduce threshold to 2.5 miles</span>
+  scenario_a <- households %>%
+    <span class="code-function">mutate</span>(
+      eligible_a = distance_to_school >= <span class="code-number">2.5</span>,
+      uses_a = <span class="code-function">rbinom</span>(n(), <span class="code-number">1</span>, <span class="code-keyword">ifelse</span>(eligible_a, takeup_prob, <span class="code-number">0</span>)),
+      access_a = <span class="code-keyword">ifelse</span>(uses_a, current_access + <span class="code-function">rpois</span>(n(), <span class="code-number">3</span>), current_access)
+    )
+  
+  <span class="code-comment"># ... similar for Scenarios B and C ...</span>
+})
+                </div>
+                
+                <div class="two-column">
+                    <div class="step-box">
+                        <h4>Step 1: Change eligibility</h4>
+                        <p><code>distance >= 2.5</code></p>
+                        <p style="font-size: 16px; color: #666;">Simple threshold change</p>
+                    </div>
+                    
+                    <div class="step-box">
+                        <h4>Step 2: Random usage</h4>
+                        <p><code>rbinom()</code> with existing take-up rates</p>
+                        <p style="font-size: 16px; color: #666;">But rates are predetermined!</p>
+                    </div>
+                </div>
+                
+                <div class="danger-box">
+                    <p style="text-align: center; font-size: 20px;">🚨 The simulation runs 1,000 times but the core relationships never change!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: What's Predetermined -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>What's Predetermined</h2>
+                <span class="slide-number">9/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>1. Take-up rates are baked in from the start:</h3>
+                <div class="code-dark">
+<span class="code-comment"># In the data generation:</span>
+base_takeup = <span class="code-function">case_when</span>(
+  ethnicity == <span class="code-string">"Pakistani"</span> & eligible ~ <span class="code-number">0.42</span>,  <span class="code-comment"># Hardcoded!</span>
+  ethnicity == <span class="code-string">"White_British"</span> & eligible ~ <span class="code-number">0.78</span>,  <span class="code-comment"># Hardcoded!</span>
+  ...
+)
+                </div>
+                
+                <h3>2. The "improvement" in Scenario B is predetermined:</h3>
+                <div class="code-dark">
+takeup_improved = <span class="code-function">case_when</span>(
+  ethnicity == <span class="code-string">"Pakistani"</span> & eligible ~ <span class="code-function">pmin</span>(<span class="code-number">0.71</span>, takeup_prob * <span class="code-number">1.7</span>),
+  eligible ~ <span class="code-function">pmin</span>(<span class="code-number">0.9</span>, takeup_prob * <span class="code-number">1.2</span>),
+)
+                </div>
+                
+                <div class="warning-box">
+                    <p style="font-size: 22px; text-align: center;">
+                        <span class="highlight">I just multiply Pakistani take-up by 1.7 to get 71%!</span>
+                    </p>
+                </div>
+                
+                <h3>3. The inequality measure is just the standard deviation:</h3>
+                <div class="code-dark">
+inequality = <span class="code-function">sd</span>(households$post_policy_access)
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: What Monte Carlo Actually Does -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>What the Monte Carlo Actually Does</h2>
+                <span class="slide-number">10/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>The 1,000 simulations only add random variation to:</h3>
+                
+                <div class="two-column">
+                    <div class="info-box">
+                        <h4>1. Individual Usage</h4>
+                        <p>Whether each person uses transport</p>
+                        <div class="code-dark" style="margin-top: 10px;">
+<span class="code-function">rbinom</span>(n(), <span class="code-number">1</span>, takeup_prob)
+                        </div>
+                        <p style="font-size: 16px; color: #666;">Binomial random draw</p>
+                    </div>
+                    
+                    <div class="info-box">
+                        <h4>2. School Access</h4>
+                        <p>How many extra schools they access</p>
+                        <div class="code-dark" style="margin-top: 10px;">
+<span class="code-function">rpois</span>(n(), <span class="code-number">3</span>)
+                        </div>
+                        <p style="font-size: 16px; color: #666;">Poisson random draw</p>
+                    </div>
+                </div>
+                
+                <h3>But the core relationships are all predetermined:</h3>
+                <div class="danger-box">
+                    <ul style="font-size: 20px;">
+                        <li><strong>Scenario A</strong> will always help more people but less effectively</li>
+                        <li><strong>Scenario B</strong> will always help fewer people but more effectively</li>
+                        <li><strong>Scenario C</strong> will always fall in between</li>
+                    </ul>
+                </div>
+                
+                <div class="key-point" style="margin-top: 30px;">
+                    <p style="font-size: 20px; text-align: center; margin: 0;">
+                        The Monte Carlo is essentially just adding noise to make the results look realistic!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Why This Is Fine -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The Real Value: Why This Is Actually Fine</h2>
+                <span class="slide-number">11/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>This is fine for a methodological demonstration!</h3>
+                
+                <p style="font-size: 22px; margin-bottom: 30px;">The point isn't to prove that outreach works better in London (we don't have real data).</p>
+                
+                <h3>The point is to show:</h3>
+                <div style="margin-left: 30px;">
+                    <div class="step-box" style="background: #f0e6ff; border-color: #7B3F99;">
+                        <h4>1. HOW MAIHDA would reveal differential impacts</h4>
+                        <p>The <code>(period | strata_id)</code> term allows effects to vary by group</p>
+                    </div>
+                    
+                    <div class="step-box" style="background: #f0e6ff; border-color: #7B3F99;">
+                        <h4>2. WHY understanding intersectional barriers matters</h4>
+                        <p>Average success can mask group-specific failures</p>
+                    </div>
+                    
+                    <div class="step-box" style="background: #f0e6ff; border-color: #7B3F99;">
+                        <h4>3. WHAT KIND of insights this method provides</h4>
+                        <p>Targeted interventions can be more effective than broad expansions</p>
+                    </div>
+                </div>
+                
+                <div class="success-box" style="margin-top: 30px;">
+                    <h4 style="margin-bottom: 10px;">For Methodology Demonstration:</h4>
+                    <p>Using synthetic data with plausible patterns is standard practice. It allows us to clearly demonstrate analytical techniques without the noise and complications of real data.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Real Study Comparison -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Synthetic Demo vs Real Study</h2>
+                <span class="slide-number">12/13</span>
+            </div>
+            <div class="slide-content">
+                <h3>What Would Be Different in a Real Study:</h3>
+                
+                <div class="two-column">
+                    <div>
+                        <h4 style="color: #dc3545;">Instead of Synthetic Data:</h4>
+                        <ul>
+                            <li>Hardcoded take-up rates (42%, 78%)</li>
+                            <li>Predetermined improvements (×1.7)</li>
+                            <li>Made-up policy scenarios</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 style="color: #28a745;">Use Real Data:</h4>
+                        <ul>
+                            <li>Actual take-up data from London Transport</li>
+                            <li>Test real outreach programs</li>
+                            <li>Measure actual changes in accessibility</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3>But the MAIHDA Method Would Be Identical:</h3>
+                <div class="code-dark">
+<span class="code-comment"># Same model structure in both cases:</span>
+schools_accessible ~ period + <span class="code-function">(period | strata_id)</span> + (1 | household_id)
+                </div>
+                
+                <div class="info-box">
+                    <h4>The Beauty of Methodological Demonstrations:</h4>
+                    <p>We can clearly show HOW the method works without getting bogged down in:</p>
+                    <ul>
+                        <li>Data quality issues</li>
+                        <li>Missing values</li>
+                        <li>Measurement error</li>
+                        <li>Complex real-world confounders</li>
+                    </ul>
+                </div>
+                
+                <p style="font-size: 20px; margin-top: 30px;">Think of it like learning physics with frictionless surfaces and perfect spheres - simplified to show the core principles!</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Key Insight Remains Valid -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>The Key Insight Remains Valid</h2>
+                <span class="slide-number">13/13</span>
+            </div>
+            <div class="slide-content">
+                <div class="key-point" style="margin-bottom: 30px;">
+                    <h3 style="margin-top: 0;">The Core Methodological Truth:</h3>
+                    <p style="font-size: 22px; margin: 0;">
+                        <strong>IF</strong> eligible Pakistani families have low take-up due to information barriers (plausible),<br>
+                        <strong>THEN</strong> targeted outreach would be more cost-effective than expanding eligibility.
+                    </p>
+                </div>
+                
+                <div class="two-column">
+                    <div class="danger-box">
+                        <h4 style="color: #dc3545;">Conventional Analysis Would:</h4>
+                        <ul>
+                            <li>Show average improvement</li>
+                            <li>Miss group disparities</li>
+                            <li>Recommend broad expansion</li>
+                            <li>Waste resources</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="success-box">
+                        <h4 style="color: #28a745;">MAIHDA Would:</h4>
+                        <ul>
+                            <li>Reveal hidden patterns</li>
+                            <li>Identify specific barriers</li>
+                            <li>Enable targeted solutions</li>
+                            <li>Maximize impact</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 30px;">The Value of This Demonstration:</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <p style="font-size: 20px; margin-bottom: 15px;">It clearly shows researchers and policymakers:</p>
+                    <ol style="font-size: 18px;">
+                        <li>Why intersectional analysis matters</li>
+                        <li>How to implement MAIHDA methods</li>
+                        <li>What kinds of insights to expect</li>
+                        <li>How to design better interventions</li>
+                    </ol>
+                </div>
+                
+                <div style="text-align: center; margin-top: 40px; font-size: 24px; color: #7B3F99; font-weight: bold;">
+                    The method is real. The insights are valuable.<br>
+                    The synthetic data just makes it clearer.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+        <span id="slideIndicator" style="color: #666; font-size: 16px;">1 / 13</span>
+        <button id="nextBtn" onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            document.getElementById('slideIndicator').textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) changeSlide(1);
+            if (e.key === 'ArrowLeft' && currentSlide > 0) changeSlide(-1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

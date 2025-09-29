@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAIHDA + Causal Methods Interactive Demo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #ffffff;
+            color: #333333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            color: #7B3F99;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #666666;
+            font-size: 1.1em;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(123, 63, 153, 0.2);
+            border-color: rgba(123, 63, 153, 0.3);
+        }
+
+        .controls {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 500;
+            color: #7B3F99;
+            font-size: 0.9em;
+        }
+
+        select, input[type="range"], button {
+            background: #ffffff;
+            border: 1px solid #7B3F99;
+            color: #333333;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        select:hover, input[type="range"]:hover {
+            background: rgba(123, 63, 153, 0.05);
+            border-color: #7B3F99;
+        }
+
+        button {
+            background: #7B3F99;
+            color: white;
+            font-weight: 600;
+            padding: 10px 20px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #9b5fb9;
+            transform: scale(1.05);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-top: 20px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: rgba(123, 63, 153, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid rgba(123, 63, 153, 0.2);
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #7B3F99;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 3px;
+        }
+
+        #heatmap {
+            margin-top: 20px;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: #ffffff;
+            border: 2px solid #7B3F99;
+            padding: 12px;
+            border-radius: 8px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+            font-size: 0.9em;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .explanation {
+            background: rgba(123, 63, 153, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #7B3F99;
+        }
+
+        .formula {
+            font-family: 'Courier New', monospace;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow-x: auto;
+            border: 1px solid #e0e0e0;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .highlight {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MAIHDA + Causal Methods Interactive Demo</h1>
+        <p class="subtitle">Exploring Heterogeneous Treatment Effects Across Intersectional Groups</p>
+
+        <div class="dashboard">
+            <!-- Method Selection and Controls -->
+            <div class="card">
+                <h2>Method Configuration</h2>
+                <div class="controls">
+                    <div class="control-group">
+                        <label for="method">Causal Method</label>
+                        <select id="method">
+                            <option value="did">Difference-in-Differences (DiD)</option>
+                            <option value="rdd">Regression Discontinuity (RDD)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="policy">Policy Scenario</label>
+                        <select id="policy">
+                            <option value="wage">Minimum Wage Increase</option>
+                            <option value="education">College Admission Policy</option>
+                            <option value="health">Healthcare Expansion</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="heterogeneity">Heterogeneity Level</label>
+                        <input type="range" id="heterogeneity" min="0" max="100" value="50">
+                        <span id="hetValue">50%</span>
+                    </div>
+                    <button onclick="runAnalysis()">Run Analysis</button>
+                </div>
+
+                <div class="explanation">
+                    <h3>Current Model</h3>
+                    <div class="formula" id="modelFormula">
+                        outcome ~ treatment*post + (1 | race:gender:income) + (treatment:post | race:gender:income)
+                    </div>
+                    <p id="methodDescription">
+                        This MAIHDA-enhanced DiD model estimates how treatment effects vary across intersectional strata while accounting for baseline differences between groups.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Treatment Effects Visualization -->
+            <div class="card">
+                <h2>Treatment Effects by Intersectional Group</h2>
+                <div class="chart-container">
+                    <canvas id="effectsChart"></canvas>
+                </div>
+                <div class="stats-grid" id="stats">
+                    <div class="stat-box">
+                        <div class="stat-value">0.00</div>
+                        <div class="stat-label">Average Effect</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">0.00</div>
+                        <div class="stat-label">Effect Range</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">0%</div>
+                        <div class="stat-label">Variance Explained</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value">0</div>
+                        <div class="stat-label">Groups Analyzed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Heatmap Visualization -->
+        <div class="card">
+            <h2>Intersectional Effects Heatmap</h2>
+            <div id="heatmap"></div>
+            <div class="legend" id="heatmapLegend"></div>
+        </div>
+
+        <!-- Power Analysis -->
+        <div class="card">
+            <h2>Power Analysis & Sample Requirements</h2>
+            <div class="controls">
+                <div class="control-group">
+                    <label for="effectSize">Expected Effect Size</label>
+                    <input type="range" id="effectSize" min="0.1" max="1" step="0.1" value="0.5">
+                    <span id="effectSizeValue">0.5</span>
+                </div>
+                <div class="control-group">
+                    <label for="power">Desired Power</label>
+                    <input type="range" id="power" min="70" max="95" step="5" value="80">
+                    <span id="powerValue">80%</span>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="powerChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Key Concepts Explanation -->
+        <div class="card">
+            <h2>Understanding Key Parameters</h2>
+            <div class="explanation">
+                <h3>🎯 Heterogeneity Level</h3>
+                <p><strong>What it means:</strong> The degree to which treatment effects vary across different intersectional groups. A higher heterogeneity level means the policy impact differs more dramatically between groups.</p>
+                <p><strong>Example:</strong> At 0% heterogeneity, a minimum wage increase affects all groups equally. At 100% heterogeneity, some groups might see large benefits while others see minimal or even negative effects.</p>
+                <p><strong>Why it matters:</strong> High heterogeneity suggests that "one-size-fits-all" policies may not work well and targeted interventions might be needed.</p>
+            </div>
+            
+            <div class="explanation">
+                <h3>📊 Expected Effect Size</h3>
+                <p><strong>What it means:</strong> The magnitude of change we expect to see from our intervention, measured in standard deviations. Common benchmarks are: 0.2 (small), 0.5 (medium), 0.8 (large).</p>
+                <p><strong>Example:</strong> An effect size of 0.5 means the treatment group's average outcome is half a standard deviation higher than the control group's.</p>
+                <p><strong>Why it matters:</strong> Smaller effect sizes require larger sample sizes to detect. If we expect subtle effects, we'll need more participants in our study.</p>
+            </div>
+            
+            <div class="explanation">
+                <h3>⚡ Desired Power</h3>
+                <p><strong>What it means:</strong> The probability of correctly detecting a true effect when it exists. Standard practice is to aim for 80% power.</p>
+                <p><strong>Example:</strong> With 80% power, if the treatment truly works, we have an 80% chance of our study showing statistically significant results.</p>
+                <p><strong>Why it matters:</strong> Low power increases the risk of false negatives (missing real effects). Higher power requires larger samples but gives more confidence in our results.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script>
+        // Color scheme
+        const themeColor = '#7B3F99';
+        const colors = {
+            primary: themeColor,
+            secondary: '#333333',
+            accent: '#666666',
+            background: 'rgba(123, 63, 153, 0.1)',
+            grid: 'rgba(0, 0, 0, 0.1)'
+        };
+
+        // Initialize charts
+        let effectsChart, powerChart;
+        const tooltip = document.getElementById('tooltip');
+
+        // Intersectional groups
+        const races = ['White', 'Black', 'Hispanic', 'Asian'];
+        const genders = ['Male', 'Female'];
+        const incomes = ['Low', 'Middle', 'High'];
+
+        // Generate all intersectional combinations
+        function generateStrata() {
+            const strata = [];
+            for (let race of races) {
+                for (let gender of genders) {
+                    for (let income of incomes) {
+                        strata.push(`${race}_${gender}_${income}`);
+                    }
+                }
+            }
+            return strata;
+        }
+
+        // Simulate treatment effects with heterogeneity
+        function simulateEffects(method, policy, heterogeneity) {
+            const strata = generateStrata();
+            const baseEffect = getBaseEffect(policy);
+            const effects = {};
+            
+            strata.forEach(stratum => {
+                const [race, gender, income] = stratum.split('_');
+                
+                // Base effect modified by intersectional characteristics
+                let effect = baseEffect;
+                
+                // Add heterogeneity based on characteristics
+                if (policy === 'wage') {
+                    if (income === 'Low') effect *= 1.5;
+                    if (income === 'High') effect *= 0.5;
+                    if (gender === 'Female') effect *= 1.2;
+                    if (race === 'Black' || race === 'Hispanic') effect *= 1.3;
+                }
+                
+                // Add random variation based on heterogeneity level
+                const randomVariation = (Math.random() - 0.5) * heterogeneity / 50;
+                effect += effect * randomVariation;
+                
+                effects[stratum] = effect;
+            });
+            
+            return effects;
+        }
+
+        function getBaseEffect(policy) {
+            const effects = {
+                'wage': 0.15,
+                'education': 0.25,
+                'health': 0.20
+            };
+            return effects[policy];
+        }
+
+        // Update model formula display
+        function updateModelFormula() {
+            const method = document.getElementById('method').value;
+            const formulas = {
+                'did': 'outcome ~ treatment*post + (1 | race:gender:income) + (treatment:post | race:gender:income)',
+                'rdd': 'outcome ~ treatment + running_var + treatment:running_var + (treatment | race:gender:income)'
+            };
+            
+            document.getElementById('modelFormula').textContent = formulas[method];
+            
+            const descriptions = {
+                'did': 'This MAIHDA-enhanced DiD model estimates how treatment effects vary across intersectional strata while accounting for baseline differences between groups.',
+                'rdd': 'The MAIHDA-RDD approach allows discontinuity effects to vary by intersectional group, revealing which populations benefit most from crossing the threshold.'
+            };
+            
+            document.getElementById('methodDescription').textContent = descriptions[method];
+        }
+
+        // Create effects chart
+        function createEffectsChart(effects) {
+            const ctx = document.getElementById('effectsChart').getContext('2d');
+            
+            const sortedEffects = Object.entries(effects)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 20); // Top 20 groups
+            
+            const data = {
+                labels: sortedEffects.map(([stratum, _]) => {
+                    const parts = stratum.split('_');
+                    return `${parts[0].substr(0, 3)}-${parts[1].substr(0, 1)}-${parts[2]}`;
+                }),
+                datasets: [{
+                    label: 'Treatment Effect',
+                    data: sortedEffects.map(([_, effect]) => effect),
+                    backgroundColor: sortedEffects.map(([_, effect]) => 
+                        effect > 0 ? `rgba(123, 63, 153, ${0.3 + effect})` : 'rgba(220, 53, 69, 0.6)'
+                    ),
+                    borderColor: themeColor,
+                    borderWidth: 2
+                }]
+            };
+            
+            if (effectsChart) effectsChart.destroy();
+            
+            effectsChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const stratum = sortedEffects[context.dataIndex][0];
+                                    const [race, gender, income] = stratum.split('_');
+                                    return `${race} ${gender}, ${income} income`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: colors.grid },
+                            ticks: { color: colors.accent }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: colors.accent }
+                        }
+                    }
+                }
+            });
+            
+            updateStats(effects);
+        }
+
+        // Update statistics
+        function updateStats(effects) {
+            const values = Object.values(effects);
+            const avg = values.reduce((a, b) => a + b, 0) / values.length;
+            const min = Math.min(...values);
+            const max = Math.max(...values);
+            const variance = values.reduce((a, b) => a + Math.pow(b - avg, 2), 0) / values.length;
+            const totalVariance = values.reduce((a, b) => a + Math.pow(b, 2), 0) / values.length;
+            const r2 = variance / totalVariance;
+            
+            const stats = document.querySelectorAll('.stat-value');
+            stats[0].textContent = avg.toFixed(3);
+            stats[1].textContent = `${min.toFixed(2)} to ${max.toFixed(2)}`;
+            stats[2].textContent = `${(r2 * 100).toFixed(0)}%`;
+            stats[3].textContent = values.length;
+        }
+
+        // Create heatmap
+        function createHeatmap(effects) {
+            const container = d3.select('#heatmap');
+            container.selectAll('*').remove();
+            
+            const margin = { top: 50, right: 50, bottom: 50, left: 100 };
+            const width = container.node().getBoundingClientRect().width - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+            
+            const svg = container.append('svg')
+                .attr('width', width + margin.left + margin.right)
+                .attr('height', height + margin.top + margin.bottom)
+                .append('g')
+                .attr('transform', `translate(${margin.left},${margin.top})`);
+            
+            // Prepare data
+            const data = [];
+            races.forEach(race => {
+                genders.forEach(gender => {
+                    incomes.forEach(income => {
+                        const key = `${race}_${gender}_${income}`;
+                        data.push({
+                            race: race,
+                            gender_income: `${gender}-${income}`,
+                            value: effects[key]
+                        });
+                    });
+                });
+            });
+            
+            // Scales
+            const xScale = d3.scaleBand()
+                .domain(data.map(d => d.gender_income).filter((v, i, a) => a.indexOf(v) === i))
+                .range([0, width])
+                .padding(0.05);
+            
+            const yScale = d3.scaleBand()
+                .domain(races)
+                .range([0, height])
+                .padding(0.05);
+            
+            const colorScale = d3.scaleSequential()
+                .domain(d3.extent(data, d => d.value))
+                .interpolator(d3.interpolatePurples);
+            
+            // Draw cells
+            svg.selectAll('rect')
+                .data(data)
+                .enter().append('rect')
+                .attr('x', d => xScale(d.gender_income))
+                .attr('y', d => yScale(d.race))
+                .attr('width', xScale.bandwidth())
+                .attr('height', yScale.bandwidth())
+                .style('fill', d => colorScale(d.value))
+                .style('stroke', colors.primary)
+                .style('stroke-width', 1)
+                .on('mouseover', function(event, d) {
+                    tooltip.style.opacity = 1;
+                    tooltip.innerHTML = `
+                        <strong>${d.race} ${d.gender_income}</strong><br>
+                        Effect: ${d.value.toFixed(3)}
+                    `;
+                    tooltip.style.left = (event.pageX + 10) + 'px';
+                    tooltip.style.top = (event.pageY - 28) + 'px';
+                })
+                .on('mouseout', function() {
+                    tooltip.style.opacity = 0;
+                });
+            
+            // Add axes
+            svg.append('g')
+                .attr('transform', `translate(0, ${height})`)
+                .call(d3.axisBottom(xScale))
+                .style('color', colors.accent);
+            
+            svg.append('g')
+                .call(d3.axisLeft(yScale))
+                .style('color', colors.accent);
+        }
+
+        // Power analysis
+        function createPowerChart() {
+            const ctx = document.getElementById('powerChart').getContext('2d');
+            const effectSize = parseFloat(document.getElementById('effectSize').value);
+            const power = parseFloat(document.getElementById('power').value) / 100;
+            
+            // Calculate sample sizes for different numbers of strata
+            const strataNumbers = [4, 8, 12, 16, 20, 24];
+            const sampleSizes = strataNumbers.map(n => {
+                // Simplified power calculation
+                const z_alpha = 1.96;
+                const z_beta = quantile(power);
+                const sigma = 1;
+                const n_per_stratum = Math.ceil(2 * Math.pow(sigma, 2) * Math.pow(z_alpha + z_beta, 2) / Math.pow(effectSize, 2));
+                return n_per_stratum * n;
+            });
+            
+            if (powerChart) powerChart.destroy();
+            
+            powerChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: strataNumbers.map(n => `${n} strata`),
+                    datasets: [{
+                        label: 'Total Sample Size Required',
+                        data: sampleSizes,
+                        borderColor: themeColor,
+                        backgroundColor: colors.background,
+                        borderWidth: 3,
+                        pointRadius: 6,
+                        pointBackgroundColor: themeColor,
+                        tension: 0.2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            display: true,
+                            labels: { color: colors.accent }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Sample Size',
+                                color: colors.accent
+                            },
+                            grid: { color: colors.grid },
+                            ticks: { color: colors.accent }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Number of Intersectional Strata',
+                                color: colors.accent
+                            },
+                            grid: { display: false },
+                            ticks: { color: colors.accent }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Utility function for normal quantile
+        function quantile(p) {
+            // Approximation of inverse normal CDF
+            const a = [2.50662823884, -18.61500062529, 41.39119773534, -25.44106049637];
+            const b = [-8.47351093090, 23.08336743743, -21.06224101826, 3.13082909833];
+            const c = [0.3374754822726147, 0.9761690190917186, 0.1607979714918209,
+                      0.0276438810333863, 0.0038405729373609, 0.0003951896511919,
+                      0.0000321767881768, 0.0000002888167364, 0.0000003960315187];
+            
+            const y = p - 0.5;
+            if (Math.abs(y) < 0.42) {
+                const r = y * y;
+                return y * (((a[3] * r + a[2]) * r + a[1]) * r + a[0]) /
+                          ((((b[3] * r + b[2]) * r + b[1]) * r + b[0]) * r + 1);
+            } else {
+                let r = p;
+                if (y > 0) r = 1 - p;
+                r = Math.log(-Math.log(r));
+                let x = c[0];
+                for (let i = 1; i < 9; i++) {
+                    x = x * r + c[i];
+                }
+                if (y < 0) x = -x;
+                return x;
+            }
+        }
+
+        // Run analysis
+        function runAnalysis() {
+            const method = document.getElementById('method').value;
+            const policy = document.getElementById('policy').value;
+            const heterogeneity = parseFloat(document.getElementById('heterogeneity').value);
+            
+            const effects = simulateEffects(method, policy, heterogeneity);
+            createEffectsChart(effects);
+            createHeatmap(effects);
+            createPowerChart();
+        }
+
+        // Event listeners
+        document.getElementById('method').addEventListener('change', updateModelFormula);
+        document.getElementById('heterogeneity').addEventListener('input', function() {
+            document.getElementById('hetValue').textContent = this.value + '%';
+        });
+        document.getElementById('effectSize').addEventListener('input', function() {
+            document.getElementById('effectSizeValue').textContent = this.value;
+            createPowerChart();
+        });
+        document.getElementById('power').addEventListener('input', function() {
+            document.getElementById('powerValue').textContent = this.value + '%';
+            createPowerChart();
+        });
+
+        // Initialize
+        updateModelFormula();
+        runAnalysis();
+    </script>
+</body>
+</html>

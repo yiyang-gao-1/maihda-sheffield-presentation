@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAIHDA Studies: Health Inequalities Research</title>
+    <style>
+        :root {
+            --primary-color: #7B3F99;
+            --primary-light: #9d66b8;
+            --primary-dark: #5a2e73;
+            --secondary-color: #f4f1f8;
+            --text-dark: #2c2c2c;
+            --text-light: #666;
+            --border-color: #e0d5e8;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f9f7fb;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(123, 63, 153, 0.3);
+            margin-bottom: 40px;
+            border-radius: 0 0 30px 30px;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .study-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .tab-button {
+            padding: 15px 30px;
+            background: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            cursor: pointer;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .tab-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(123, 63, 153, 0.3);
+        }
+
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .study-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .study-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid var(--border-color);
+        }
+
+        .section h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section h3 {
+            color: var(--primary-dark);
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .icon {
+            width: 30px;
+            height: 30px;
+            fill: var(--primary-color);
+        }
+
+        .question-box {
+            background: var(--secondary-color);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 20px;
+            font-style: italic;
+            font-size: 1.1em;
+            color: var(--primary-dark);
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .data-card {
+            background: linear-gradient(135deg, #f9f7fb 0%, #fff 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .data-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-card h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .data-card .value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: var(--primary-dark);
+        }
+
+        .data-card .label {
+            color: var(--text-light);
+            font-size: 0.9em;
+        }
+
+        .model-progression {
+            position: relative;
+            padding-left: 40px;
+            margin-top: 20px;
+        }
+
+        .model-step {
+            position: relative;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .model-step:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 5px 20px rgba(123, 63, 153, 0.2);
+        }
+
+        .model-step::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 25px;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px var(--primary-color);
+        }
+
+        .model-step::after {
+            content: '';
+            position: absolute;
+            left: -22px;
+            top: 45px;
+            width: 2px;
+            height: calc(100% + 20px);
+            background: var(--primary-color);
+        }
+
+        .model-step:last-child::after {
+            display: none;
+        }
+
+        .model-step h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .model-step .formula {
+            background: #f5f5f5;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 10px 0;
+            overflow-x: auto;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .model-step .details {
+            color: var(--text-light);
+            font-size: 0.95em;
+            margin-top: 10px;
+        }
+
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .finding-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .finding-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .finding-card .metric {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .finding-card .description {
+            color: var(--text-dark);
+            font-size: 0.95em;
+        }
+
+        .key-insight {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            box-shadow: 0 5px 20px rgba(123, 63, 153, 0.3);
+        }
+
+        .key-insight h4 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tr:hover {
+            background: var(--secondary-color);
+        }
+
+        .variable-type {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .type-fixed {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .type-time-varying {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .type-outcome {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .type-grouping {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>MAIHDA Studies on Health Inequalities</h1>
+        <p>Three Innovative Applications Using Understanding Society Data</p>
+    </header>
+
+    <div class="container">
+        <div class="study-tabs">
+            <button class="tab-button active" onclick="showStudy('study1')">
+                Study 1: Longitudinal MAIHDA
+            </button>
+            <button class="tab-button" onclick="showStudy('study2')">
+                Study 2: Spatial MAIHDA
+            </button>
+            <button class="tab-button" onclick="showStudy('study3')">
+                Study 3: Policy Evaluation MAIHDA
+            </button>
+        </div>
+
+        <!-- Study 1: Longitudinal MAIHDA -->
+        <div id="study1" class="study-content active">
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9,11H7V13H9V11M13,11H11V13H13V11M17,11H15V13H17V11M19,4H18V2H16V4H8V2H6V4H5C3.89,4 3,4.9 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V9H19V20Z"/>
+                    </svg>
+                    Research Question
+                </h2>
+                <div class="question-box">
+                    "How do physical health trajectories differ across intersectional groups defined by sex, ethnicity, and education (fixed characteristics), and how do these trajectories vary with aging and time?"
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7Z"/>
+                    </svg>
+                    Data & Variables
+                </h2>
+                
+                <div class="data-grid">
+                    <div class="data-card">
+                        <h4>Dataset</h4>
+                        <div class="value">Understanding Society</div>
+                        <div class="label">Waves 1-14 (2009-2023)</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Sample Size</h4>
+                        <div class="value">62,155</div>
+                        <div class="label">individuals</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Observations</h4>
+                        <div class="value">465,115</div>
+                        <div class="label">total measurements</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Outcome</h4>
+                        <div class="value">SF-12 PCS</div>
+                        <div class="label">Physical Component Score (0-100)</div>
+                    </div>
+                </div>
+
+                <h3>Key Variables</h3>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>stratum_fixed</td>
+                            <td><span class="variable-type type-grouping">Fixed Grouping</span></td>
+                            <td>Sex × Ethnicity × Education (40 groups)</td>
+                        </tr>
+                        <tr>
+                            <td>sf12pcs_dv</td>
+                            <td><span class="variable-type type-outcome">Outcome</span></td>
+                            <td>Physical health score (higher = better)</td>
+                        </tr>
+                        <tr>
+                            <td>age_centered</td>
+                            <td><span class="variable-type type-time-varying">Time-varying</span></td>
+                            <td>Age centered at 50 years</td>
+                        </tr>
+                        <tr>
+                            <td>wave_centered</td>
+                            <td><span class="variable-type type-time-varying">Time-varying</span></td>
+                            <td>Survey wave (centered at wave 1)</td>
+                        </tr>
+                        <tr>
+                            <td>birth_cohort</td>
+                            <td><span class="variable-type type-fixed">Fixed</span></td>
+                            <td>Birth cohort (Pre-1940 to 1990s+)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+                    </svg>
+                    Model Progression
+                </h2>
+                
+                <div class="model-progression">
+                    <div class="model-step">
+                        <h4>Model 0: Empty Model</h4>
+                        <div class="formula">sf12pcs_dv ~ 1 + (1|pidp) + (1|stratum_fixed)</div>
+                        <div class="details">Baseline ICC calculation: Individual ICC = 61.79%, Stratum ICC = 7.03%</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 1: Basic Time Effects</h4>
+                        <div class="formula">sf12pcs_dv ~ wave_centered + age_centered + (1|pidp) + (1|stratum_fixed)</div>
+                        <div>Added: wave + age effects</div>
+                        <div class="details">Age effect = -0.242 points/year, Wave effect = -0.033 points/wave</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 2: Age Trajectories</h4>
+                        <div class="formula">sf12pcs_dv ~ wave_centered * age_centered + (1|pidp) + (1|stratum_fixed)</div>
+                        <div>Added: wave × age interaction</div>
+                        <div class="details">Health decline accelerates with age (interaction = -0.008, p<0.001)</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 3: Fixed Effects</h4>
+                        <div class="formula">sf12pcs_dv ~ wave_centered + age_centered + sex_fixed + eth_fixed + edu_fixed + (1|pidp) + (1|stratum_fixed)</div>
+                        <div>Added: sex + ethnicity + education</div>
+                        <div class="details">98.6% reduction in stratum variance (PCV)</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 4: Random Slopes</h4>
+                        <div class="formula">sf12pcs_dv ~ wave_centered + age_centered + sex_fixed + eth_fixed + edu_fixed + (1 + wave_centered|pidp) + (1|stratum_fixed)</div>
+                        <div>Added: Individual-specific trajectories</div>
+                        <div class="details">Negative correlation (-0.387) between baseline health and decline rate</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 5: Full Model</h4>
+                        <div class="formula">sf12pcs_dv ~ wave_centered + age_centered + sex_fixed + eth_fixed + edu_fixed + birth_cohort + wave_centered:age_centered + (1 + wave_centered|pidp) + (1|stratum_fixed)</div>
+                        <div>Added: Birth cohort effects and interactions</div>
+                        <div class="details">Final stratum ICC = 0.11% (near zero)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9,5V9H21V5M9,19H21V15H9M9,14H21V10H9M4,9H8V5H4M4,19H8V15H4M4,14H8V10H4V14Z"/>
+                    </svg>
+                    Key Findings
+                </h2>
+                
+                <div class="findings-grid">
+                    <div class="finding-card">
+                        <div class="metric">0.11%</div>
+                        <div class="description">Final stratum variance (from 7.03%)</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">3.4 points</div>
+                        <div class="description">Education gradient (Degree vs None)</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">67%</div>
+                        <div class="description">Individual-level variance dominates</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">-0.387</div>
+                        <div class="description">Correlation: baseline health vs decline rate</div>
+                    </div>
+                </div>
+
+                <div class="key-insight">
+                    <h4>Key Insight</h4>
+                    <p>Intersectional effects are minimal after accounting for additive effects. Health inequalities operate through additive disadvantage rather than unique emergent properties of specific sex-ethnicity-education combinations. Individual heterogeneity dominates over group-level differences.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Study 2: Spatial MAIHDA -->
+        <div id="study2" class="study-content">
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9,11H7V13H9V11M13,11H11V13H13V11M17,11H15V13H17V11M19,4H18V2H16V4H8V2H6V4H5C3.89,4 3,4.9 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V9H19V20Z"/>
+                    </svg>
+                    Research Question
+                </h2>
+                <div class="question-box">
+                    "To what extent do geographic contexts amplify or mitigate mental health inequalities across intersectional groups?"
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7Z"/>
+                    </svg>
+                    Data & Variables
+                </h2>
+                
+                <div class="data-grid">
+                    <div class="data-card">
+                        <h4>Dataset</h4>
+                        <div class="value">Wave 14</div>
+                        <div class="label">Cross-sectional analysis</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Sample Size</h4>
+                        <div class="value">33,977</div>
+                        <div class="label">individuals</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Geographic Units</h4>
+                        <div class="value">25</div>
+                        <div class="label">Region × Urban/Rural</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Intersectional Strata</h4>
+                        <div class="value">246</div>
+                        <div class="label">groups</div>
+                    </div>
+                </div>
+
+                <h3>Key Variables</h3>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>sf12mcs_dv</td>
+                            <td><span class="variable-type type-outcome">Outcome</span></td>
+                            <td>Mental health score (0-100, higher = better)</td>
+                        </tr>
+                        <tr>
+                            <td>stratum</td>
+                            <td><span class="variable-type type-grouping">Grouping</span></td>
+                            <td>Sex × Ethnicity × Education × Age</td>
+                        </tr>
+                        <tr>
+                            <td>spatial_unit</td>
+                            <td><span class="variable-type type-grouping">Grouping</span></td>
+                            <td>Region × Urban/Rural (e.g., "R7_Urban" = London Urban)</td>
+                        </tr>
+                        <tr>
+                            <td>area_deprivation</td>
+                            <td><span class="variable-type type-fixed">Area-level</span></td>
+                            <td>Standardized composite deprivation score</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+                    </svg>
+                    Model Progression
+                </h2>
+                
+                <div class="model-progression">
+                    <div class="model-step">
+                        <h4>Model 1: Cross-Classified Null Model</h4>
+                        <div class="formula">sf12mcs_dv ~ 1 + (1|stratum) + (1|spatial_unit)</div>
+                        <div class="details">Stratum ICC = 8.2%, Spatial ICC = 0.5%</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 2: Individual-Level Effects</h4>
+                        <div class="formula">sf12mcs_dv ~ sex_cat + eth_cat + edu_cat + age_cat + (1|stratum) + (1|spatial_unit)</div>
+                        <div>Added: sex + ethnicity + education + age</div>
+                        <div class="details">Stratum PCV = 75.4%</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 3: Area-Level Effects</h4>
+                        <div class="formula">sf12mcs_dv ~ sex_cat + eth_cat + edu_cat + age_cat + area_deprivation + (1|stratum) + (1|spatial_unit)</div>
+                        <div>Added: area_deprivation</div>
+                        <div class="details">Each unit increase in deprivation → 0.536 point decrease in MCS</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 4: Cross-Level Interactions</h4>
+                        <div class="formula">sf12mcs_dv ~ sex_cat + eth_cat + edu_cat + age_cat + area_deprivation + edu_cat:area_deprivation + (1|stratum) + (1|spatial_unit)</div>
+                        <div>Tested: education × area_deprivation</div>
+                        <div class="details">No significant interaction (p = 0.78)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9,5V9H21V5M9,19H21V15H9M9,14H21V10H9M4,9H8V5H4M4,19H8V15H4M4,14H8V10H4V14Z"/>
+                    </svg>
+                    Key Findings
+                </h2>
+                
+                <div class="findings-grid">
+                    <div class="finding-card">
+                        <div class="metric">1.8 points</div>
+                        <div class="description">Urban-rural mental health gap</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">2.4 points</div>
+                        <div class="description">Regional variation (best to worst)</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">0.5%</div>
+                        <div class="description">Spatial variance (very limited)</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">6 areas</div>
+                        <div class="description">Priority areas identified</div>
+                    </div>
+                </div>
+
+                <div class="key-insight">
+                    <h4>Key Insight</h4>
+                    <p>Geographic effects are minimal compared to individual and intersectional effects. Rural areas show 1.8 points better mental health than urban areas. Only 0.5% of variance is attributable to geographic areas, suggesting that place-based interventions alone may have limited impact.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Study 3: Policy Evaluation MAIHDA -->
+        <div id="study3" class="study-content">
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9,11H7V13H9V11M13,11H11V13H13V11M17,11H15V13H17V11M19,4H18V2H16V4H8V2H6V4H5C3.89,4 3,4.9 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V9H19V20Z"/>
+                    </svg>
+                    Research Question
+                </h2>
+                <div class="question-box">
+                    "How did COVID-19 differentially impact mental health across intersectional groups, and which groups were most vulnerable to mental health deterioration?"
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M19,3H14.82C14.4,1.84 13.3,1 12,1C10.7,1 9.6,1.84 9.18,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M12,3A1,1 0 0,1 13,4A1,1 0 0,1 12,5A1,1 0 0,1 11,4A1,1 0 0,1 12,3M7,7H17V5H19V19H5V5H7V7Z"/>
+                    </svg>
+                    Data & Variables
+                </h2>
+                
+                <div class="data-grid">
+                    <div class="data-card">
+                        <h4>Baseline</h4>
+                        <div class="value">Wave 11</div>
+                        <div class="label">Pre-COVID (2019-2020)</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>COVID Waves</h4>
+                        <div class="value">9 surveys</div>
+                        <div class="label">April 2020 - March 2021</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Sample Size</h4>
+                        <div class="value">17,678</div>
+                        <div class="label">individuals with baseline + COVID data</div>
+                    </div>
+                    <div class="data-card">
+                        <h4>Observations</h4>
+                        <div class="value">111,101</div>
+                        <div class="label">with GHQ scores</div>
+                    </div>
+                </div>
+
+                <h3>Key Variables</h3>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+                        <tr>
+                            <td>scghq1_dv</td>
+                            <td><span class="variable-type type-outcome">Outcome</span></td>
+                            <td>GHQ-12 score (0-36, higher = worse mental health)</td>
+                        </tr>
+                        <tr>
+                            <td>ghq_change</td>
+                            <td><span class="variable-type type-outcome">Outcome</span></td>
+                            <td>COVID GHQ - Baseline GHQ</td>
+                        </tr>
+                        <tr>
+                            <td>deteriorated</td>
+                            <td><span class="variable-type type-outcome">Binary Outcome</span></td>
+                            <td>Clinical deterioration (change ≥ 4 points)</td>
+                        </tr>
+                        <tr>
+                            <td>lockdown</td>
+                            <td><span class="variable-type type-time-varying">Context</span></td>
+                            <td>"Lockdown 1", "Lockdown 2", "No lockdown"</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4M12,6A6,6 0 0,0 6,12A6,6 0 0,0 12,18A6,6 0 0,0 18,12A6,6 0 0,0 12,6M12,8A4,4 0 0,1 16,12A4,4 0 0,1 12,16A4,4 0 0,1 8,12A4,4 0 0,1 12,8Z"/>
+                    </svg>
+                    Model Progression
+                </h2>
+                
+                <div class="model-progression">
+                    <div class="model-step">
+                        <h4>Model 1: Null Model for Change Score</h4>
+                        <div class="formula">ghq_change ~ 1 + (1|stratum) + (1|pidp)</div>
+                        <div class="details">Individual ICC = 66.07%, Stratum ICC = 1.02%</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 2: Individual Characteristics</h4>
+                        <div class="formula">ghq_change ~ sex_cat + eth_cat + edu_cat + age_cat + (1|stratum) + (1|pidp)</div>
+                        <div>Added: demographics predicting change</div>
+                        <div class="details">Stratum PCV = 91%</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 3: Baseline Mental Health Effects</h4>
+                        <div class="formula">ghq_change ~ sex_cat + eth_cat + edu_cat + age_cat + baseline_ghq + baseline_income + (1|stratum) + (1|pidp)</div>
+                        <div>Added: baseline_ghq + baseline_income</div>
+                        <div class="details">Baseline GHQ coefficient = -0.439 (regression to mean)</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 4: Interaction Model</h4>
+                        <div class="formula">ghq_change ~ sex_cat + eth_cat + edu_cat + age_cat + baseline_ghq + edu_cat:baseline_ghq + baseline_income + (1|stratum) + (1|pidp)</div>
+                        <div>Tested: differential vulnerability</div>
+                        <div class="details">Significant interaction - impact varies by education and baseline health</div>
+                    </div>
+                    <div class="model-step">
+                        <h4>Model 5: Longitudinal Recovery Model</h4>
+                        <div class="formula">ghq_score ~ baseline_ghq + time + sex_cat + eth_cat + edu_cat + age_cat + (1 + time|pidp) + (1|stratum)</div>
+                        <div>Growth curve for recovery</div>
+                        <div class="details">Minimal overall recovery trend (-0.003 points/month)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M9,5V9H21V5M9,19H21V15H9M9,14H21V10H9M4,9H8V5H4M4,19H8V15H4M4,14H8V10H4V14Z"/>
+                    </svg>
+                    Key Findings
+                </h2>
+                
+                <div class="findings-grid">
+                    <div class="finding-card">
+                        <div class="metric">0.61</div>
+                        <div class="description">Mean GHQ increase</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">22%</div>
+                        <div class="description">Clinical deterioration rate</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">Nov 2020</div>
+                        <div class="description">Peak impact (second lockdown)</div>
+                    </div>
+                    <div class="finding-card">
+                        <div class="metric">Young women</div>
+                        <div class="description">Most vulnerable group</div>
+                    </div>
+                </div>
+
+                <h3>Most Vulnerable Groups</h3>
+                <div class="table-responsive">
+                    <table>
+                        <tr>
+                            <th>Group</th>
+                            <th>Mean Change</th>
+                            <th>% Deteriorated</th>
+                        </tr>
+                        <tr>
+                            <td>Female Black A-Level 16-24</td>
+                            <td>+4.0 points</td>
+                            <td>55.8%</td>
+                        </tr>
+                        <tr>
+                            <td>Female Asian A-Level 16-24</td>
+                            <td>+3.6 points</td>
+                            <td>49.2%</td>
+                        </tr>
+                        <tr>
+                            <td>Female White A-Level 16-24</td>
+                            <td>+2.4 points</td>
+                            <td>37.7%</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="key-insight">
+                    <h4>Key Insight</h4>
+                    <p>COVID-19 mental health impacts were highly heterogeneous across intersectional groups. Young women with lower education levels were most vulnerable, while older adults and those with higher baseline mental health showed greater resilience. Recovery patterns varied significantly, with some groups showing persistent effects.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showStudy(studyId) {
+            // Hide all study contents
+            const allContents = document.querySelectorAll('.study-content');
+            allContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            const allTabs = document.querySelectorAll('.tab-button');
+            allTabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected study content
+            document.getElementById(studyId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.data-card, .finding-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>

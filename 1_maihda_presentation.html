@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilevel Modelling & MAIHDA: From Educational Segregation to Intersectional Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
+            overflow: hidden;
+        }
+        
+        .presentation {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .slide {
+            width: 1024px;
+            height: 768px;
+            background: white;
+            position: absolute;
+            display: none;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .slide.active {
+            display: block;
+        }
+        
+        .slide-header {
+            background: linear-gradient(135deg, #7B3F99 0%, #5A2D79 100%);
+            color: white;
+            padding: 40px 50px 30px;
+        }
+        
+        .slide-content {
+            padding: 40px 50px;
+            height: calc(100% - 120px);
+            overflow-y: auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #7B3F99;
+        }
+        
+        h2 {
+            font-size: 36px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+        
+        h3 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #7B3F99;
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+        
+        p {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #e0e0e0;
+            font-weight: 300;
+        }
+        
+        ul {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+        
+        li {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .highlight {
+            background: #FFD700;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .key-point {
+            background: #f0e6ff;
+            border-left: 5px solid #7B3F99;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 15px;
+            z-index: 1000;
+        }
+        
+        button {
+            background: #7B3F99;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: #5A2D79;
+            transform: translateY(-2px);
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .slide-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 18px;
+            opacity: 0.8;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+        
+        .three-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .emphasis {
+            color: #7B3F99;
+            font-weight: bold;
+        }
+        
+        .formula {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            background: linear-gradient(135deg, #7B3F99 0%, #5A2D79 100%);
+            color: white;
+            padding: 50px;
+        }
+        
+        .title-slide h1 {
+            color: white;
+            font-size: 56px;
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+        
+        .title-slide .subtitle {
+            font-size: 28px;
+            margin-bottom: 60px;
+            color: #e0e0e0;
+        }
+        
+        .author-info {
+            margin-top: 40px;
+        }
+        
+        .author-info p {
+            margin-bottom: 10px;
+            font-size: 22px;
+        }
+        
+        .variance-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 300px;
+            margin: 30px 0;
+        }
+        
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+        
+        .stacked-bar {
+            width: 60px;
+            display: flex;
+            flex-direction: column-reverse;
+            border: 1px solid #333;
+        }
+        
+        .bar-segment {
+            width: 100%;
+            transition: all 0.3s;
+        }
+        
+        .bar-label {
+            margin-top: 10px;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border: 1px solid #333;
+        }
+        
+        .heatmap {
+            display: grid;
+            grid-template-columns: 150px repeat(3, 1fr);
+            gap: 2px;
+            margin: 30px auto;
+            max-width: 600px;
+        }
+        
+        .heatmap-cell {
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            position: relative;
+        }
+        
+        .heatmap-header {
+            background: #7B3F99;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .heatmap-label {
+            background: #f0f0f0;
+            font-weight: bold;
+            text-align: left;
+        }
+        
+        .retention-plot {
+            position: relative;
+            height: 400px;
+            margin: 30px 0;
+        }
+        
+        .survival-curve {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+        }
+        
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        
+        .results-table th {
+            background: #7B3F99;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .results-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .results-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        
+        .results-table .highlight-cell {
+            background: #FFD700;
+            font-weight: bold;
+        }
+        
+        .yellow-box {
+            background: #FFD700;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .research-box {
+            border: 2px solid #7B3F99;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            background: #fafafa;
+        }
+        
+        .research-box h4 {
+            color: #7B3F99;
+            margin-bottom: 10px;
+        }
+        
+        .featured-box {
+            background: #f0e6ff;
+            border: 3px solid #7B3F99;
+            box-shadow: 0 4px 8px rgba(123, 63, 153, 0.2);
+        }
+        
+        .analysis-box {
+            background: #e6f3ff;
+            border: 2px solid #2B5797;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .analysis-box h4 {
+            color: #2B5797;
+            margin-bottom: 10px;
+        }
+        
+        .comparison-box {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .without-maihda {
+            background: #ffe6e6;
+            border: 2px solid #d32f2f;
+        }
+        
+        .with-maihda {
+            background: #e6ffe6;
+            border: 2px solid #388e3c;
+        }
+        
+        .problem-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .solution-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        
+        .decision-matrix {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 2fr;
+            gap: 5px;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .matrix-header {
+            background: #7B3F99;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .matrix-cell {
+            background: #f5f5f5;
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        
+        .matrix-highlight {
+            background: #FFD700;
+            font-weight: bold;
+        }
+        
+        .arrow-down {
+            font-size: 24px;
+            color: #7B3F99;
+            text-align: center;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div class="title-slide">
+                <h1>Multilevel Modelling & MAIHDA:<br>From Educational Segregation to Intersectional Analysis</h1>
+                <p class="subtitle">Three Research Applications Demonstrating MAIHDA's Transformative Potential</p>
+                <div class="author-info">
+                    <p><strong>Dr Yiyang Gao</strong></p>
+                    <p>PhD in Advanced Quantitative Methods, Q-Step Centre, Exeter</p>
+                    <p>Current Postdoc, Evidence Centre for Education, Durham University</p>
+                </div>
+            </div>
+            <span class="slide-number">1/10</span>
+        </div>
+
+        <!-- Slide 2: Research Profile -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Research Profile</h2>
+                <span class="slide-number">2/10</span>
+            </div>
+            <div class="slide-content">
+                <p style="margin-bottom: 30px;">Research Positioning: At the intersection of <span class="emphasis">Quantitative Geography (Space)</span>, <span class="emphasis">Demography/Sociology (Population)</span>, <span class="emphasis">Education</span>, and <span class="emphasis">Health</span></p>
+                
+                <div class="three-column">
+                    <div class="research-box featured-box">
+                        <h4>🏫 Ethnicity & Segregation</h4>
+                        <p><strong>Evolving Patterns of Ethnic Segregation in English Schools</strong></p>
+                        <p style="font-size: 16px; color: #666;">Population, Space and Place (forthcoming)</p>
+                        <p style="margin-top: 15px;"><strong>⭐ Multilevel Analysis of Ethnic Clustering Across Local Schools</strong></p>
+                        <p style="font-size: 16px; color: #666;">British Education Research Journal (R&R)</p>
+                        <p style="font-size: 14px; color: #7B3F99; font-style: italic;">★ Featured in this presentation</p>
+                    </div>
+                    
+                    <div class="research-box featured-box">
+                        <h4>💼 Workforce Inequality</h4>
+                        <p><strong>⭐ Understanding Teacher Retention in England: A Multi-Cohort Survival Analysis</strong></p>
+                        <p style="font-size: 16px; color: #666;">Research Papers in Education (Under Review)</p>
+                        <p style="font-size: 14px; color: #7B3F99; font-style: italic;">★ Featured in this presentation</p>
+                        <p style="margin-top: 15px;"><strong>Spatial-Temporal Patterns of Teacher Career Progression</strong></p>
+                        <p style="font-size: 16px; color: #666;">Presenting at: ADR UK & RGS-IBG</p>
+                    </div>
+                    
+                    <div class="research-box featured-box">
+                        <h4>🗺️ Accessibility, Simulation, Health</h4>
+                        <p><strong>Convenor: "Systems and Simulation Approaches in Population Research"</strong></p>
+                        <p style="font-size: 16px; color: #666;">BSPS | Collaboration with Public Health Glasgow</p>
+                        <p style="margin-top: 15px;"><strong>⭐ Grant: Educational Equity - Transport & School Segregation</strong></p>
+                        <p style="font-size: 16px; color: #666;">Leeds, Glasgow, Durham, Exeter</p>
+                        <p style="font-size: 14px; color: #7B3F99; font-style: italic;">★ Featured in this presentation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: What is MAIHDA? -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>What is MAIHDA?</h2>
+                <span class="slide-number">3/10</span>
+            </div>
+            <div class="slide-content">
+                <h3>Multilevel Analysis of Individual Heterogeneity and Discriminatory Accuracy</h3>
+                
+                <div class="key-point">
+                    <p><strong>The "Gold Standard" for Quantitative Intersectional Analysis</strong></p>
+                    <p>Treats intersectional identities as random effects in multilevel models, revealing how multiple characteristics combine to create unique experiences beyond simple additive effects</p>
+                </div>
+                
+                <div class="two-column">
+                    <div>
+                        <h3>Conventional Approach:</h3>
+                        <ul>
+                            <li>Examines factors separately</li>
+                            <li>Assumes additive effects</li>
+                            <li>Misses critical intersections</li>
+                            <li>Generic policy recommendations</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3>MAIHDA Approach:</h3>
+                        <ul>
+                            <li>Creates intersectional strata</li>
+                            <li>Reveals multiplicative effects</li>
+                            <li>Handles small cell sizes via shrinkage</li>
+                            <li>Enables targeted interventions</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="yellow-box">
+                    <p><strong>Three Extended MAIHDA Applications:</strong></p>
+                    <ul>
+                        <li><strong>Spatial MAIHDA</strong> → School Segregation Study</li>
+                        <li><strong>Longitudinal MAIHDA</strong> → Teacher Retention Study</li>
+                        <li><strong>Policy Evaluation MAIHDA</strong> → Transport & Accessibility Study</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Study 1 - Current Approach -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Study 1: Educational Segregation - Current Approach</h2>
+                <span class="slide-number">4/10</span>
+            </div>
+            <div class="slide-content">
+                <div class="two-column">
+                    <div>
+                        <h3>Research Question</h3>
+                        <p>Which students experience educational segregation, and how does this vary across space and time?</p>
+                        
+                        <div class="analysis-box">
+                            <h4>Current Aggregate Approach:</h4>
+                            <ul style="list-style-type: none; margin-left: 0;">
+                                <li><strong>• Calculates:</strong> Segregation indices by ethnicity and area</li>
+                                <li><strong>• Shows:</strong> Overall levels of ethnic concentration in schools</li>
+                                <li><strong>• Misses:</strong> Which specific students attend segregated schools</li>
+                                <li><strong>• Cannot reveal:</strong> Intersectional vulnerabilities</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="formula" style="margin-top: 30px;">
+                            boot_model <- glmer(<br>
+                            &nbsp;&nbsp;attends_segregated ~ 1 +<br>
+                            &nbsp;&nbsp;(1 | strata_id) + # intersectional strata<br>
+                            &nbsp;&nbsp;(1 | lsoa_id), # spatial clusters<br>
+                            &nbsp;&nbsp;family = binomial,<br>
+                            &nbsp;&nbsp;data = boot_students,<br>
+                            &nbsp;&nbsp;control = glmerControl(optimizer = "bobyqa",<br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;optCtrl = list(maxfun = 10000))<br>
+                            )
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3>The Segregation Paradox</h3>
+                        <p class="emphasis">Aggregate data shows decreasing segregation, but which students still experience it?</p>
+                        
+                        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                            <h4>Who Attends Segregated Schools?</h4>
+                            <p style="font-size: 16px;">Current methods can't answer:</p>
+                            <ul style="font-size: 16px;">
+                                <li>Are Pakistani boys more affected than Pakistani girls?</li>
+                                <li>Does social class intersect with ethnicity?</li>
+                                <li>Where do vulnerable groups cluster?</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="yellow-box">
+                            <p><strong>Definition of Segregated School:</strong></p>
+                            <p>Schools where >70% of students are from a single ethnic group (following Burgess & Wilson, 2005)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Study 1 - Spatial MAIHDA Enhancement -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Study 1: Spatial MAIHDA Enhancement</h2>
+                <span class="slide-number">5/10</span>
+            </div>
+            <div class="slide-content">
+                <h3>Individual-Level Spatial MAIHDA Innovation</h3>
+                <div class="two-column">
+                    <div>
+                        <h4>Method Enhancement:</h4>
+                        <ul>
+                            <li><strong>Unit:</strong> Individual students (N = 100k)</li>
+                            <li><strong>Outcome:</strong> Attends segregated school (binary)</li>
+                            <li><strong>24 intersectional strata:</strong> Ethnicity × SES × Gender</li>
+                            <li><span class="highlight">Cross-classified</span> with spatial units (LSOAs)</li>
+                            <li>Monte Carlo: 10,000 simulations</li>
+                        </ul>
+                        
+                        <div style="background: #e6f3ff; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                            <p style="font-size: 14px;"><strong>Discriminatory Accuracy:</strong> ICC = 0.15</p>
+                            <p style="font-size: 14px;">85% of variation is within intersectional groups - context matters more than identity alone</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>Probability of Attending Segregated School:</h4>
+                        <table class="results-table">
+                            <tr>
+                                <th>Intersectional Group</th>
+                                <th>Probability</th>
+                                <th>Odds Ratio</th>
+                            </tr>
+                            <tr>
+                                <td>Pakistani × Low SES × Female</td>
+                                <td class="highlight-cell">68.4%</td>
+                                <td>3.24 [2.89-3.61]</td>
+                            </tr>
+                            <tr>
+                                <td>Pakistani × Low SES × Male</td>
+                                <td class="highlight-cell">71.2%</td>
+                                <td>3.57 [3.18-3.99]</td>
+                            </tr>
+                            <tr>
+                                <td>White × High SES × Female</td>
+                                <td>21.1%</td>
+                                <td>Reference</td>
+                            </tr>
+                            <tr>
+                                <td>Black × Low SES × Male</td>
+                                <td>52.3%</td>
+                                <td>2.48 [2.21-2.78]</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <h3 style="margin-top: 20px;">Spatial Clustering of Vulnerable Groups</h3>
+                <div class="chart-container" style="height: 280px;">
+                    <svg viewBox="0 0 800 280" style="width: 100%; height: 100%;">
+                        <!-- Background -->
+                        <rect width="800" height="280" fill="#f0f0f0"/>
+                        
+                        <!-- Map outline -->
+                        <rect x="50" y="30" width="700" height="220" fill="white" stroke="#333" stroke-width="2"/>
+                        
+                        <!-- Spatial clusters -->
+                        <g>
+                            <!-- High risk areas -->
+                            <circle cx="150" cy="100" r="40" fill="#FF6B6B" opacity="0.7"/>
+                            <circle cx="180" cy="120" r="35" fill="#FF6B6B" opacity="0.7"/>
+                            <text x="165" y="105" text-anchor="middle" font-size="11" font-weight="bold">Bradford</text>
+                            <text x="165" y="118" text-anchor="middle" font-size="9">72% risk</text>
+                            
+                            <circle cx="350" cy="150" r="45" fill="#FF6B6B" opacity="0.7"/>
+                            <text x="350" y="155" text-anchor="middle" font-size="11" font-weight="bold">Birmingham</text>
+                            <text x="350" y="168" text-anchor="middle" font-size="9">69% risk</text>
+                            
+                            <circle cx="550" cy="180" r="50" fill="#FF6B6B" opacity="0.7"/>
+                            <text x="550" y="185" text-anchor="middle" font-size="11" font-weight="bold">East London</text>
+                            <text x="550" y="198" text-anchor="middle" font-size="9">74% risk</text>
+                            
+                            <!-- Low risk areas -->
+                            <circle cx="450" cy="80" r="30" fill="#4ECDC4" opacity="0.5"/>
+                            <text x="450" y="85" text-anchor="middle" font-size="10">Low risk</text>
+                            
+                            <circle cx="650" cy="120" r="25" fill="#4ECDC4" opacity="0.5"/>
+                        </g>
+                        
+                        <!-- Legend -->
+                        <text x="60" y="20" font-size="12" font-weight="bold">Spatial concentration of Pakistani × Low SES students in segregated schools</text>
+                        <rect x="600" y="40" width="15" height="15" fill="#FF6B6B" opacity="0.7"/>
+                        <text x="620" y="52" font-size="10">High risk clusters</text>
+                        <rect x="600" y="60" width="15" height="15" fill="#4ECDC4" opacity="0.5"/>
+                        <text x="620" y="72" font-size="10">Low risk areas</text>
+                    </svg>
+                </div>
+                
+                <div class="key-point">
+                    <p><strong>Critical Finding:</strong> Monte Carlo reveals Pakistani low-SES boys have 71.2% [95% CI: 68.4%-73.8%] probability of attending segregated schools, with strong spatial clustering (Moran's I = 0.82) in specific urban areas. This intersectional vulnerability was invisible in aggregate analyses.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Study 2 - Current Survival Analysis -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Study 2: Teacher Retention - Current Approach</h2>
+                <span class="slide-number">6/10</span>
+            </div>
+            <div class="slide-content">
+                <h3>Tracking the 2011 Teacher Cohort: Traditional Survival Analysis</h3>
+                
+                <div class="two-column">
+                    <div>
+                        <h4>Current Method Limitations:</h4>
+                        <ul>
+                            <li>Cox model with additive effects</li>
+                            <li>Assumes: ethnicity + gender + ITT = risk</li>
+                            <li>Misses intersectional experiences</li>
+                            <li>Cannot identify time-specific vulnerabilities</li>
+                        </ul>
+                        
+                        <div class="analysis-box" style="margin-top: 20px;">
+                            <h4>Longitudinal MAIHDA Model:</h4>
+                            <div class="formula" style="background: transparent; padding: 10px; margin: 10px 0;">
+                                # Fit Longitudinal MAIHDA with time-varying effects<br>
+                                long_maihda <- glmer(<br>
+                                &nbsp;&nbsp;event_this_year ~ year_scaled + year2 +<br>
+                                &nbsp;&nbsp;(year_scaled + year2 | strata_id) + # Random slopes<br>
+                                &nbsp;&nbsp;(1 | school_id) + # School effects<br>
+                                &nbsp;&nbsp;(1 | teacher_id), # Individual frailty<br>
+                                &nbsp;&nbsp;family = binomial(link = "cloglog"),<br>
+                                &nbsp;&nbsp;data = teachers_pp,<br>
+                                &nbsp;&nbsp;control = glmerControl(optimizer = "bobyqa",<br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;optCtrl = list(maxfun = 50000))<br>
+                                )
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>Survival Curves for 2011 Cohort:</h4>
+                        <div class="retention-plot">
+                            <div class="survival-curve">
+                                <svg viewBox="0 0 450 380">
+                                    <!-- Title -->
+                                    <text x="225" y="20" font-size="14" text-anchor="middle" font-weight="bold">Teachers Entering Profession in 2011</text>
+                                    
+                                    <!-- Axes -->
+                                    <line x1="50" y1="320" x2="400" y2="320" stroke="#333" stroke-width="2"/>
+                                    <line x1="50" y1="320" x2="50" y2="50" stroke="#333" stroke-width="2"/>
+                                    
+                                    <!-- Y-axis labels -->
+                                    <text x="30" y="325" font-size="11" text-anchor="end">0%</text>
+                                    <text x="30" y="255" font-size="11" text-anchor="end">25%</text>
+                                    <text x="30" y="185" font-size="11" text-anchor="end">50%</text>
+                                    <text x="30" y="115" font-size="11" text-anchor="end">75%</text>
+                                    <text x="30" y="55" font-size="11" text-anchor="end">100%</text>
+                                    
+                                    <!-- X-axis labels with years -->
+                                    <text x="50" y="340" font-size="10" text-anchor="middle">2011</text>
+                                    <text x="117" y="340" font-size="10" text-anchor="middle">2013</text>
+                                    <text x="183" y="340" font-size="10" text-anchor="middle">2015</text>
+                                    <text x="250" y="340" font-size="10" text-anchor="middle">2017</text>
+                                    <text x="317" y="340" font-size="10" text-anchor="middle">2019</text>
+                                    <text x="383" y="340" font-size="10" text-anchor="middle">2021</text>
+                                    <text x="400" y="340" font-size="10" text-anchor="middle">'22</text>
+                                    
+                                    <!-- Years in teaching -->
+                                    <text x="50" y="355" font-size="9" text-anchor="middle" fill="#666">Year 0</text>
+                                    <text x="150" y="355" font-size="9" text-anchor="middle" fill="#666">Year 3</text>
+                                    <text x="250" y="355" font-size="9" text-anchor="middle" fill="#666">Year 6</text>
+                                    <text x="350" y="355" font-size="9" text-anchor="middle" fill="#666">Year 9</text>
+                                    <text x="400" y="355" font-size="9" text-anchor="middle" fill="#666">Year 11</text>
+                                    
+                                    <!-- Axis titles -->
+                                    <text x="225" y="375" font-size="12" text-anchor="middle">Time Since Entry</text>
+                                    <text x="-10" y="185" font-size="12" text-anchor="middle" transform="rotate(-90 -10 185)">Retention Rate</text>
+                                    
+                                    <!-- ITT vs Non-ITT curves -->
+                                    <path d="M 50 50 L 100 70 L 150 100 L 200 140 L 250 180 L 300 220 L 350 255 L 400 275" 
+                                          stroke="#FF6B6B" stroke-width="3" fill="none"/>
+                                    <path d="M 50 50 L 100 110 L 150 160 L 200 200 L 250 230 L 300 255 L 350 275 L 400 290" 
+                                          stroke="#4ECDC4" stroke-width="3" fill="none"/>
+                                    
+                                    <!-- Legend -->
+                                    <rect x="270" y="70" width="15" height="3" fill="#FF6B6B"/>
+                                    <text x="290" y="75" font-size="11">With ITT (16.85%)</text>
+                                    <rect x="270" y="90" width="15" height="3" fill="#4ECDC4"/>
+                                    <text x="290" y="95" font-size="11">No ITT (9.75%)</text>
+                                    
+                                    <!-- Problem annotation -->
+                                    <text x="225" y="290" font-size="10" text-anchor="middle" fill="#666" font-style="italic">But which teachers struggle most?</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Study 2 - Longitudinal MAIHDA -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Study 2: Longitudinal MAIHDA Enhancement (Bell et al., 2024)</h2>
+                <span class="slide-number">7/10</span>
+            </div>
+            <div class="slide-content">
+                <h3>Revealing Intersectional Career Trajectories</h3>
+                
+                <div class="two-column">
+                    <div>
+                        <h4>Longitudinal MAIHDA Innovation:</h4>
+                        <ul>
+                            <li><strong>200 intersectional strata:</strong> Ethnicity × Gender × ITT × Region</li>
+                            <li><strong>Time-varying hazards:</strong> Captures non-linear career patterns</li>
+                            <li><strong>Individual trajectories:</strong> Random slopes for each stratum</li>
+                            <li><strong>Critical periods:</strong> Statistically identified vulnerability windows</li>
+                        </ul>
+                        
+                        <div style="background: #e6f3ff; padding: 12px; border-radius: 8px; margin-top: 15px;">
+                            <p style="font-size: 14px; margin: 0;"><strong>Key Finding:</strong> 78% of variation is within intersectional groups - individual context dominates</p>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4>Heterogeneous Career Trajectories:</h4>
+                        <div class="chart-container" style="height: 320px;">
+                            <svg viewBox="0 0 400 320" style="width: 100%; height: 100%;">
+                                <!-- Title -->
+                                <text x="200" y="15" font-size="11" text-anchor="middle" font-weight="bold">5,000 MC Simulations: Top Risk Groups</text>
+                                
+                                <!-- Grid -->
+                                <line x1="50" y1="280" x2="380" y2="280" stroke="#333" stroke-width="2"/>
+                                <line x1="50" y1="280" x2="50" y2="30" stroke="#333" stroke-width="2"/>
+                                
+                                <!-- Multiple trajectory groups with confidence bands -->
+                                <!-- Group 1: Black Male Non-ITT London -->
+                                <path d="M 50 50 Q 100 60 125 85 Q 150 130 200 180 T 380 240 L 380 250 Q 200 190 150 140 Q 125 95 100 70 L 50 60 Z" 
+                                      fill="#FF6B6B" opacity="0.2"/>
+                                <path d="M 50 55 Q 100 65 125 90 Q 150 135 200 185 T 380 245" 
+                                      stroke="#FF6B6B" stroke-width="2.5" fill="none"/>
+                                
+                                <!-- Group 2: Pakistani Female Non-ITT North -->
+                                <path d="M 50 50 Q 120 70 200 120 T 380 180 L 380 190 Q 200 130 120 80 L 50 60 Z" 
+                                      fill="#FFB366" opacity="0.2"/>
+                                <path d="M 50 55 Q 120 75 200 125 T 380 185" 
+                                      stroke="#FFB366" stroke-width="2.5" fill="none"/>
+                                
+                                <!-- Group 3: White Female ITT North (resilient) -->
+                                <path d="M 50 50 Q 150 60 250 85 T 380 120 L 380 130 Q 250 95 150 70 L 50 60 Z" 
+                                      fill="#7B3F99" opacity="0.2"/>
+                                <path d="M 50 55 Q 150 65 250 90 T 380 125" 
+                                      stroke="#7B3F99" stroke-width="2.5" fill="none"/>
+                                
+                                <!-- Group 4: Asian Male ITT London (resilient) -->
+                                <path d="M 50 50 Q 150 55 250 70 T 380 95 L 380 105 Q 250 80 150 65 L 50 60 Z" 
+                                      fill="#4ECDC4" opacity="0.2"/>
+                                <path d="M 50 55 Q 150 60 250 75 T 380 100" 
+                                      stroke="#4ECDC4" stroke-width="2.5" fill="none"/>
+                                
+                                <!-- Critical point markers -->
+                                <circle cx="125" cy="90" r="6" fill="#FFD700" stroke="#333" stroke-width="2"/>
+                                <text x="135" y="85" font-size="9">Year 2</text>
+                                
+                                <circle cx="100" cy="75" r="6" fill="#FFD700" stroke="#333" stroke-width="2"/>
+                                <text x="85" y="70" font-size="9">Year 1</text>
+                                
+                                <!-- Axes labels -->
+                                <text x="50" y="295" font-size="10">2011</text>
+                                <text x="215" y="295" font-size="10">2017</text>
+                                <text x="380" y="295" font-size="10">2022</text>
+                                <text x="215" y="310" font-size="11" text-anchor="middle">Years Since Entry</text>
+                                <text x="25" y="155" font-size="11" text-anchor="middle" transform="rotate(-90 25 155)">Retention Probability</text>
+                                
+                                <!-- Y-axis labels -->
+                                <text x="45" y="285" font-size="9" text-anchor="end">0%</text>
+                                <text x="45" y="180" font-size="9" text-anchor="end">50%</text>
+                                <text x="45" y="55" font-size="9" text-anchor="end">100%</text>
+                            </svg>
+                        </div>
+                        
+                        <!-- Legend outside chart -->
+                        <div style="font-size: 11px; margin-top: 10px;">
+                            <span style="color: #FF6B6B;">■</span> Black × Male × Non-ITT × London (HR: 2.8 at Year 2)<br>
+                            <span style="color: #FFB366;">■</span> Pakistani × Female × Non-ITT × North (HR: 2.3 at Year 1)<br>
+                            <span style="color: #7B3F99;">■</span> White × Female × ITT × North (Reference group)<br>
+                            <span style="color: #4ECDC4;">■</span> Asian × Male × ITT × London (Most resilient)
+                        </div>
+                    </div>
+                </div>
+                
+                <table class="results-table" style="margin-top: 20px; font-size: 14px;">
+                    <tr>
+                        <th>Intersectional Group</th>
+                        <th>Year 1 Risk</th>
+                        <th>Year 2 Risk</th>
+                        <th>Critical Period</th>
+                        <th>11-Year Retention</th>
+                    </tr>
+                    <tr style="background: #ffe6e6;">
+                        <td>Black × Male × Non-ITT × London</td>
+                        <td>18%</td>
+                        <td class="highlight-cell">31%</td>
+                        <td>Year 2 Crisis</td>
+                        <td>3.2%</td>
+                    </tr>
+                    <tr style="background: #fff0e6;">
+                        <td>Pakistani × Female × Non-ITT × North</td>
+                        <td class="highlight-cell">22%</td>
+                        <td>18%</td>
+                        <td>Year 1 Crisis</td>
+                        <td>4.8%</td>
+                    </tr>
+                    <tr>
+                        <td>White × Female × ITT × North</td>
+                        <td>8%</td>
+                        <td>10%</td>
+                        <td>Gradual</td>
+                        <td>23.4%</td>
+                    </tr>
+                </table>
+                
+                <div class="key-point">
+                    <p><strong>Transformative Insight:</strong> Longitudinal MAIHDA reveals that "teacher retention" isn't one problem but many distinct challenges. Black male non-ITT teachers in London face a Year 2 crisis (HR = 2.8, 95% CrI: [2.1-3.7]), whilst Pakistani female non-ITT teachers in the North struggle most in Year 1. This enables precisely targeted, time-specific interventions.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Study 3 - Comparing Without vs With MAIHDA -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Study 3: London Transport Policy - The MAIHDA Difference</h2>
+                <span class="slide-number">8/10</span>
+            </div>
+            <div class="slide-content">
+                <div class="analysis-box" style="margin-bottom: 20px;">
+                    <h4>London's Free School Transport Policy:</h4>
+                    <p style="font-size: 16px; margin: 0;">Free transport if: <strong>>3 miles</strong> from school OR <strong>>2 miles + low income</strong> OR <strong>2-15 miles + faith school</strong></p>
+                </div>
+                
+                <div class="two-column" style="gap: 20px;">
+                    <div class="comparison-box without-maihda" style="display: flex; flex-direction: column;">
+                        <h3 style="color: #d32f2f; text-align: center; margin-bottom: 20px;">❌ Without MAIHDA</h3>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                            <h4 style="color: #333; margin-bottom: 15px;">The "Successful" Policy Story</h4>
+                            <ul style="font-size: 16px; margin-left: 20px;">
+                                <li>✓ 65% of eligible families use the service</li>
+                                <li>✓ Users gain access to 3.1 more schools on average</li>
+                                <li>✓ Overall inequality reduced by 15%</li>
+                            </ul>
+                            <p style="font-size: 18px; font-weight: bold; color: #388e3c; text-align: center; margin-top: 20px;">Conclusion: "Policy is working well!"</p>
+                        </div>
+                        
+                        <div style="background: #fff3cd; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                            <h4 style="color: #856404; margin-bottom: 10px;">What We Miss:</h4>
+                            <ul style="font-size: 16px; margin-left: 20px; color: #666;">
+                                <li>Which eligible families aren't using the service?</li>
+                                <li>Why do some groups benefit more than others?</li>
+                                <li>Who's falling through the gaps?</li>
+                            </ul>
+                        </div>
+                        
+                        <div style="background: #f8d7da; padding: 15px; border-radius: 5px; margin-top: auto;">
+                            <h4 style="color: #721c24; margin-bottom: 10px;">Policy Action:</h4>
+                            <p style="font-size: 16px; margin: 0;">"Expand eligibility for all"</p>
+                            <p style="font-size: 14px; color: #721c24; margin-top: 5px;">Cost: £10M | Impact: Minimal</p>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-box with-maihda" style="display: flex; flex-direction: column;">
+                        <h3 style="color: #388e3c; text-align: center; margin-bottom: 20px;">✓ With MAIHDA</h3>
+                        
+                        <div style="background: white; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                            <h4 style="color: #333; margin-bottom: 15px;">What We Reveal:</h4>
+                            
+                            <table style="width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 15px;">
+                                <tr style="background: #f0f0f0;">
+                                    <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Group</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Take-up Rate</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd; text-align: center;">Schools Gained</th>
+                                    <th style="padding: 8px; border: 1px solid #ddd; text-align: left;">Reality</th>
+                                </tr>
+                                <tr style="background: #ffe6e6;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Black low-income families at 2.5mi</strong></td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">0%</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">+0 schools</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; color: #d32f2f; font-weight: bold;">Completely excluded!</td>
+                                </tr>
+                                <tr style="background: #fff3cd;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>White low-income families at 4mi</strong></td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">78%</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">+3.1 schools</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; color: #388e3c; font-weight: bold;">Thriving ✓</td>
+                                </tr>
+                                <tr style="background: #fff3cd;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Pakistani low-income families at 4mi</strong></td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">42%</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">+1.2 schools</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; color: #d32f2f; font-weight: bold;">Struggling</td>
+                                </tr>
+                                <tr style="background: #e6ffe6;">
+                                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Pakistani families with faith preference</strong></td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">68%</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; text-align: center;">+2.8 schools</td>
+                                    <td style="padding: 8px; border: 1px solid #ddd; color: #388e3c; font-weight: bold;">Working well ✓</td>
+                                </tr>
+                            </table>
+                            
+                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                                <span style="background: #ffe6e6; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold;">Problem 1: ELIGIBILITY GAP</span>
+                                <span style="background: #fff3cd; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold;">Problem 2: TAKE-UP GAP</span>
+                                <span style="background: #e6ffe6; padding: 5px 10px; border-radius: 5px; font-size: 12px; font-weight: bold;">Problem 3: CULTURAL FIT</span>
+                            </div>
+                        </div>
+                        
+                        <div style="background: #f5f5f5; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                            <code style="font-size: 13px;">schools_accessible ~ period + (period | strata_id) + (1 | household_id)</code>
+                            <p style="font-size: 11px; color: #666; margin: 8px 0 0 0;">The (period | strata_id) term reveals differential policy impacts invisible in aggregate analysis</p>
+                        </div>
+                        
+                        <div style="background: #d4edda; padding: 15px; border-radius: 5px; margin-bottom: 15px;">
+                            <h4 style="color: #155724; margin-bottom: 10px;">Policy Action:</h4>
+                            <p style="font-size: 16px; margin: 0;">"Targeted outreach"</p>
+                            <p style="font-size: 14px; color: #155724; margin-top: 5px;">Cost: £3M | Impact: 3× greater</p>
+                        </div>
+                        
+                        <div style="text-align: center; font-size: 16px; color: #388e3c; font-weight: bold; margin-top: auto; padding-top: 10px;">
+                            Treat symptoms → Treat root causes
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Study 3 - MAIHDA Solutions with Inequality Measurement -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>Study 3: MAIHDA-Driven Policy Solutions</h2>
+                <span class="slide-number">9/10</span>
+            </div>
+            <div class="slide-content">
+                <h3 style="text-align: center;">From Diagnosis to Targeted Action</h3>
+                
+                <div class="analysis-box" style="background: #e6f3ff; margin-bottom: 25px; margin-top: 25px;">
+                    <h4 style="color: #2B5797;">How Inequality is Measured:</h4>
+                    <p style="font-size: 16px; margin: 5px 0;"><strong>Inequality</strong> = Standard deviation of school access across households</p>
+                    <p style="font-size: 16px; margin: 5px 0;"><strong>Reduction</strong> = (Baseline SD - New SD) / Baseline SD × 100%</p>
+                    <p style="font-size: 14px; margin-top: 10px; font-style: italic;">*Lower SD = more equal access to schools</p>
+                </div>
+                
+                <h4 style="text-align: center; margin-bottom: 20px;">Monte Carlo Policy Evaluation (1,000 simulations)</h4>
+                <div class="decision-matrix">
+                    <div class="matrix-header">Scenario</div>
+                    <div class="matrix-header">Cost</div>
+                    <div class="matrix-header">New Users</div>
+                    <div class="matrix-header">Inequality ↓</div>
+                    <div class="matrix-header">Impact</div>
+                    
+                    <div class="matrix-cell">A: Expand to 2.5mi</div>
+                    <div class="matrix-cell">£££</div>
+                    <div class="matrix-cell">+5,000</div>
+                    <div class="matrix-cell">10%</div>
+                    <div class="matrix-cell" style="font-size: 12px;">Addresses eligibility gap</div>
+                    
+                    <div class="matrix-cell matrix-highlight">B: Targeted Outreach</div>
+                    <div class="matrix-cell matrix-highlight">£</div>
+                    <div class="matrix-cell matrix-highlight">+2,000</div>
+                    <div class="matrix-cell matrix-highlight">25% ✓</div>
+                    <div class="matrix-cell matrix-highlight" style="font-size: 12px;">Addresses take-up gap</div>
+                    
+                    <div class="matrix-cell">C: Expand Faith</div>
+                    <div class="matrix-cell">££</div>
+                    <div class="matrix-cell">+3,000</div>
+                    <div class="matrix-cell">20%</div>
+                    <div class="matrix-cell" style="font-size: 12px;">Builds on success</div>
+                </div>
+                
+                <div class="two-column" style="margin-top: 25px; gap: 20px;">
+                    <div class="solution-box">
+                        <h4>🎯 Why Targeted Outreach Wins:</h4>
+                        <p style="font-size: 16px;">Because it addresses the actual barriers - information gaps, cultural mistrust, language issues. We're not changing eligibility; we're ensuring those who ARE eligible can actually access the service.</p>
+                    </div>
+                    
+                    <div style="background: #f0e6ff; padding: 20px; border-radius: 8px; border: 2px solid #7B3F99;">
+                        <h4 style="color: #7B3F99;">📊 The MAIHDA Insight:</h4>
+                        <p style="font-size: 16px;">MAIHDA reveals that what looks like a successful policy (65% average) actually masks severe inequalities. Without MAIHDA, we'd waste £10M making more people eligible who still wouldn't use the service. With MAIHDA, we invest £3M in targeted outreach and achieve 2.5× greater inequality reduction.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Key Contributions & Conclusion -->
+        <div class="slide">
+            <div class="slide-header">
+                <h2>MAIHDA: Transforming Understanding of Educational Inequalities</h2>
+                <span class="slide-number">10/10</span>
+            </div>
+            <div class="slide-content">
+                <h3>Evolution Across Three Studies</h3>
+                
+                <table class="results-table" style="font-size: 18px;">
+                    <tr>
+                        <th>Study</th>
+                        <th>Current Method</th>
+                        <th>MAIHDA Extension</th>
+                        <th>Key Innovation</th>
+                    </tr>
+                    <tr>
+                        <td><strong>School Segregation</strong></td>
+                        <td>Aggregate Indices</td>
+                        <td>Spatial MAIHDA</td>
+                        <td>Reveals which intersectional groups experience segregation & where they cluster</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Teacher Retention</strong></td>
+                        <td>Survival Analysis</td>
+                        <td>Longitudinal MAIHDA</td>
+                        <td>Identifies career crisis points for specific groups</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Transport Access</strong></td>
+                        <td>Agent-Based Model</td>
+                        <td>Policy Evaluation MAIHDA</td>
+                        <td>Quantifies differential policy impacts</td>
+                    </tr>
+                </table>
+                
+                <div class="two-column" style="margin-top: 30px;">
+                    <div>
+                        <h3>Main Takeaways</h3>
+                        <ol style="font-size: 18px; line-height: 1.8;">
+                            <li>Intersectional membership matters but explains modest variance (10-20%)</li>
+                            <li>Most variance (80-90%) exists within intersectional groups</li>
+                            <li>Beyond "colourblind" or "essentialist" (systematic inequalities + individual/contextual variation)</li>
+                        </ol>
+                    </div>
+                    
+                    <div>
+                        <h3>Future Directions</h3>
+                        <ul style="font-size: 18px; line-height: 1.8;">
+                            <li>Apply these methods to other health outcomes and contexts (NHS retention crisis, access to healthcare)</li>
+                            <li>Develop software tools for easier implementation</li>
+                            <li>Integrate with causal inference frameworks</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <button id="prevBtn" onclick="changeSlide(-1)">Previous</button>
+        <span id="slideIndicator" style="color: #666; font-size: 16px;">1 / 10</span>
+        <button id="nextBtn" onclick="changeSlide(1)">Next</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            
+            // Update navigation
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            document.getElementById('slideIndicator').textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' && currentSlide < totalSlides - 1) changeSlide(1);
+            if (e.key === 'ArrowLeft' && currentSlide > 0) changeSlide(-1);
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

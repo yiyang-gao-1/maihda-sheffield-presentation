@@ -107,7 +107,7 @@ For permission requests, please contact the author at [yiyang.gao@durham.ac.uk].
 ### 📧 Contact
 
 For questions about this presentation or potential collaborations:
-- Email: [yiyang.gao@durham.ac.uk]
+- Email: [y.gao@sheffield.ac.uk]
 - Twitter: [@constanceko0316]
 - ORCID: [0000-0003-0421-7760]
 
